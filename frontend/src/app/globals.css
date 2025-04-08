@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --background-sidebar: #1a1f2b;
+  --background-content: #121826;
+  --background-header: #1f1f2e;
+  --color-text: #e5e4e4;
+  --background-linear-gradient: linear-gradient(
+    180deg,
+    #eaafc8 0%,
+    #654ea3 94%
+  );
+  --height-header: 60px;
+}
+
+/* body,
+html {
+  height: 100vh;
+
+} */
