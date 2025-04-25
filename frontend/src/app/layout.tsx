@@ -1,5 +1,6 @@
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./globals.css";
-
+import Sidebar from "./layout/Sidebar";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,10 +16,16 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <title>FreeCodeHub - Học lập trình miễn phí</title>
+        <link rel="icon" href="assets/img/iconx_logo.png" type="image/x-icon" />
       </head>
-      <body className="">
-        {/* <Header /> */}
-        {children}
+      <body className="bg-[#121826]">
+        <div className="wrapper_app flex">
+          <ThemeProvider>
+            <Sidebar />
+            <main className="ml-[287px] flex-1">{children}</main>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );
