@@ -3,13 +3,12 @@ import React, { useState } from "react";
 import Banner from "@/app/components/Banner";
 import ItemProduct from "@/app/components/ItemProduct";
 import Footer from "@/app/layout/Footer";
-import Sidebar from "@/app/layout/Sidebar";
 import SidebarMobile from "@/app/layout/SidebarMobile";
+
 const Home = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      {/* Overlay và Sidebar động chỉ hiển thị ở max-[1364px] */}
       {showSidebar && (
         <div className="max-[1364px]:block hidden w-1/2">
           <div

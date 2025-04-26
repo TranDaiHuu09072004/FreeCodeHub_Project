@@ -13,10 +13,9 @@ const listMenu = [
 
 const Sidebar = ({ className = "" }) => {
   const pathname = usePathname();
-
   return (
     <div
-      className={`w-[287px] 2xl:block max-2xl:hidden h-screen bg-[#1a1f2b] fixed top-0 left-0 z-50 backdrop-blur-md border-r border-white/10 ${className}`}
+      className={`w-[287px] min-[1368px]:block max-[1368px]:hidden h-screen bg-[#1a1f2b] fixed top-0 left-0 z-50 backdrop-blur-md border-r border-white/10 ${className}`}
     >
       <div className="header_logo relative pb-[2px] text-center">
         <h1 className="text-3xl mx-[20px] font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text drop-shadow leading-[60px] after:content-[''] after:absolute after:left-[-20px] after:right-[-20px] after:bottom-0 after:h-[2px] after:bg-gradient-to-b after:from-[#eaafc8] after:to-[#654ea3]">

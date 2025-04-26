@@ -7,10 +7,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        screens: {
-          max1366: { max: "1366px" }, // tạo breakpoint ≤ 1366px
-        },
+      screens: {
+        max1366: { max: "1366px" },
       },
     },
   },
