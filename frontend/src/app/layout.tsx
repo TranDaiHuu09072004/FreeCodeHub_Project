@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./globals.css";
 import Sidebar from "./layout/Sidebar";
 export default function RootLayout({
@@ -21,10 +20,10 @@ export default function RootLayout({
       </head>
       <body className="bg-[#121826]">
         <div className="wrapper_app flex">
-          <ThemeProvider>
-            <Sidebar />
-            <main className="ml-[287px] flex-1">{children}</main>
-          </ThemeProvider>
+          <Sidebar />
+          <main className="2xl:ml-[287px] min-[1366px]:w-[75%] min-[1366px]:ml-[20%] max-sm:overflow-x-hidden flex-1">
+            {children}
+          </main>
         </div>
       </body>
     </html>

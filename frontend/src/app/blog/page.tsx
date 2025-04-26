@@ -90,6 +90,7 @@ const Blog = () => {
         name="Đăng ký nhận bản tin"
         description="Nhận thông báo về các bài viết mới và các khóa học miễn phí chất lượng cao."
         placeholder="Email của bạn...."
+        isSearch={true}
       />
       <Footer />
     </div>

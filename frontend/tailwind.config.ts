@@ -8,15 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        light: {
-          body: "#ffffff",
-          section: "#f3f0fa",
-          color: "#000",
-        },
-        dark: {
-          body: "#121826",
-          section: "#1A1F2B",
-          color: "#fff",
+        screens: {
+          max1366: { max: "1366px" }, // tạo breakpoint ≤ 1366px
         },
       },
     },

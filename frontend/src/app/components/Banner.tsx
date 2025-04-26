@@ -21,13 +21,13 @@ const Banner = ({
   return (
     <>
       <section
-        className={`banner_home flex justify-between items-center rounded-[10px] p-[20px] py-[30px] px-[80px] ${
+        className={`banner_home w-[100%] flex justify-between items-center rounded-[10px] max-[1080px]:h-[16rem] max-[1080px]:p-0 min-[1080px]:p-[32px] max-lg:px-[2rem] 2xl:p-[20px] 2xl:py-[30px] 2xl:px-[80px] ${
           isBlog
             ? "bg-[#1A1F2B]"
             : "bg-gradient-to-l from-[#eaafc8] to-[#654ea3]"
         }`}
       >
-        <div className="content_banner w-[50%]">
+        <div className="content_banner 2xl:w-[50%] max-lg:w-full">
           <h1 className="text-[32px] text-white font-bold leading-10 mb-[10px] ">
             {name}
           </h1>
@@ -46,8 +46,12 @@ const Banner = ({
             </a>
           )}
         </div>
-        <div className="img_banner w-[50%]">
-          <img src={image} alt="" className="object-cover ml-[207px]" />
+        <div className="img_banner 2xl:w-[50%] max-[1080px]:hidden">
+          <img
+            src={image}
+            alt=""
+            className="object-cover 2xl:ml-[207px] max-2xl:ml-auto max-lg:hidden"
+          />
         </div>
       </section>
     </>

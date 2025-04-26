@@ -1,9 +1,32 @@
+"use client";
+import React, { useState } from "react";
 import Banner from "@/app/components/Banner";
 import ItemProduct from "@/app/components/ItemProduct";
 import Footer from "@/app/layout/Footer";
+import Sidebar from "@/app/layout/Sidebar";
+import SidebarMobile from "@/app/layout/SidebarMobile";
 const Home = () => {
+  const [showSidebar, setShowSidebar] = useState(false);
   return (
-    <div className="px-[56px] pt-[56px]">
+    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
+      {/* Overlay và Sidebar động chỉ hiển thị ở max-[1364px] */}
+      {showSidebar && (
+        <div className="max-[1364px]:block hidden w-1/2">
+          <div
+            className="fixed inset-0 bg-black/40 z-[999998]"
+            onClick={() => setShowSidebar(false)}
+          ></div>
+          <div className="fixed top-0 left-0 h-full w-1/2 bg-[#1a1f2b] z-[999999] transition-all duration-300">
+            <SidebarMobile className="w-1/2 h-full max-[1364px]:block 2xl:hidden" />
+            <button
+              className="absolute top-4 right-4 text-white text-2xl z-[1000000]"
+              onClick={() => setShowSidebar(false)}
+            >
+              <i className="fa-solid fa-xmark cursor-pointer"></i>
+            </button>
+          </div>
+        </div>
+      )}
       <Banner
         name="Học lập trình miễn phí từ các chuyên gia"
         description="Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng
@@ -12,16 +35,16 @@ const Home = () => {
         image="assets/img/banner_img.png"
         isBlog={false}
       />
-      <section className="course_popular mt-[35px]">
+      <section className="course_popular my-[35px]">
         <div className="relative pl-4">
           <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
           <h1 className="text-[25px] font-bold text-white">Khóa học nổi bật</h1>
         </div>
-        <div className="wrapper_course mt-[35px] grid grid-cols-3 gap-[20px]">
+        <div className="wrapper_course my-[35px] grid grid-cols-3 max-xl:grid-cols-1 gap-[20px]">
           <ItemProduct />
         </div>
       </section>
-      <section className="-m-[56px] my-[35px] quantity bg-gradient-to-l from-[#eaafc8] to-[#654ea3] grid grid-cols-3">
+      <section className="max-sm:-mx-[16px] my-[35px] quantity bg-gradient-to-l from-[#eaafc8] to-[#654ea3] grid grid-cols-3 max-xl:grid-cols-1 max-lg:overflow-x-hidden">
         <div className="item_quantity flex flex-col items-center m-[30px] p-[30px] bg-[#CFDBE9] rounded-[10px]">
           <div className="icon_quantity">
             <i className="fa-solid fa-book-open text-[45px] text-white"></i>
@@ -66,7 +89,7 @@ const Home = () => {
             Nam
           </p>
         </div>
-        <div className="wrapper_partner--channel grid grid-cols-2 gap-x-[10px] mt-[50px] place-items-center max-w-[700px] mx-auto gap-[30px]">
+        <div className="wrapper_partner--channel grid grid-cols-2 max-md:grid-cols-1 gap-x-[10px] mt-[50px] place-items-center max-w-[700px] mx-auto gap-[30px]">
           <div className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]">
             <div className="logo_chanel">
               <img
@@ -171,15 +194,15 @@ const Home = () => {
             FreeCodeHub
           </p>
         </div>
-        <div className="grid grid-cols-3 mt-[35px] gap-x-[20px]">
-          <div className="item_say--about_us p-7 bg-[#1A1F2B] rounded-[10px]">
+        <div className="grid grid-cols-3 max-md:grid-cols-1 mt-[35px] gap-[20px]">
+          <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
               <img
                 src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
               />
-              <div className="name_info ml-5">
+              <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
                   Nguyễn Văn Anh Minh
                 </h5>
@@ -211,14 +234,14 @@ const Home = () => {
               </p>
             </div>
           </div>
-          <div className="item_say--about_us p-7 bg-[#1A1F2B] rounded-[10px]">
+          <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
               <img
                 src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
               />
-              <div className="name_info ml-5">
+              <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
                   Nguyễn Văn Anh Minh
                 </h5>
@@ -250,14 +273,14 @@ const Home = () => {
               </p>
             </div>
           </div>
-          <div className="item_say--about_us p-7 bg-[#1A1F2B] rounded-[10px]">
+          <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
               <img
                 src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
               />
-              <div className="name_info ml-5">
+              <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
                   Nguyễn Văn Anh Minh
                 </h5>
@@ -291,6 +314,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <div className="bar w-[50px] max-[1364px]:block min-[1364px]:hidden fixed right-[33px] max-lg:right-[16px] bottom-[40px] bg-gradient-to-l from-[#eaafc8] to-[#654ea3] py-[5px] px-[10px] rounded-[3px] text-center z-[999999]">
+        <i
+          className="fa-solid fa-bars text-white text-[30px] cursor-pointer"
+          onClick={() => setShowSidebar(true)}
+        ></i>
+      </div>
       <Footer />
     </div>
   );

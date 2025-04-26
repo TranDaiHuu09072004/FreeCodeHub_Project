@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <>
       <section className="footer">
-        <div className="wrapper_footer grid grid-cols-5">
+        <div className="wrapper_footer grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-1">
           <div className="footer_main">
             <div className="footer_main--logo">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text drop-shadow leading-[60px]">
@@ -37,7 +37,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="list_footer--item pl-5">
+          <div className="list_footer--item max-xl:pl-5 max-sm:pl-0">
             <h1 className="text-white text-xl font-bold my-[15px]">
               Liên kết nhanh
             </h1>
