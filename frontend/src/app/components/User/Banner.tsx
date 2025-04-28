@@ -1,4 +1,4 @@
-import InputSearch from "@/app/components/InputSearch";
+import InputSearch from "@/app/components/User/InputSearch";
 
 type Banner = {
   name: string;
@@ -14,20 +14,13 @@ const Banner = ({
   description,
   showButton,
   image,
-  isBlog,
   isSearch,
   placeholder = "Tìm kiếm...",
 }: Banner) => {
   return (
     <>
-      <section
-        className={`banner_home w-[100%] flex justify-between items-center rounded-[10px] max-[1080px]:h-[16rem] max-[1080px]:p-0 min-[1080px]:p-[32px] max-lg:px-[2rem] 2xl:p-[20px] 2xl:py-[30px] 2xl:px-[80px] ${
-          isBlog
-            ? "bg-[#1A1F2B]"
-            : "bg-gradient-to-l from-[#eaafc8] to-[#654ea3]"
-        }`}
-      >
-        <div className="content_banner 2xl:w-[50%] max-lg:w-full">
+      <section className="banner_home w-[100%] flex justify-between items-center rounded-[10px] max-[1080px]:h-[16rem] max-[1080px]:p-5 max-sm:h-full max-sm:p-[2rem] min-[1080px]:p-[32px] 2xl:p-[20px] 2xl:py-[30px] 2xl:px-[80px] bg-gradient-to-l from-[#eaafc8] to-[#654ea3]">
+        <div className="content_banner min-[1046px]:w-[50%] max-lg:w-full">
           <h1 className="text-[32px] text-white font-bold leading-10 mb-[10px] ">
             {name}
           </h1>
@@ -46,7 +39,7 @@ const Banner = ({
             </a>
           )}
         </div>
-        <div className="img_banner 2xl:w-[50%] max-[1080px]:hidden">
+        <div className="img_banner min-[1046px]:w-[50%] min-[1046px]:block max-[1080px]:hidden">
           <img
             src={image}
             alt=""

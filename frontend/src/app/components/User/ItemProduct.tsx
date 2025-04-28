@@ -21,9 +21,8 @@ const ListCourse_Popular = [
   },
   {
     id: 2,
-    image:
-      "https://hoidanit.vn/_next/image?url=https%3A%2F%2Fhoidanit.vn%2Fimages%2F2610799786e82f64a8aea3b0ecd23b55c.png&w=1920&q=75",
-    name: "  Tự học FullStack NextJS/NestJS",
+    image: "https://files.fullstack.edu.vn/f8-prod/courses/13/13.png",
+    name: "Tự học FullStack NextJS/NestJS",
     image_author:
       "https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj",
     author: "Hỏi dân IT",

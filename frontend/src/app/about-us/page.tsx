@@ -1,17 +1,17 @@
-import Banner_Blog from "@/app/components/BannerBlog";
+import Banner_Blog from "@/app/components/User/BannerBlog";
 import Footer from "@/app/layout/Footer";
 import Link from "next/link";
 
 const About_Us = () => {
   return (
-    <div className="pt-[56px] px-[56px]">
+    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner_Blog
         name="Về FreeCodeHub"
         isButton={true}
         description="FreeCodeHub ra đời từ sự tận tâm của tôi - Hữu - với mong muốn mang lại cơ hội học tập và phát triển cho cộng đồng giới trẻ Việt Nam trong lĩnh vực lập trình"
       />
-      <section className="author_create flex items-center justify-between my-[35px]">
-        <div className="content_author w-[50%]">
+      <section className="author_create flex max-xl:flex-col items-center justify-between my-[35px]">
+        <div className="content_author xl:w-[50%] max-xl:w-full">
           <h3 className="text-white text-[25px] mb-[15px] font-bold">
             Người sáng lập
           </h3>
@@ -38,11 +38,11 @@ const About_Us = () => {
             đầy thử thách nhưng cũng thú vị này
           </p>
         </div>
-        <div className="image_author w-[50%]">
+        <div className="image_author xl:w-[50%] max-xl:w-full">
           <img
             src="assets/img/name_author.png"
             alt=""
-            className="w-[400px] h-auto object-cover rounded-[10px] ml-[165px]"
+            className="xl:w-[400px] max-xl:w-full h-auto object-cover rounded-[10px] xl:ml-[165px]"
           />
         </div>
       </section>
@@ -51,12 +51,12 @@ const About_Us = () => {
           <h1 className="text-[25px] text-white font-bold mb-[20px]">
             Sứ mệnh của chúng tôi
           </h1>
-          <p className="text-[#798595] text-[18px] px-[150px]">
+          <p className="text-[#798595] text-[18px] xl:px-[150px]">
             Sứ mệnh của FreeCodeHub là giúp mọi người dễ dàng tiếp cận với kiến
             thức lập trình chất lượng cao một cách miễn phí và có tổ chức
           </p>
         </div>
-        <div className="wrapper_misson grid grid-cols-2 gap-[20px] my-[35px]">
+        <div className="wrapper_misson grid grid-cols-2 max-xl:grid-cols-1 gap-[20px] my-[35px]">
           <div className="item_misson bg-[#1a1f2b] p-5 flex items-center gap-x-[20px]  rounded-[5px]">
             <div className="icon_misson">
               <i className="fa-solid fa-book-open text-[20px] text-white p-3 bg-[#302F3E] rounded-full"></i>
@@ -120,7 +120,7 @@ const About_Us = () => {
           <h1 className="text-[25px] text-white font-bold mb-[20px]">
             Hành trình 6 tháng của tôi
           </h1>
-          <p className="text-[#798595] text-[18px] px-[150px]">
+          <p className="text-[#798595] text-[18px] xl:px-[150px]">
             Đây là quá trình tôi đã trải qua để xây dựng FreeCodeHub từ ý tưởng
             ban đầu đến một cộng đồng học tập phát triển.
           </p>
@@ -249,12 +249,12 @@ const About_Us = () => {
           <h1 className="text-[25px] text-white font-bold mb-[20px]">
             Đối tác của chúng tôi
           </h1>
-          <p className="text-[#798595] text-[18px] px-[150px]">
+          <p className="text-[#798595] text-[18px] xl:px-[150px]">
             Chúng tôi hợp tác với các kênh Youtube lập trình hàng đầu để mang
             đến nội dung chất lượng cao cho người học.
           </p>
         </div>
-        <div className="wrapper_partner grid grid-cols-5 gap-5">
+        <div className="wrapper_partner grid grid-cols-5 max-xl:grid-cols-2 gap-5">
           <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
             <div className="img">
               <img

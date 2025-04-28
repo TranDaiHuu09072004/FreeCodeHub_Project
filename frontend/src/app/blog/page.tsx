@@ -1,7 +1,7 @@
 "use client";
-import Banner_Blog from "@/app/components/BannerBlog";
-import Button from "@/app/components/Button";
-import ItemBlog from "@/app/components/ItemBlog";
+import Banner_Blog from "@/app/components/User/BannerBlog";
+import Button from "@/app/components/User/Button";
+import ItemBlog from "@/app/components/User/ItemBlog";
 import Footer from "@/app/layout/Footer";
 import { useState } from "react";
 
@@ -12,7 +12,7 @@ const Blog = () => {
   };
 
   return (
-    <div className="px-[56px] pt-[56px]">
+    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner_Blog
         placeholder="Tìm kiếm bài viết"
         name="Blog FreeCodeHub"
@@ -20,8 +20,8 @@ const Blog = () => {
         isSearch={true}
       />
       <section className="select_blog my-[35px] flex justify-center">
-        <div className="flex space-x-4">
-          {Array.from({ length: 6 }, (_, index) => (
+        <div className="grid grid-cols-5 max-xl:grid-cols-3 max-sm:grid-cols-2 gap-5">
+          {Array.from({ length: 5 }, (_, index) => (
             <Button
               key={index}
               children="Tất cả"
@@ -38,15 +38,15 @@ const Blog = () => {
         </div>
       </section>
       <section className="blog_hot">
-        <div className="item-detail_course flex">
-          <div className="img_detail w-[50%] bg-[#121826] p-[10px] rounded-[10px]">
+        <div className="item-detail_course flex max-xl:flex-col">
+          <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px]">
             <img
               src="https://files.fullstack.edu.vn/f8-prod/courses/13/13.png"
               alt=""
-              className="rounded-[10px] "
+              className="rounded-[10px] w-full"
             />
           </div>
-          <div className="content_detail pl-[37px] w-[50%]">
+          <div className="content_detail xl:pl-[37px] xl:w-[50%] max-xl:w-full">
             <h5 className="mt-[15px] bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white py-1 px-2 w-[100px] rounded-[30px]">
               Tin nổi bật
             </h5>
@@ -82,7 +82,7 @@ const Blog = () => {
           <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
           <h1 className="text-[25px] font-bold text-white">Bài viết</h1>
         </div>
-        <div className="wrapper_blog mt-[35px] grid grid-cols-3 gap-[20px]">
+        <div className="wrapper_blog mt-[35px] grid lg:grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1  gap-[20px]">
           <ItemBlog />
         </div>
       </section>

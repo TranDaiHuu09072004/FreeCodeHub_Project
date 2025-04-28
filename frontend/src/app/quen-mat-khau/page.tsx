@@ -1,4 +1,4 @@
-import Button from "@/app/components/Button";
+import Button from "@/app/components/User/Button";
 import Link from "next/link";
 const ChangePassWord = () => {
   return (

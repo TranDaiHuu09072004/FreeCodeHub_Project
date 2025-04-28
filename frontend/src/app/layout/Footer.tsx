@@ -148,10 +148,10 @@ const Footer = () => {
           </div>
         </div>
         <div className="py-[10px] border-b border-[#1F2937]"></div>
-        <h1 className="text-center my-[10px] text-[#BEBDBD] hover:text-white">
+        <h1 className="text-center max-sm:text-[15px] my-[10px] text-[#BEBDBD] hover:text-white">
           © 2025 FreeCodeHub Project from Huudev with love{" "}
-          <span>
-            <i className="fa-solid fa-heart text-red-600 text-[20px]"></i>
+          <span className="max-sm:hidden">
+            <i className="fa-solid fa-heart text-red-600 text-[20px] "></i>
           </span>
         </h1>
       </section>

@@ -1,38 +1,17 @@
-"use client";
-import React, { useState } from "react";
-import Banner from "@/app/components/Banner";
-import ItemProduct from "@/app/components/ItemProduct";
+import React from "react";
+import Banner from "@/app/components/User/Banner";
+import ItemProduct from "@/app/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
-import SidebarMobile from "@/app/layout/SidebarMobile";
 
 const Home = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      {showSidebar && (
-        <div className="max-[1364px]:block hidden w-1/2">
-          <div
-            className="fixed inset-0 bg-black/40 z-[999998]"
-            onClick={() => setShowSidebar(false)}
-          ></div>
-          <div className="fixed top-0 left-0 h-full w-1/2 bg-[#1a1f2b] z-[999999] transition-all duration-300">
-            <SidebarMobile className="w-1/2 h-full max-[1364px]:block 2xl:hidden" />
-            <button
-              className="absolute top-4 right-4 text-white text-2xl z-[1000000]"
-              onClick={() => setShowSidebar(false)}
-            >
-              <i className="fa-solid fa-xmark cursor-pointer"></i>
-            </button>
-          </div>
-        </div>
-      )}
       <Banner
         name="Học lập trình miễn phí từ các chuyên gia"
         description="Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng
             đầu Việt Nam, tất cả đều miễn phí và chất lượng"
         showButton={true}
         image="assets/img/banner_img.png"
-        isBlog={false}
       />
       <section className="course_popular my-[35px]">
         <div className="relative pl-4">
@@ -313,12 +292,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <div className="bar w-[50px] max-[1364px]:block min-[1364px]:hidden fixed right-[33px] max-lg:right-[16px] bottom-[40px] bg-gradient-to-l from-[#eaafc8] to-[#654ea3] py-[5px] px-[10px] rounded-[3px] text-center z-[999999]">
-        <i
-          className="fa-solid fa-bars text-white text-[30px] cursor-pointer"
-          onClick={() => setShowSidebar(true)}
-        ></i>
-      </div>
+
       <Footer />
     </div>
   );

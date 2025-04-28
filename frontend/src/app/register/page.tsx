@@ -1,9 +1,9 @@
-import Button from "@/app/components/Button";
+import Button from "@/app/components/User/Button";
 import Link from "next/link";
 
 const Register = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#121826]">
+    <div className="min-h-screen flex items-center justify-center bg-[#121826] lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <div className="form_register bg-[#1A1F2B] w-[433px] p-8 rounded-[10px]">
         <h1 className="text-white text-[25px] text-center font-medium mb-2">
           Tạo tài khoản
@@ -44,7 +44,7 @@ const Register = () => {
             Đã có tài khoản?{" "}
             <Link
               href="/login"
-              className="bg-gradient-to-r font-bold from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent hover:underline"
+              className="bg-gradient-to-r font-bold from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent hover:underline ml-1"
             >
               Đăng nhập
             </Link>

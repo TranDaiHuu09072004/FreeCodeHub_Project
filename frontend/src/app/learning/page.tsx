@@ -15,7 +15,7 @@ const Learning = () => {
           title:
             "ReactJS là gì? Tại sao nên học ReactJS | Khóa học ReactJS tại F8",
           duration: "10:41",
-          videoUrl: "https://www.youtube.com/embed/x0fSBAgBrOQ",
+          videoUrl: "",
         },
         {
           id: 2,
@@ -55,21 +55,14 @@ const Learning = () => {
   const currentLesson = allLessons.find((lesson) => lesson.id === currentVideo);
 
   return (
-    <div className="pt-[56px] px-[56px]">
+    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <section className="learning_course mb-[35px]">
-        <div className="title_course flex gap-x-[20px] mb-[20px]">
-          <div className="flex items-center gap-x-[10px] play_video bg-gradient-to-r from-[#eaafc8] to-[#654ea3] w-[50%] rounded-[10px] py-[10px] px-[20px]">
-            <i className="fa-solid fa-circle-play text-[25px] text-white"></i>
-            <h1 className="text-white text-[25px]">Video khóa học</h1>
-          </div>
-          <div className="play_video bg-gradient-to-r from-[#eaafc8] to-[#654ea3] w-[50%] rounded-[10px] py-[10px] px-[20px]">
-            <h1 className="text-white text-[25px]">Danh sách các bài học</h1>
-          </div>
-        </div>
-
-        <div className="content_learning flex gap-x-[20px]">
-          {/* Video Player */}
-          <div className="video_player w-[50%] bg-[#141625] rounded-[10px] overflow-hidden">
+        <div className="content_learning 2xl:flex max-xl:flex-col gap-x-[20px]">
+          <div className="video_player 2xl:w-[50%] max-xl:w-full bg-[#141625] rounded-[10px] overflow-hidden">
+            <div className="flex items-center gap-x-[10px] play_video bg-gradient-to-r from-[#eaafc8] to-[#654ea3] w-full rounded-[10px] py-[10px] px-[20px]">
+              <i className="fa-solid fa-circle-play text-[25px] text-white"></i>
+              <h1 className="text-white text-[25px]">Video khóa học</h1>
+            </div>
             <div className="aspect-video">
               <iframe
                 width="100%"
@@ -89,7 +82,15 @@ const Learning = () => {
           </div>
 
           {/* Lesson List */}
-          <div className="lesson_list w-[50%] bg-[#141625] rounded-[10px] max-h-[600px] overflow-y-auto">
+
+          <div className="lesson_list 2xl:w-[50%] max-xl:w-full bg-[#141625] rounded-[10px] max-h-[600px] overflow-y-auto">
+            <div className="title_course flex max-xl:flex-col gap-x-[20px] mb-[20px]">
+              <div className="play_video bg-gradient-to-r from-[#eaafc8] to-[#654ea3] w-full rounded-[10px] py-[10px] px-[20px]">
+                <h1 className="text-white text-[25px]">
+                  Danh sách các bài học
+                </h1>
+              </div>
+            </div>
             {allLessons.map((lesson) => (
               <div
                 key={lesson.id}
@@ -130,7 +131,7 @@ const Learning = () => {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

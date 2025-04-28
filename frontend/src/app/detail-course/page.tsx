@@ -1,6 +1,6 @@
-import Banner from "@/app/components/Banner";
-import Button from "@/app/components/Button";
-import Accordion from "@/app/components/Accordion";
+import Banner from "@/app/components/User/Banner";
+import Button from "@/app/components/User/Button";
+import Accordion from "@/app/components/User/Accordion";
 import Footer from "@/app/layout/Footer";
 
 const DetailCourses = () => {
@@ -61,23 +61,22 @@ const DetailCourses = () => {
   ];
 
   return (
-    <div className="px-[56px] pt-[56px]">
+    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner
         name="Chi tiết khóa học"
         description="Chọn khóa học chi tiết của bạn"
         image="assets/img/banne_detail-course.png"
-        isBlog={false}
       />
       <section className="detail_course bg-[#1F212C] rounded-[10px] p-[35px] my-[35px] ">
-        <div className="item-detail_course flex ">
-          <div className="img_detail w-[50%] bg-[#121826] p-[10px] rounded-[10px]">
+        <div className="item-detail_course flex max-2xl:flex-col">
+          <div className="img_detail 2xl:w-[50%] max-2xl:w-full bg-[#121826] p-[10px] rounded-[10px]">
             <img
               src="https://files.fullstack.edu.vn/f8-prod/courses/13/13.png"
               alt=""
-              className="rounded-[10px] "
+              className="rounded-[10px] max-2xl:w-full"
             />
           </div>
-          <div className="content_detail pl-[37px] w-[50%]">
+          <div className="content_detail 2xl:pl-[37px] 2xl:w-[50%] max-2xl:w-full">
             <h3 className="text-[20px] text-white font-bold mt-[15px] mb-[30px]">
               Xây dựng Website với ReactJS
             </h3>
@@ -107,7 +106,7 @@ const DetailCourses = () => {
         <h1 className="title text-white text-[30px] font-bold text-center py-[35px]">
           Mô tả chi tiết khóa học
         </h1>
-        <ul className="list_des--detail-course grid grid-cols-2 gap-[20px] pb-[35px]">
+        <ul className="list_des--detail-course grid grid-cols-2 max-sm:grid-cols-1 gap-[20px] pb-[35px]">
           <li className="flex items-center gap-[10px]">
             <i className="fa-solid fa-circle-check bg-gradient-to-r from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent text-[30px]"></i>{" "}
             <span className=" text-[#E5E4E4]">

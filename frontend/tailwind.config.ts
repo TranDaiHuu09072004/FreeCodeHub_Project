@@ -5,12 +5,9 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
-    extend: {
-      screens: {
-        max1366: { max: "1366px" },
-      },
-    },
+    extend: {},
+    plugins: [],
   },
-  plugins: [],
 };
