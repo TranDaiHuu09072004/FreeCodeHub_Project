@@ -40,7 +40,7 @@ const SidebarAdmin = ({ className = "" }) => {
     >
       <div className="header_logo relative pb-[2px] text-center">
         <h1 className="text-[25px] mx-[20px] font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text drop-shadow leading-[60px] after:content-[''] after:absolute after:left-[-20px] after:right-[-20px] after:bottom-0 after:h-[2px] after:bg-gradient-to-b after:from-[#eaafc8] after:to-[#654ea3]">
-          <Link href="/">Admin Dashboard</Link>
+          <Link href="/dashboard">Admin Dashboard</Link>
         </h1>
       </div>
       <ul className="list_sidebar mt-[20px] text-white px-[30px]">
