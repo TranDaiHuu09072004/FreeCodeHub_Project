@@ -1,10 +1,11 @@
 type MyButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   icon?: string;
   isNumber_blog?: boolean;
   number_blog?: string;
+  type?: string;
 };
 const Button = ({
   children,
@@ -18,7 +19,7 @@ const Button = ({
     <>
       {" "}
       <button className={className} onClick={onClick}>
-        {icon && <i className={`mr-2 ${icon}`}></i>}
+        {icon && <i className={`mr-2 text-[18px] ${icon}`}></i>}
         {children} {isNumber_blog && <span>{number_blog}</span>}
       </button>
     </>

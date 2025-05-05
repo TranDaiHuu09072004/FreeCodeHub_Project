@@ -3,29 +3,33 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const listMenu = [
-  { href: "/dashboard", icon: "fa-solid fa-border-all", label: "Dashboard" },
   {
-    href: "/blog-management",
+    href: "/admin/dashboard",
+    icon: "fa-solid fa-border-all",
+    label: "Dashboard",
+  },
+  {
+    href: "/admin/blog",
     icon: "fa-solid fa-file",
     label: "Quản lý blog",
   },
   {
-    href: "/user-management",
+    href: "/admin/user",
     icon: "fa-solid fa-users",
     label: "Quản lý người dùng",
   },
   {
-    href: "/category-management",
+    href: "/admin/categories",
     icon: "fa-solid fa-layer-group",
     label: "Quản lý danh mục",
   },
   {
-    href: "/author-management",
+    href: "/admin/author",
     icon: "fa-solid fa-pen-nib",
     label: "Quản lý tác giả",
   },
   {
-    href: "/courses-management",
+    href: "/admin/course",
     icon: "fa-solid fa-book-open",
     label: "Quản lý khóa học",
   },

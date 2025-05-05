@@ -1,8 +1,8 @@
 "use client";
 import "./globals.css";
-import Sidebar from "./layout/Sidebar";
 import { ThemeProvider } from "next-themes";
 import ShowSideBarMenu from "@/app/components/User/ShowSideBarMenu";
+import SidebarUser from "@/app/components/Sidebar/SideBarUser";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className="bg-[#121826]">
         <ThemeProvider attribute="class">
           <div className="wrapper_app xl:flex">
-            <Sidebar />
+            <SidebarUser />
             <ShowSideBarMenu />
             <main className="2xl:ml-[287px] min-[1366px]:w-[75%] min-[1366px]:ml-[20%] max-sm:overflow-x-hidden max-sm:ml-0 2xl:flex-1">
               {children}

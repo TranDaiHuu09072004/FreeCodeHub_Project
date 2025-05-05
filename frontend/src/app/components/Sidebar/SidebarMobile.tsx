@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const listMenu = [
+const clientMenu = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
   { href: "/courses", icon: "fa-solid fa-graduation-cap", label: "Khóa học" },
   { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Blog" },
@@ -11,8 +11,43 @@ const listMenu = [
   { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
 ];
 
-const SidebarMobile = ({ className = "" }) => {
+const adminMenu = [
+  {
+    href: "/admin/dashboard",
+    icon: "fa-solid fa-border-all",
+    label: "Dashboard",
+  },
+  {
+    href: "/admin/blog",
+    icon: "fa-solid fa-file",
+    label: "Quản lý blog",
+  },
+  {
+    href: "/admin/user",
+    icon: "fa-solid fa-users",
+    label: "Quản lý người dùng",
+  },
+  {
+    href: "/admin/categories",
+    icon: "fa-solid fa-layer-group",
+    label: "Quản lý danh mục",
+  },
+  {
+    href: "/admin/author",
+    icon: "fa-solid fa-pen-nib",
+    label: "Quản lý tác giả",
+  },
+  {
+    href: "/admin/course",
+    icon: "fa-solid fa-book-open",
+    label: "Quản lý khóa học",
+  },
+  { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
+];
+
+const SidebarMobile = ({ className = "", type = "client" }) => {
   const pathname = usePathname();
+  const listMenu = type === "admin" ? adminMenu : clientMenu;
 
   return (
     <div
@@ -28,7 +63,12 @@ const SidebarMobile = ({ className = "" }) => {
           <li
             key={index}
             className={`xl:py-2 xl:px-4 max-xl:py-2 max-xl:px-1 rounded-[3px] mb-[10px] transition-all duration-300 ${
-              pathname === item.href
+              (
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href ||
+                    pathname.startsWith(item.href + "/")
+              )
                 ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                 : ""
             }`}

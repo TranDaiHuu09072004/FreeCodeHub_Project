@@ -7,7 +7,6 @@ import {
   coursePerformanceData,
   userDistributionData,
   COLORS,
-  recentCoursesData,
 } from "@/app/data/dashboardData";
 import UserDistributionChart from "@/app/components/Admin/chart/UserDistributionChart";
 import CoursePerformanceChart from "@/app/components/Admin/chart/CoursePerformanceChart";
@@ -66,7 +65,7 @@ const Dashboard = () => {
       <section className="wellcomeback_dashboard flex justify-between">
         <div className="title_dashboard">
           <h1 className="text-white text-[25px] font-bold">Dashboard</h1>
-          <span className="text-[#677d9b] text-[15px] font-[450] hover:text-white">
+          <span className="text-[#677d9b] text-[15px] font-[450]">
             Chào mừng trở lại, Admin
           </span>
         </div>
