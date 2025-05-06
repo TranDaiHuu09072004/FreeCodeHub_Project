@@ -224,6 +224,7 @@ const Blog_Management = () => {
                   <input
                     type="text"
                     required
+                    placeholder="Nhập tiêu đề"
                     className="h-[40px] w-[489.95px] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                   />
                 </div>
@@ -234,8 +235,9 @@ const Blog_Management = () => {
                   <textarea
                     name="summary"
                     id="summary"
+                    placeholder="Nhập tóm tắt"
                     rows={5}
-                    className="col-span-3 rounded-[10px] border border-[#1e2631]"
+                    className="col-span-3 p-3 rounded-[10px] border border-[#1e2631]"
                   ></textarea>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -245,8 +247,9 @@ const Blog_Management = () => {
                   <textarea
                     name="content"
                     id="content"
+                    placeholder="Nhập nội dung"
                     rows={5}
-                    className="col-span-3 rounded-[10px] border border-[#1e2631]"
+                    className="col-span-3 p-3 rounded-[10px] border border-[#1e2631]"
                   ></textarea>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -256,6 +259,7 @@ const Blog_Management = () => {
                   <input
                     type="text"
                     required
+                    placeholder="Nhập tác giả"
                     className="h-[40px] w-[489.95px] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                   />
                 </div>
@@ -266,6 +270,7 @@ const Blog_Management = () => {
                   <input
                     type="text"
                     required
+                    placeholder="Nhập chuyên mục"
                     className="h-[40px] w-[489.95px] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                   />
                 </div>
@@ -276,6 +281,7 @@ const Blog_Management = () => {
                   <input
                     type="date"
                     required
+                    placeholder="Nhập ngày đăng"
                     className="h-[40px] w-[489.95px] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                   />
                 </div>
@@ -313,6 +319,7 @@ const Blog_Management = () => {
                   <Input
                     id="image"
                     type="file"
+                    placeholder="Chọn hình ảnh"
                     className="h-[40px] w-[489.95px] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                   />
                 </div>

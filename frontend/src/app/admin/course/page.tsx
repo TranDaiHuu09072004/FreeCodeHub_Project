@@ -58,7 +58,7 @@ const Course_Management = () => {
           </div>
           <Button
             onClick={openDialog}
-            className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
+            className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] !py-[8px] !px-[15px] rounded-[5px] cursor-pointer"
             children="Thêm khóa học"
             icon="fa-solid fa-circle-plus"
           />
