@@ -2,11 +2,12 @@ type InputSearch = {
   placeholder?: string;
   w: string;
   h: string;
+  className: string;
 };
-const InputSearch = ({ placeholder, w, h }: InputSearch) => {
+const InputSearch = ({ placeholder, w, h, className }: InputSearch) => {
   return (
     <>
-      <div className="search_courses flex justify-center items-center mx-auto w-[250px] max-xl:mb-[10px]">
+      <div className={className}>
         <input
           type="text"
           className="bg-[#333647] rounded-[5px] px-[10px] text-[#b3b7c7] outline-none"

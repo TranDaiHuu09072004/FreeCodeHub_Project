@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 const listMenu = [
   {
@@ -71,7 +72,6 @@ const SidebarAdmin = ({ className = "" }) => {
           </li>
         ))}
       </ul>
-
       <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

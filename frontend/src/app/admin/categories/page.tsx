@@ -38,7 +38,7 @@ const Category_Management = () => {
   const openDialog = () => setIsDialogOpen(true);
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      <div className="title_blog my-[35px]">
+      <div className="title_blog mb-[35px]">
         <h3 className="text-2xl text-white font-bold">Quản lý danh mục</h3>
         <p className="text-[#677d9b] text-[15px] font-[450]">
           Quản lý tài khoản danh mục trên hệ thống
@@ -83,134 +83,22 @@ const Category_Management = () => {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
+              <TableCell className="font-medium text-white">1</TableCell>
+              <TableCell className="text-white">
                 <span>Frontend</span>
               </TableCell>
               <TableCell>
-                <span className="text-[#677d9b]">frontend</span>
+                <span className="text-[#677d9b] text-white">frontend</span>
               </TableCell>
-              <TableCell>
+              <TableCell className="text-white">
                 {" "}
                 <span> Các khóa học về Frontend Development</span>
               </TableCell>
-              <TableCell>
+              <TableCell className="text-white">
                 <span>12</span>
               </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <span>Frontend</span>
-              </TableCell>
-              <TableCell>
-                <span className="text-[#677d9b]">frontend</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <span> Các khóa học về Frontend Development</span>
-              </TableCell>
-              <TableCell>
-                <span>12</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <span>Frontend</span>
-              </TableCell>
-              <TableCell>
-                <span className="text-[#677d9b]">frontend</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <span> Các khóa học về Frontend Development</span>
-              </TableCell>
-              <TableCell>
-                <span>12</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <span>Frontend</span>
-              </TableCell>
-              <TableCell>
-                <span className="text-[#677d9b]">frontend</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <span> Các khóa học về Frontend Development</span>
-              </TableCell>
-              <TableCell>
-                <span>12</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <span>Frontend</span>
-              </TableCell>
-              <TableCell>
-                <span className="text-[#677d9b]">frontend</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <span> Các khóa học về Frontend Development</span>
-              </TableCell>
-              <TableCell>
-                <span>12</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
+              <TableCell className="text-white">2025-04-10</TableCell>
+              <TableCell className="text-white">
                 <Button
                   icon="fa-regular fa-pen-to-square !text-[14px] "
                   className="w-[40px] h-[40px] items-center cursor-pointer"

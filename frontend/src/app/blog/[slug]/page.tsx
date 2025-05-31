@@ -63,10 +63,10 @@ const DetailBlog = () => {
               alt=""
               className="blog w-full rounded-[10px]"
             />
-            <p className="my-5">
+            <p className="my-5 text-white">
               Giới thiệu TypeScript cho Người Mới Bắt Đầu ❓
             </p>
-            <p className="my-5">
+            <p className="my-5 text-white">
               TypeScript là gì? TypeScript là một ngôn ngữ lập trình dựa trên
               JavaScript, bổ sung kiểu tĩnh (static typing) và các tính năng lập
               trình hướng đối tượng. Nó được phát triển bởi Microsoft. Nói đơn
@@ -75,7 +75,7 @@ const DetailBlog = () => {
           </div>
           <div className=" my-5 border-b border-[#1F2937]"></div>
           <div className="comment">
-            <h3 className="text-2xl font-bold">
+            <h3 className="text-2xl font-bold text-white">
               Bình luận <span>(3)</span>
             </h3>
             <div className="form_comment bg-[#1a1f2b] p-[16px] mt-[24px] rounded-[5px]">
@@ -90,7 +90,7 @@ const DetailBlog = () => {
                     <textarea
                       name=""
                       id=""
-                      className="w-full p-[10px] text-[15px] h-[80px]"
+                      className="w-full text-white p-[10px] text-[15px] h-[80px]"
                       placeholder="Viết bình luận của bạn..."
                     ></textarea>
                   </div>
@@ -116,7 +116,7 @@ const DetailBlog = () => {
                   <span className="text-[#677d9b] text-[13px]">
                     2 giờ trước
                   </span>
-                  <p>Bài viết này rất hữu ích</p>
+                  <p className="text-white">Bài viết này rất hữu ích</p>
                 </div>
               </div>
               <div className="Show_favourite-hearts ml-10 flex items-center gap-[3px] cursor-pointer py-2">
@@ -127,9 +127,9 @@ const DetailBlog = () => {
           </div>
         </section>
         <section className="blog_related">
-          <h3 className="text-2xl font-bold">Bài viết liên quan</h3>
+          <h3 className="text-2xl font-bold text-white">Bài viết liên quan</h3>
           <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5 my-5">
-            <ItemBlog/>
+            <ItemBlog />
           </div>
         </section>
       </div>

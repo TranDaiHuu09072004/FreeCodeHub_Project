@@ -2,6 +2,7 @@ import React from "react";
 import Banner from "@/app/components/User/Banner";
 import ItemProduct from "@/app/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
+import ChannelAuthor from "@/app/components/User/ChanelAuthors";
 
 const Home = () => {
   return (
@@ -68,98 +69,7 @@ const Home = () => {
           </p>
         </div>
         <div className="wrapper_partner--channel grid grid-cols-2 max-md:grid-cols-1 gap-x-[10px] mt-[50px] place-items-center max-w-[700px] mx-auto gap-[30px]">
-          <div className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]">
-            <div className="logo_chanel">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="img_logo--chanel w-[84px] h-[84px] rounded-[20px]"
-              />
-            </div>
-            <div className="name_chanel ">
-              <h1 className="text-[25px] text-white"> F8 Offical</h1>
-            </div>
-            <div className="des">
-              <p className=" text-white"> Học lập trình để đi làm</p>
-            </div>
-            <div className="sub_chanel text-white">
-              <a
-                href="https://www.youtube.com/@F8VNOfficial"
-                className="text-white"
-              >
-                143K+ Subcribers
-              </a>
-            </div>
-          </div>
-          <div className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]">
-            <div className="logo_chanel">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="img_logo--chanel w-[84px] h-[84px] rounded-[20px]"
-              />
-            </div>
-            <div className="name_chanel ">
-              <h1 className="text-[25px] text-white"> F8 Offical</h1>
-            </div>
-            <div className="des">
-              <p className=" text-white"> Học lập trình để đi làm</p>
-            </div>
-            <div className="sub_chanel text-white">
-              <a
-                href="https://www.youtube.com/@F8VNOfficial"
-                className="text-white"
-              >
-                143K+ Subcribers
-              </a>
-            </div>
-          </div>
-          <div className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]">
-            <div className="logo_chanel">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="img_logo--chanel w-[84px] h-[84px] rounded-[20px]"
-              />
-            </div>
-            <div className="name_chanel ">
-              <h1 className="text-[25px] text-white"> F8 Offical</h1>
-            </div>
-            <div className="des">
-              <p className=" text-white"> Học lập trình để đi làm</p>
-            </div>
-            <div className="sub_chanel text-white">
-              <a
-                href="https://www.youtube.com/@F8VNOfficial"
-                className="text-white"
-              >
-                143K+ Subcribers
-              </a>
-            </div>
-          </div>
-          <div className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]">
-            <div className="logo_chanel">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="img_logo--chanel w-[84px] h-[84px] rounded-[20px]"
-              />
-            </div>
-            <div className="name_chanel ">
-              <h1 className="text-[25px] text-white"> F8 Offical</h1>
-            </div>
-            <div className="des">
-              <p className=" text-white"> Học lập trình để đi làm</p>
-            </div>
-            <div className="sub_chanel text-white">
-              <a
-                href="https://www.youtube.com/@F8VNOfficial"
-                className="text-white"
-              >
-                143K+ Subcribers
-              </a>
-            </div>
-          </div>
+          <ChannelAuthor />
         </div>
       </section>
       <section className="student_say--about_us my-[35px]">

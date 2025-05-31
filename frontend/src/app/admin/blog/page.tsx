@@ -39,7 +39,7 @@ const Blog_Management = () => {
   const openDialog = () => setIsDialogOpen(true);
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      <div className="title_blog my-[35px]">
+      <div className="title_blog mb-[35px]">
         <h3 className="text-2xl text-white font-bold">Quản lý blog</h3>
         <p className="text-[#677d9b] text-[15px] font-[450]">
           Quản lý các bài viết blog
@@ -84,114 +84,24 @@ const Blog_Management = () => {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-medium">1</TableCell>
+              <TableCell className="font-medium text-white">1</TableCell>
               <TableCell>
-                <h5>
+                <h5 className="text-white">
                   Giới thiệu React Hooks Tìm hiểu về React Hooks và cách chúng
                 </h5>
                 <p className="text-[#677d9b]"> thay đổi cách viết com...</p>
               </TableCell>
-              <TableCell>Nguyễn Văn A</TableCell>
-              <TableCell>ReactJS</TableCell>
-              <TableCell>
+              <TableCell className="text-white">Nguyễn Văn A</TableCell>
+              <TableCell className="text-white">ReactJS</TableCell>
+              <TableCell className="text-white">
                 <div className="flex items-center gap-[5px]">
                   {" "}
                   <i className="fa-regular fa-circle-check text-green-500 text-[16px]"></i>
                   Đã đăng
                 </div>
               </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <h5>
-                  Giới thiệu React Hooks Tìm hiểu về React Hooks và cách chúng
-                </h5>
-                <p className="text-[#677d9b]"> thay đổi cách viết com...</p>
-              </TableCell>
-              <TableCell>Nguyễn Văn A</TableCell>
-              <TableCell>ReactJS</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-[5px]">
-                  {" "}
-                  <i className="fa-regular fa-circle-check text-green-500 text-[16px]"></i>
-                  Đã đăng
-                </div>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <h5>
-                  Giới thiệu React Hooks Tìm hiểu về React Hooks và cách chúng
-                </h5>
-                <p className="text-[#677d9b]"> thay đổi cách viết com...</p>
-              </TableCell>
-              <TableCell>Nguyễn Văn A</TableCell>
-              <TableCell>ReactJS</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-[5px]">
-                  {" "}
-                  <i className="fa-regular fa-circle-check text-green-500 text-[16px]"></i>
-                  Đã đăng
-                </div>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <h5>
-                  Giới thiệu React Hooks Tìm hiểu về React Hooks và cách chúng
-                </h5>
-                <p className="text-[#677d9b]"> thay đổi cách viết com...</p>
-              </TableCell>
-              <TableCell>Nguyễn Văn A</TableCell>
-              <TableCell>ReactJS</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-[5px]">
-                  {" "}
-                  <i className="fa-regular fa-circle-check text-green-500 text-[16px]"></i>
-                  Đã đăng
-                </div>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
+              <TableCell className="text-white">2025-04-10</TableCell>
+              <TableCell className="text-white">
                 <Button
                   icon="fa-regular fa-pen-to-square !text-[14px] "
                   className="w-[40px] h-[40px] items-center cursor-pointer"

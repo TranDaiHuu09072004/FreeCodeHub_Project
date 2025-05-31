@@ -28,7 +28,12 @@ const Banner = ({
             {description}
           </p>
           {isSearch && (
-            <InputSearch placeholder={placeholder} w="470px" h="40px" />
+            <InputSearch
+              placeholder={placeholder}
+              w="470px"
+              h="40px"
+              className="search_courses flex justify-center items-center mx-auto w-[250px] max-xl:mb-[10px]"
+            />
           )}
           {showButton && (
             <a

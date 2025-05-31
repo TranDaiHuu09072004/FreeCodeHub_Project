@@ -40,7 +40,7 @@ const Author_Management = () => {
   const openDialog = () => setIsDialogOpen(true);
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      <div className="title_blog my-[35px]">
+      <div className="title_blog mb-[35px]">
         <h3 className="text-2xl text-white font-bold">Quản lý tác giả</h3>
         <p className="text-[#677d9b] text-[15px] font-[450]">
           Quản lý các tác giả trên hệ thống
@@ -85,7 +85,7 @@ const Author_Management = () => {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-medium">1</TableCell>
+              <TableCell className="font-medium text-white">1</TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
@@ -96,14 +96,14 @@ const Author_Management = () => {
                     />
                   </div>
                   <div className="">
-                    <h3>Sơn Đặng</h3>
+                    <h3 className="text-white">Sơn Đặng</h3>
                     <span className="text-[#677d9b]">
                       Founder of F8, fullstack developer with 10+ years of
                     </span>
                   </div>
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="text-white">
                 <div className="flex items-center gap-3">
                   {" "}
                   <span> F8 Offical </span>
@@ -112,192 +112,12 @@ const Author_Management = () => {
                   </Link>
                 </div>
               </TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
+              <TableCell className="text-white">12</TableCell>
+              <TableCell className="text-white">
                 <span>10+</span>
               </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>Sơn Đặng</h3>
-                    <span className="text-[#677d9b]">
-                      Founder of F8, fullstack developer with 10+ years of
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  {" "}
-                  <span> F8 Offical </span>
-                  <Link href="#">
-                    <i className="fa-solid fa-up-right-from-square"></i>
-                  </Link>
-                </div>
-              </TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
-                <span>10+</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>Sơn Đặng</h3>
-                    <span className="text-[#677d9b]">
-                      Founder of F8, fullstack developer with 10+ years of
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  {" "}
-                  <span> F8 Offical </span>
-                  <Link href="#">
-                    <i className="fa-solid fa-up-right-from-square"></i>
-                  </Link>
-                </div>
-              </TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
-                <span>10+</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>Sơn Đặng</h3>
-                    <span className="text-[#677d9b]">
-                      Founder of F8, fullstack developer with 10+ years of
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  {" "}
-                  <span> F8 Offical </span>
-                  <Link href="#">
-                    <i className="fa-solid fa-up-right-from-square"></i>
-                  </Link>
-                </div>
-              </TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
-                <span>10+</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>Sơn Đặng</h3>
-                    <span className="text-[#677d9b]">
-                      Founder of F8, fullstack developer with 10+ years of
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  {" "}
-                  <span> F8 Offical </span>
-                  <Link href="#">
-                    <i className="fa-solid fa-up-right-from-square"></i>
-                  </Link>
-                </div>
-              </TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
-                <span>10+</span>
-              </TableCell>
-              <TableCell>2025-04-10</TableCell>
-              <TableCell>
+              <TableCell className="text-white">2025-04-10</TableCell>
+              <TableCell className="text-white">
                 <Button
                   icon="fa-regular fa-pen-to-square !text-[14px] "
                   className="w-[40px] h-[40px] items-center cursor-pointer"

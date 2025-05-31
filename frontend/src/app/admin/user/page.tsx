@@ -20,7 +20,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 import {
   AlertDialog,
@@ -40,7 +39,7 @@ const User_Management = () => {
   const openDialog = () => setIsDialogOpen(true);
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      <div className="title_blog my-[35px]">
+      <div className="title_blog mb-[35px]">
         <h3 className="text-2xl text-white font-bold">Quản lý người dùng</h3>
         <p className="text-[#677d9b] text-[15px] font-[450]">
           Quản lý tài khoản người dùng trên hệ thống

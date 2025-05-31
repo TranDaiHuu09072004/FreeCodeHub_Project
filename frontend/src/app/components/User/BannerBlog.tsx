@@ -26,7 +26,7 @@ const Banner_Blog = ({
             {description}
           </p>
           {isSearch && (
-            <InputSearch placeholder={placeholder} w="470px" h="37px" />
+            <InputSearch placeholder={placeholder} w="470px" h="37px"  className="search_courses flex justify-center items-center mx-auto w-[250px] max-xl:mb-[10px]" />
           )}
           {isButton && (
             <div className="flex max-xl:flex-col xl:justify-center max-xl:justify-between gap-[20px]">
