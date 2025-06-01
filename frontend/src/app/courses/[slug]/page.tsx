@@ -1,9 +1,10 @@
 "use client";
 import Banner from "@/app/components/User/Banner";
 import Button from "@/app/components/User/Button";
-import { Course } from "@/app/components/User/ItemProduct";
+import { Course, Lesson } from "@/app/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
 import axios from "axios";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -13,11 +14,18 @@ const DetailCourses = () => {
   useEffect(() => {
     if (slug) {
       const URL_DETAIL_COURSES = process.env.NEXT_PUBLIC_API_URL;
-      axios
-        .get(`${URL_DETAIL_COURSES}/courses/${slug}`)
-        .then((res) => setDetailCourses(res.data));
+      axios.get(`${URL_DETAIL_COURSES}/courses/${slug}`).then((res) => {
+        setDetailCourses(res.data);
+      });
     }
   }, [slug]);
+
+  useEffect(() => {
+    const URL_DETAIL_COURSES = process.env.NEXT_PUBLIC_API_URL;
+    axios
+      .get(`${URL_DETAIL_COURSES}/courses/${slug}/lessons`)
+      .then((res) => console.log(res.data));
+  }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner
@@ -50,10 +58,12 @@ const DetailCourses = () => {
             <p className="text-[#9d9da3] my-[20px] text-[14px]">
               {detailCourses?.description}
             </p>
-            <Button
-              children="Học ngay"
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
-            />
+            <Link href={`/lesson/${detailCourses?.slug}`}>
+              <Button
+                children="Học ngay"
+                className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
+              />
+            </Link>
           </div>
         </div>
       </section>

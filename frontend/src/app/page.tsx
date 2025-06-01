@@ -12,7 +12,7 @@ const Home = () => {
         description="Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng
             đầu Việt Nam, tất cả đều miễn phí và chất lượng"
         showButton={true}
-        image="assets/img/banner_img.png"
+        image="../assets/img/banner_img.png"
       />
       <section className="course_popular my-[35px]">
         <div className="relative pl-4">

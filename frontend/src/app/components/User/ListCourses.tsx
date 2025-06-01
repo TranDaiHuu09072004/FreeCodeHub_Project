@@ -49,17 +49,18 @@ const ListCourses = () => {
             <i className="text-[#9D9DA3]">{listcourse.badge}</i>
           </div>
           <div className="icon_arrow-right min-sm:hidden">
-            <Link href="/detail-course">
+            <Link href={`/courses/${listcourse.slug}`}>
               {" "}
               <i className="fa-solid fa-arrow-right text-white text-[18px]"></i>
             </Link>
           </div>
           <div className="max-sm:hidden">
-            {" "}
-            <Button
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer "
-              children="Học ngay"
-            />
+            <Link href={`/courses/${listcourse.slug}`}>
+              <Button
+                className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer "
+                children="Học ngay"
+              />
+            </Link>
           </div>
         </div>
       ))}
