@@ -1,0 +1,8 @@
+    # Dependencies
+    /backend/node_modules
+
+    # Environment variables
+    .env
+    /backend/.env # If .env is inside backend folder
+
+    # Optional: Add other entries as needed from the list above

@@ -19,7 +19,7 @@ export const register: RequestHandler = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "user", // GÁN MẶC ĐỊNH
+      role: "client", // GÁN MẶC ĐỊNH
       status: true, // GÁN MẶC ĐỊNH
     });
 
@@ -33,7 +33,7 @@ export const register: RequestHandler = async (req, res) => {
 };
 
 export const login: RequestHandler = async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -54,15 +54,10 @@ export const login: RequestHandler = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token, role: user.role }); // trả về role luôn để frontend redirect
+    res.json({ token, role: user.role, name: user.name, email: user.email });
     return;
   } catch (error) {
     res.status(500).json({ message: "Server error" });
     return;
   }
-};
-
-export const logout: RequestHandler = async (req, res) => {
-  res.json({ message: "Log out" });
-  return;
 };

@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { register, login, logout } from "../controllers/auth.controler";
+import { register, login } from "../controllers/auth.controler";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/logout", logout);
 
 // chỉ user có role "admin" thì mới vào được
 router.get(

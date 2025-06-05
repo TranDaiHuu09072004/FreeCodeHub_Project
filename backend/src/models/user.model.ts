@@ -6,7 +6,11 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }, // <-- vẫn có!
-    role: { type: String, enum: ["admin", "user", "author"], default: "user" },
+    role: {
+      type: String,
+      enum: ["admin", "client", "author"],
+      default: "client",
+    },
     status: { type: Boolean, default: true },
     registeredCourses: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Course" },

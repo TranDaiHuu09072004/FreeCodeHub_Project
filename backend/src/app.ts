@@ -9,7 +9,13 @@ import UserRoutes from "./routes/user.routes";
 import AuthorRoutes from "./routes/author.routes";
 import LessonRoutes from "./routes/lesson.routes";
 import authRoutes from "./routes/auth.routes";
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // frontend đang chạy ở đây
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // nếu có sử dụng cookie / token
+  })
+);
 app.use(express.json());
 
 app.use("/api/auth", courseRoutes);
