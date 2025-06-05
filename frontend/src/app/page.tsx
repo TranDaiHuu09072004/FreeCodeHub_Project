@@ -6,7 +6,7 @@ import ChannelAuthor from "@/app/components/User/ChanelAuthors";
 
 const Home = () => {
   return (
-    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
+    <div className="bg-[#121826] lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner
         name="Học lập trình miễn phí từ các chuyên gia"
         description="Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng

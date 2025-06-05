@@ -1,15 +1,15 @@
 "use client";
 import Button from "@/app/components/User/Button";
 import { Course } from "@/app/components/User/ItemProduct";
-import axios from "axios";
+import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 const ListCourses = () => {
   const [listcourses, setListCourses] = useState<Course[]>([]);
-  const URL_API_COURSES = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     axios
-      .get(`${URL_API_COURSES}/courses`)
+      .get("/courses")
       .then((res) => setListCourses(res.data))
       .catch((err) => console.log("Fetch Data Fail", err));
   }, []);

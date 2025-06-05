@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axios from "@/app/utils/axiosInstance";
 import { useEffect, useState } from "react";
 
 export interface Author {
@@ -21,10 +21,10 @@ function formatSubscribers(n: number | undefined | null): string {
 
 const ChannelAuthor = () => {
   const [listAuthor, setListAuthor] = useState<Author[]>([]);
-  const URL_API_COURSES = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     axios
-      .get(`${URL_API_COURSES}/authors`)
+      .get("/authors")
       .then((res) => setListAuthor(res.data))
       .catch((err) => console.log("Fetch Data Fail", err));
   }, []);

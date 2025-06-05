@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 
 export interface Course {
@@ -38,12 +38,11 @@ export interface CourseDetail extends Course {
 }
 
 const ItemProduct = () => {
-  const URL_API_COURSES = process.env.NEXT_PUBLIC_API_URL;
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     axios
-      .get(`${URL_API_COURSES}/courses/featured`)
+      .get("/courses/featured")
       .then((res) => {
         setCourses(res.data);
       })

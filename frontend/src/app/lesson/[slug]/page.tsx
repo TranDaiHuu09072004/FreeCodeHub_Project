@@ -13,9 +13,9 @@ const Learning = () => {
 
   useEffect(() => {
     if (slug) {
-      const URL_DETAIL_COURSES = process.env.NEXT_PUBLIC_API_URL;
+      const URL_API = process.env.NEXT_PUBLIC_API_URL;
       axios
-        .get(`${URL_DETAIL_COURSES}/courses/${slug}/lessons`)
+        .get(`${URL_API}/courses/${slug}/lessons`)
         .then((res) => {
           setLessons(res.data);
           if (res.data.length > 0) {

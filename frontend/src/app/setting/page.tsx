@@ -1,17 +1,23 @@
 "use client";
 import Button from "@/app/components/User/Button";
 import Footer from "@/app/layout/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 const Setting = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userParse = JSON.parse(user);
+      setUsername(userParse.name || "Guest User");
+      setEmail(userParse.email || "guestuser@gmail.com");
+    }
+  }, []);
   const [activeTab, setActiveTab] = useState("profile");
   const { resolvedTheme, theme, setTheme } = useTheme();
-  const [profileData, setProfileData] = useState({
-    fullName: "Trần Đại Hữu",
-    email: "trandaihuu4764@gmail.com",
-    bio: "Sinh viên năm cuối Fpoly",
-  });
+  const [profileData, setProfileData] = useState([]);
 
   const handleProfileUpdate = () => {
     // Handle profile update logic here
@@ -91,13 +97,7 @@ const Setting = () => {
                     <label className="block text-white mb-2">Họ tên</label>
                     <input
                       type="text"
-                      value={profileData.fullName}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          fullName: e.target.value,
-                        })
-                      }
+                      value={username}
                       className="xl:w-[554px] max-sm:w-full bg-[#141625] text-white p-4 rounded-[5px] border border-[#8795A8] focus:outline-none focus:border-[#eaafc8] h-[40px]"
                     />
                   </div>
@@ -105,24 +105,16 @@ const Setting = () => {
                     <label className="block text-white mb-2">Email</label>
                     <input
                       type="email"
-                      value={profileData.email}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          email: e.target.value,
-                        })
-                      }
+                      value={email}
                       className="xl:w-[554px] max-sm:w-full bg-[#141625] text-white p-4 rounded-[5px] border border-[#8795A8] focus:outline-none focus:border-[#eaafc8] h-[40px]"
                     />
                   </div>
                   <div className="mb-5">
-                    <label className="block text-white mb-2">Giới thiệu</label>
+                    <label className="block text-white mb-2">
+                      Ngày tháng năm sinh
+                    </label>
                     <input
-                      type="text"
-                      value={profileData.bio}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, bio: e.target.value })
-                      }
+                      type="date"
                       className="xl:w-[554px] max-sm:w-full bg-[#141625] text-white p-4 rounded-[5px] border border-[#8795A8] focus:outline-none focus:border-[#eaafc8] h-[40px]"
                     />
                   </div>

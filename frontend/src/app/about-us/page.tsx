@@ -1,8 +1,24 @@
+"use client";
 import Banner_Blog from "@/app/components/User/BannerBlog";
 import Footer from "@/app/layout/Footer";
+import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+export interface Authors {
+  name: string;
+  channel: string;
+  description: string;
+  avatar: string;
+  numCourses: number;
+  numSubcribers: number;
+}
 
 const About_Us = () => {
+  useEffect(() => {
+    axios.get("/authors").then((res) => setPartners(res.data));
+  }, []);
+  const [partners, setPartners] = useState<Authors[]>([]);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner_Blog
@@ -255,71 +271,24 @@ const About_Us = () => {
           </p>
         </div>
         <div className="wrapper_partner grid grid-cols-5 max-xl:grid-cols-2 gap-5">
-          <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
-            <div className="img">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-[32px] h-[32px] rounded-full"
-              />
+          {partners.map((p, index) => (
+            <div
+              key={index}
+              className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]"
+            >
+              <div className="img">
+                <img
+                  src={p.avatar}
+                  alt=""
+                  className="w-[32px] h-[32px] rounded-full"
+                />
+              </div>
+              <Link href="#">
+                {" "}
+                <h3 className="text-white font-bold">{p.channel}</h3>
+              </Link>
             </div>
-            <Link href="#">
-              {" "}
-              <h3 className="text-white font-bold">F8 Offical</h3>
-            </Link>
-          </div>
-          <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
-            <div className="img">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-[32px] h-[32px] rounded-full"
-              />
-            </div>
-            <Link href="#">
-              {" "}
-              <h3 className="text-white font-bold">Được Dev</h3>
-            </Link>
-          </div>
-          <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
-            <div className="img">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-[32px] h-[32px] rounded-full"
-              />
-            </div>
-            <Link href="#">
-              {" "}
-              <h3 className="text-white font-bold">Hỏi dân IT</h3>
-            </Link>
-          </div>
-          <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
-            <div className="img">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-[32px] h-[32px] rounded-full"
-              />
-            </div>
-            <Link href="#">
-              {" "}
-              <h3 className="text-white font-bold">NineDev</h3>
-            </Link>
-          </div>
-          <div className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]">
-            <div className="img">
-              <img
-                src="https://yt3.googleusercontent.com/Pa8wyxqTOkhu5DW_RvkiQIS7Bsa7OW7gSen-2WpaQsC2EqUAkgubAg1_QPc951pzpN2F2Q4_TA=s160-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-[32px] h-[32px] rounded-full"
-              />
-            </div>
-            <Link href="#">
-              {" "}
-              <h3 className="text-white font-bold">Evondev</h3>
-            </Link>
-          </div>
+          ))}
         </div>
       </section>
       <Banner_Blog

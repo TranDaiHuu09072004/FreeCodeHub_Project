@@ -1,9 +1,9 @@
 "use client";
 import Banner from "@/app/components/User/Banner";
 import Button from "@/app/components/User/Button";
-import { Course, Lesson } from "@/app/components/User/ItemProduct";
+import { Course } from "@/app/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
-import axios from "axios";
+import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,18 +13,14 @@ const DetailCourses = () => {
   const [detailCourses, setDetailCourses] = useState<Course | null>(null);
   useEffect(() => {
     if (slug) {
-      const URL_DETAIL_COURSES = process.env.NEXT_PUBLIC_API_URL;
-      axios.get(`${URL_DETAIL_COURSES}/courses/${slug}`).then((res) => {
+      axios.get(`/courses/${slug}`).then((res) => {
         setDetailCourses(res.data);
       });
     }
   }, [slug]);
 
   useEffect(() => {
-    const URL_DETAIL_COURSES = process.env.NEXT_PUBLIC_API_URL;
-    axios
-      .get(`${URL_DETAIL_COURSES}/courses/${slug}/lessons`)
-      .then((res) => console.log(res.data));
+    axios.get(`/courses/${slug}/lessons`).then((res) => console.log(res.data));
   }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">

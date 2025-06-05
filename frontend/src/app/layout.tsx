@@ -1,8 +1,9 @@
 "use client";
 import "./globals.css";
 // import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/app/Context/AuthContext";
 import ShowSideBarMenu from "@/app/components/User/ShowSideBarMenu";
-import SidebarUser from "@/app/components/Sidebar/SideBarUser";
+import SidebarLayout from "@/app/components/Sidebar/SideBarLayout";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,13 +23,15 @@ export default function RootLayout({
         <link rel="icon" href="assets/img/iconx_logo.png" type="image/x-icon" />
       </head>
       <body className="bg-[#121826]">
-        <div className="wrapper_app xl:flex">
-          <SidebarUser />
-          <ShowSideBarMenu />
-          <main className="2xl:ml-[287px] min-[1366px]:w-[75%] min-[1366px]:ml-[20%] max-sm:overflow-x-hidden max-sm:ml-0 2xl:flex-1">
-            {children}
-          </main>
-        </div>
+        <AuthProvider>
+          <div className="wrapper_app xl:flex">
+            <SidebarLayout />
+            <ShowSideBarMenu />
+            <main className="2xl:ml-[287px] min-[1366px]:w-[75%] min-[1366px]:ml-[20%] max-sm:overflow-x-hidden max-sm:ml-0 2xl:flex-1">
+              {children}
+            </main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

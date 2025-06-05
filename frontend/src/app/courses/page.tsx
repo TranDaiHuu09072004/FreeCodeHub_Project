@@ -4,7 +4,7 @@ import Button from "@/app/components/User/Button";
 import InputSearch from "@/app/components/User/InputSearch";
 import ListCourses from "@/app/components/User/ListCourses";
 import Footer from "@/app/layout/Footer";
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useState } from "react";
 
 const CoursesPage = () => {
