@@ -1,9 +1,17 @@
 import { Router } from "express";
-import { register, login } from "../controllers/auth.controler";
+import {
+  register,
+  login,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+} from "../controllers/auth.controler";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
-
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
+router.post("/change-password", changePassword);
 router.post("/register", register);
 router.post("/login", login);
 

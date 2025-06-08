@@ -4,7 +4,7 @@ import Course from "../models/course.models";
 import Lesson from "../models/lesson.model";
 import User from "../models/user.model";
 
-// api đăng ký khóa học: 
+// api đăng ký khóa học:
 export const registerCourse: RequestHandler = async (req, res) => {
   const { userId, courseSlug } = req.body;
 
@@ -15,14 +15,26 @@ export const registerCourse: RequestHandler = async (req, res) => {
       return;
     }
 
+    const course = await Course.findOne({ slug: courseSlug });
+    if (!course) {
+      res.status(404).json({ message: "Khóa học không tồn tại" });
+      return;
+    }
+
     if (!user.registeredCourses.includes(courseSlug)) {
       user.registeredCourses.push(courseSlug);
       await user.save();
     }
 
-    res.json({ message: "Đăng ký khóa học thành công", registeredCourses: user.registeredCourses });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server" });
+    res.json({
+      message: "Đăng ký khóa học thành công",
+      registeredCourses: user.registeredCourses,
+    });
+  } catch (error: unknown) {
+    // Check if the error is an instance of Error to safely access .message
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    res.status(500).json({ message: "Lỗi server", error: errorMessage });
   }
 };
 

@@ -9,6 +9,7 @@ import UserRoutes from "./routes/user.routes";
 import AuthorRoutes from "./routes/author.routes";
 import LessonRoutes from "./routes/lesson.routes";
 import authRoutes from "./routes/auth.routes";
+import path from "path";
 app.use(
   cors({
     origin: "http://localhost:3000", // frontend đang chạy ở đây
@@ -17,13 +18,13 @@ app.use(
   })
 );
 app.use(express.json());
-
+app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 app.use("/api/auth", courseRoutes);
 app.use("/api/auth", blogRoutes);
 app.use("/api/auth", UserRoutes);
 app.use("/api/auth", CategoriesRoutes);
 app.use("/api/auth", AuthorRoutes);
 app.use("/api/auth", LessonRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); // Để /forgot-password hoạt động đúng
 
 export default app;

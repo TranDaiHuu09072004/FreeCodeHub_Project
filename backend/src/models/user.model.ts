@@ -12,9 +12,11 @@ const userSchema = new mongoose.Schema(
       default: "client",
     },
     status: { type: Boolean, default: true },
-    registeredCourses: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
-    ],
+    registeredCourses: [{ type: String }],
+    date_of_birth: { type: String },
+    avatar: { type: String },
+    resetToken: { type: String },
+    resetTokenExpiry: { type: Date },
   },
   { timestamps: true }
 );

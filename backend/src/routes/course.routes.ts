@@ -17,6 +17,5 @@ router.get("/courses/:slug/lessons", getLessonsByCourseSlug);
 router.post("/", createCourse);
 router.put("/courses/:id", updateCourse);
 router.post("/register-courses", registerCourse);
-router;
 
 export default router;
