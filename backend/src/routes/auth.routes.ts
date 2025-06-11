@@ -3,15 +3,15 @@ import {
   register,
   login,
   forgotPassword,
-  resetPassword,
+  // resetPassword,
   changePassword,
 } from "../controllers/auth.controler";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 
 const router = Router();
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:token", resetPassword);
-router.post("/change-password", changePassword);
+// router.post("/reset-password/:token", resetPassword);
+router.post("/change-password", authenticate, changePassword);
 router.post("/register", register);
 router.post("/login", login);
 
@@ -22,6 +22,7 @@ router.get(
   authorize("admin"),
   (req, res, next) => {
     res.send("Admin Dashboard");
+    return;
   }
 );
 

@@ -7,10 +7,12 @@ import {
   getFeaturedCourses,
   getLessonsByCourseSlug,
   registerCourse,
+  searchCourse,
 } from "../controllers/course.control";
 
 const router = Router();
 router.get("/courses", getAllCourses);
+router.get("/courses/search", searchCourse);
 router.get("/courses/featured", getFeaturedCourses);
 router.get("/courses/:id", getCourseDetail);
 router.get("/courses/:slug/lessons", getLessonsByCourseSlug);

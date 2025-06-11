@@ -4,6 +4,24 @@ import Course from "../models/course.models";
 import Lesson from "../models/lesson.model";
 import User from "../models/user.model";
 
+//api search khóa học
+export const searchCourse: RequestHandler = async (req, res) => {
+  try {
+    const query = req.query.q?.toString().toLocaleLowerCase() || "";
+    const regex = new RegExp(query, "i");
+
+    const result = await Course.find({
+      $or: [{ title: regex }, { author: regex }, { category: regex }],
+    });
+
+    res.json(result);
+    return;
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi khi tìm kiếm khóa học" });
+    return;
+  }
+};
+
 // api đăng ký khóa học:
 export const registerCourse: RequestHandler = async (req, res) => {
   const { userId, courseSlug } = req.body;
@@ -30,40 +48,35 @@ export const registerCourse: RequestHandler = async (req, res) => {
       message: "Đăng ký khóa học thành công",
       registeredCourses: user.registeredCourses,
     });
+    return;
   } catch (error: unknown) {
     // Check if the error is an instance of Error to safely access .message
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({ message: "Lỗi server", error: errorMessage });
+    return;
   }
 };
 
 // GET all courses
-export const getAllCourses: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const getAllCourses: RequestHandler = async (req, res) => {
   try {
     const courses = await Course.find().sort({ updatedAt: -1 });
     res.json(courses);
+    return;
   } catch (error) {
     res.status(500).json({ error: "Lỗi server khi lấy danh sách khóa học" });
+    return;
   }
 };
 
 // GET /api/courses/:slug/lessons
-export const getLessonsByCourseSlug: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const getLessonsByCourseSlug: RequestHandler = async (req, res) => {
   try {
     const { slug } = req.params;
 
     // B1: Tìm course theo slug
     const course = await Course.findOne({ slug });
-    if (!course) {
-      res.status(404).json({ message: "Không tìm thấy khóa học với slug này" });
-    }
     if (!course) {
       res.status(404).json({ message: "Không tìm thấy khóa học với slug này" });
       return;
@@ -75,48 +88,45 @@ export const getLessonsByCourseSlug: (
     });
 
     res.json(lessons);
+    return;
   } catch (error) {
     res.status(500).json({ message: "Lỗi khi lấy danh sách bài học", error });
+    return;
   }
 };
 
 // POST create new course
-export const createCourse: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const createCourse: RequestHandler = async (req, res) => {
   try {
     const newCourse = new Course(req.body);
     await newCourse.save();
     res.status(201).json(newCourse);
+    return;
   } catch (error) {
     res.status(400).json({ error: "Lỗi khi tạo mới khóa học" });
+    return;
   }
 };
 
 // GET featured courses
-export const getFeaturedCourses: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const getFeaturedCourses: RequestHandler = async (req, res) => {
   try {
     const featuredCourses = await Course.find({ isFeatured: true }).sort({
       updatedAt: -1,
     });
     res.json(featuredCourses);
+    return;
   } catch (error) {
     console.error(error);
     res
       .status(500)
       .json({ error: "Lỗi server khi lấy danh sách khóa học nổi bật" });
+    return;
   }
 };
 
 // GET course detail + lessons by slug
-export const getCourseDetail: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const getCourseDetail: RequestHandler = async (req, res) => {
   try {
     const courseSlug = req.params.id; // Lấy slug từ params
 
@@ -136,17 +146,16 @@ export const getCourseDetail: (
     }).sort({ order: 1 });
 
     res.json({ ...course.toObject(), lessons });
+    return;
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Lỗi server khi lấy chi tiết một khóa học" });
+    return;
   }
 };
 
 // PUT update course
-export const updateCourse: (
-  req: Request,
-  res: Response
-) => Promise<void> = async (req, res) => {
+export const updateCourse: RequestHandler = async (req, res) => {
   try {
     const courseId = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
@@ -162,7 +171,9 @@ export const updateCourse: (
       return;
     }
     res.json(updatedCourse);
+    return;
   } catch (error) {
     res.status(400).json({ error: "Lỗi khi cập nhật khóa học" });
+    return;
   }
 };
