@@ -6,15 +6,17 @@ import {
   useState,
   ReactNode,
 } from "react";
+import { useRouter } from "next/navigation";
 
 interface User {
   name: string;
   email: string;
-  [key: string]: any; // mở rộng nếu cần
+  [key: string]: any;
 }
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (userData: User) => void;
   logout: () => void;
 }
@@ -27,12 +29,14 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const localUser = localStorage.getItem("user");
     if (localUser) {
       setUser(JSON.parse(localUser));
     }
+    setLoading(false);
   }, []);
 
   const login = (userData: User) => {
@@ -45,8 +49,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem("token");
     setUser(null);
   };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

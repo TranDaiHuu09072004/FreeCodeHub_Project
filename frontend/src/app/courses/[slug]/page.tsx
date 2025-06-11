@@ -1,16 +1,20 @@
 "use client";
-import Banner from "@/app/components/User/Banner";
-import Button from "@/app/components/User/Button";
-import { Course } from "@/app/components/User/ItemProduct";
+import Banner from "@/components/User/Banner";
+import Button from "@/components/User/Button";
+import { Course } from "@/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
 import axios from "@/app/utils/axiosInstance";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/Context/AuthContext";
+import Swal from "sweetalert2";
 
 const DetailCourses = () => {
   const { slug } = useParams();
+  const router = useRouter();
+  const { user } = useAuth();
   const [detailCourses, setDetailCourses] = useState<Course | null>(null);
+
   useEffect(() => {
     if (slug) {
       axios.get(`/courses/${slug}`).then((res) => {
@@ -19,9 +23,57 @@ const DetailCourses = () => {
     }
   }, [slug]);
 
-  useEffect(() => {
-    axios.get(`/courses/${slug}/lessons`).then((res) => console.log(res.data));
-  }, []);
+  const handleRegisterCourse = async () => {
+    if (!user) {
+      // User not logged in, show SweetAlert2
+      Swal.fire({
+        title: "Bạn chưa đăng nhập",
+        text: "Vui lòng đăng nhập để đăng ký khóa học này.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#654ea3",
+        cancelButtonColor: "#1a1f2b",
+        confirmButtonText: "Đăng nhập ngay",
+        cancelButtonText: "Hủy",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        }
+      });
+    } else {
+      // User is logged in, call register API
+      try {
+        const response = await axios.post("/register-courses", {
+          courseSlug: slug, // Assuming the API expects courseSlug
+          userId: user.id, // Assuming user object has an 'id'
+        });
+
+        if (response.data) {
+          // Assuming API returns { success: true, ... }
+          Swal.fire(
+            "Thành công!",
+            "Bạn đã đăng ký khóa học thành công!",
+            "success"
+          );
+          // Redirect to the lesson page
+          setTimeout(() => {
+            router.push(`/lesson/${slug}`);
+          }, 1500);
+        } else {
+          // Assuming API returns { success: false, message: '...' }
+          Swal.fire(
+            "Lỗi!",
+            response.data.message || "Đăng ký khóa học thất bại.",
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error("Error registering course:", error);
+        Swal.fire("Lỗi!", "Có lỗi xảy ra khi đăng ký khóa học.", "error");
+      }
+    }
+  };
+
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner
@@ -54,12 +106,11 @@ const DetailCourses = () => {
             <p className="text-[#9d9da3] my-[20px] text-[14px]">
               {detailCourses?.description}
             </p>
-            <Link href={`/lesson/${detailCourses?.slug}`}>
-              <Button
-                children="Học ngay"
-                className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
-              />
-            </Link>
+            <Button
+              children="Đăng ký ngay"
+              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
+              onClick={handleRegisterCourse}
+            />
           </div>
         </div>
       </section>

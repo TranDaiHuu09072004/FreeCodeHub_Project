@@ -1,4 +1,4 @@
-import InputSearch from "@/app/components/User/InputSearch";
+import InputSearch from "@/components/User/InputSearch";
 
 type Banner = {
   name: string;

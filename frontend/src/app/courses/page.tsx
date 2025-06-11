@@ -1,15 +1,13 @@
 "use client";
-import Banner from "@/app/components/User/Banner";
-import Button from "@/app/components/User/Button";
-import InputSearch from "@/app/components/User/InputSearch";
-import ListCourses from "@/app/components/User/ListCourses";
+import Banner from "@/components/User/Banner";
+import InputSearch from "@/components/User/InputSearch";
+import ListCourses from "@/components/User/ListCourses";
 import Footer from "@/app/layout/Footer";
-// import Link from "next/link";
 import React, { useState } from "react";
 
 const CoursesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [courses, setCourses] = useState<any[]>([]);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -59,11 +57,17 @@ const CoursesPage = () => {
           placeholder="Tìm kiếm theo khóa học..."
           h={"40px"}
           w={"250px"}
+          apiEndpoint="/courses/search"
+          onResults={(data) => setCourses(data)}
           className="search_courses flex justify-center items-center w-[250px] max-xl:mb-[10px]"
         />
       </section>
       <section className="listCourses bg-[#1F212C] py-[10px] px-[20px] rounded-[10px] ">
-        <ListCourses />
+        {courses.length > 0 ? (
+          <ListCourses courses={courses} />
+        ) : (
+          <ListCourses />
+        )}
       </section>
       <section className="flex items-center justify-center gap-2 my-8">
         <button

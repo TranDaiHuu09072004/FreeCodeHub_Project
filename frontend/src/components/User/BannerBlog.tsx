@@ -1,5 +1,5 @@
-import Button from "@/app/components/User/Button";
-import InputSearch from "@/app/components/User/InputSearch";
+import Button from "@/components/User/Button";
+import InputSearch from "@/components/User/InputSearch";
 import Link from "next/link";
 type BannerBlog = {
   name: string;

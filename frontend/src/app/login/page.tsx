@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/app/components/User/Button";
+import Button from "@/components/User/Button";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -89,10 +89,10 @@ const Login = () => {
           <Button
             type="submit"
             children="Đăng nhập"
-            className="w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium mb-2"
+            className="w-full text-white bg-gradient-to-r mt-2 from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium mb-2"
           />
           <p className="text-center text-[#90a3b8] text-[14px]">
-            <Link href="/quen-mat-khau" className="">
+            <Link href="/forgot-password" className="">
               Quên mật khẩu
             </Link>
           </p>

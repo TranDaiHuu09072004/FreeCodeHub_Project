@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
 import React from "react";
 
-const listMenu = [
+const baseListMenuAuthor = [
   {
     href: "/admin/author",
     icon: "fa-solid fa-pen-nib",
@@ -15,13 +15,29 @@ const listMenu = [
     icon: "fa-solid fa-book-open",
     label: "Quản lý khóa học",
   },
-  { href: "/login", icon: "fa-solid fa-right-to-bracket", label: "Đăng nhập" },
-  { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
 ];
 
-const SidebarAdmin = ({ className = "" }) => {
+const SidebarAuthor = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+
+  // Dynamically create menu items including setting and logout if user exists
+  const menuItems = user
+    ? [
+        ...baseListMenuAuthor,
+        { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
+        // Removed login link when user is logged in
+        // { href: "/login", icon: "fa-solid fa-right-to-bracket", label: "Đăng nhập" },
+      ]
+    : [
+        ...baseListMenuAuthor,
+        {
+          href: "/login",
+          icon: "fa-solid fa-right-to-bracket",
+          label: "Đăng nhập",
+        },
+      ];
+
   return (
     <div
       className={`w-[287px] min-[1368px]:block max-[1368px]:hidden h-screen bg-[#1a1f2b] fixed top-0 left-0 z-50 backdrop-blur-md border-r border-white/10 ${className}`}
@@ -31,9 +47,9 @@ const SidebarAdmin = ({ className = "" }) => {
           <Link href="/dashboard">Admin Dashboard</Link>
         </h1>
       </div>
-      <div className="flex-grow overflow-y-auto pb-[180px]">
+      <div className="flex-grow overflow-y-auto pb-[230px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
-          {listMenu.map((item, index) => (
+          {menuItems.map((item, index) => (
             <li
               key={index}
               className={`py-2 px-4 rounded-[3px] mb-[10px] transition-all duration-300 ${
@@ -62,7 +78,7 @@ const SidebarAdmin = ({ className = "" }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-[#654ea3] rounded-full flex items-center justify-center">
-                <span className="text-white text-xl">G</span>
+                <span className="text-white text-xl">{user.name[0]}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-white text-sm font-medium">
@@ -84,4 +100,4 @@ const SidebarAdmin = ({ className = "" }) => {
   );
 };
 
-export default SidebarAdmin;
+export default SidebarAuthor;

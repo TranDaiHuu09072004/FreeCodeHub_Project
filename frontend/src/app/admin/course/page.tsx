@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Button from "@/app/components/User/Button";
+import Button from "@/components/User/Button";
 
 import {
   Table,

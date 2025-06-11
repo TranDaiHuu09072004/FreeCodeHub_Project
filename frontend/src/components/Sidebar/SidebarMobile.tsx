@@ -1,17 +1,16 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/app/Context/AuthContext";
 
-const clientMenu = [
+const baseClientMenu = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
   { href: "/courses", icon: "fa-solid fa-graduation-cap", label: "Khóa học" },
   { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Blog" },
   { href: "/about-us", icon: "fa-solid fa-user", label: "Về Chúng Tôi" },
-  { href: "/login", icon: "fa-solid fa-right-to-bracket", label: "Đăng nhập" },
-  { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
 ];
 
-const adminMenu = [
+const baseAdminMenu = [
   {
     href: "/admin/dashboard",
     icon: "fa-solid fa-border-all",
@@ -42,12 +41,29 @@ const adminMenu = [
     icon: "fa-solid fa-book-open",
     label: "Quản lý khóa học",
   },
-  { href: "/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
 ];
 
 const SidebarMobile = ({ className = "", type = "client" }) => {
   const pathname = usePathname();
-  const listMenu = type === "admin" ? adminMenu : clientMenu;
+  const { user, logout } = useAuth();
+
+  const baseMenu = type === "admin" ? baseAdminMenu : baseClientMenu;
+
+  const menuItems = [...baseMenu];
+
+  if (user) {
+    menuItems.push({
+      href: "/setting",
+      icon: "fa-solid fa-gear",
+      label: "Cài đặt",
+    });
+  } else if (type === "client") {
+    menuItems.push({
+      href: "/login",
+      icon: "fa-solid fa-right-to-bracket",
+      label: "Đăng nhập",
+    });
+  }
 
   return (
     <div
@@ -60,7 +76,7 @@ const SidebarMobile = ({ className = "", type = "client" }) => {
       </div>
       <div className="flex-grow overflow-y-auto pb-[280px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
-          {listMenu.map((item, index) => (
+          {menuItems.map((item, index) => (
             <li
               key={index}
               className={`xl:py-2 xl:px-4 max-xl:py-2 max-xl:px-1 rounded-[3px] mb-[10px] transition-all duration-300 ${
@@ -92,23 +108,31 @@ const SidebarMobile = ({ className = "", type = "client" }) => {
           ))}
         </ul>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#654ea3] rounded-full flex items-center justify-center">
-              <span className="text-white text-xl">G</span>
+      {user && (
+        <div className="p-4 border-t border-white/10 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 max-sm:hidden bg-[#654ea3] rounded-full flex items-center justify-center">
+                <span className="text-white text-xl">{user.name[0]}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-white text-sm font-medium">
+                  {user.name}
+                </span>
+                <span className="text-gray-400 text-xs max-sm:text-[11px]">
+                  {user.email}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-white text-sm font-medium">Guest User</span>
-              <span className="text-gray-400 text-xs">guest@example.com</span>
-            </div>
+            <button
+              onClick={logout}
+              className="cursor-pointer text-gray-400 hover:text-white transition-colors"
+            >
+              <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
           </div>
-          <button className="text-gray-400 hover:text-white transition-colors">
-            <i className="fa-solid fa-arrow-right-from-bracket"></i>
-            <span className="sr-only">Đăng xuất</span>
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };

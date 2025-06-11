@@ -1,5 +1,5 @@
-import Button from "@/app/components/User/Button";
-import ItemBlog from "@/app/components/User/ItemBlog";
+import Button from "@/components/User/Button";
+import ItemBlog from "@/components/User/ItemBlog";
 import Footer from "@/app/layout/Footer";
 import Link from "next/link";
 

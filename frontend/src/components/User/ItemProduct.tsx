@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/Context/AuthContext";
 
 export interface Course {
   title: string;
@@ -18,6 +20,7 @@ export interface Course {
   slug?: string;
   badge?: string;
   slogan?: string;
+  _id: string;
 }
 
 export interface Lesson {
@@ -39,6 +42,8 @@ export interface CourseDetail extends Course {
 
 const ItemProduct = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     axios
@@ -48,10 +53,29 @@ const ItemProduct = () => {
       })
       .catch((err) => console.log("Fetch Data Fail", err));
   }, []);
+
+  const handleRegisterCourse = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    course: Course
+  ) => {
+    if (
+      user &&
+      user.registeredCourses &&
+      user.registeredCourses.includes(course.slug)
+    ) {
+      e.preventDefault();
+      router.push(`/lesson/${course.slug}`);
+    }
+  };
+
   return (
     <>
       {courses.map((course, index) => (
-        <Link key={index} href={`/courses/${course.slug}`}>
+        <Link
+          key={index}
+          href={`/courses/${course.slug}`}
+          onClick={(e) => handleRegisterCourse(e, course)}
+        >
           <div className="item_course bg-[#1A1F2B] rounded-t-[10px] rounded-b-[10px] hover:translate-y-[-10px] transition-all duration-300">
             <div className="img_course ">
               <img

@@ -1,5 +1,5 @@
 "use client";
-import Banner_Blog from "@/app/components/User/BannerBlog";
+import Banner_Blog from "@/components/User/BannerBlog";
 import Footer from "@/app/layout/Footer";
 import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";

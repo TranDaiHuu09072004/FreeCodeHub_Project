@@ -1,6 +1,6 @@
 "use client";
-import DashboardStatsCard from "@/app/components/Admin/chart/DashboardStatsCard";
-import UserActivityChart from "@/app/components/Admin/chart/UserActivityChart";
+import DashboardStatsCard from "@/components/Admin/chart/DashboardStatsCard";
+import UserActivityChart from "@/components/Admin/chart/UserActivityChart";
 import React, { useState, useRef, useEffect } from "react";
 import {
   userActivityData,
@@ -8,12 +8,14 @@ import {
   userDistributionData,
   COLORS,
 } from "@/app/data/dashboardData";
-import UserDistributionChart from "@/app/components/Admin/chart/UserDistributionChart";
-import CoursePerformanceChart from "@/app/components/Admin/chart/CoursePerformanceChart";
+import UserDistributionChart from "@/components/Admin/chart/UserDistributionChart";
+import CoursePerformanceChart from "@/components/Admin/chart/CoursePerformanceChart";
+import Button from "@/components/User/Button";
+import { useAuth } from "@/app/Context/AuthContext";
 const Dashboard = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-
+  const { logout } = useAuth();
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -121,11 +123,14 @@ const Dashboard = () => {
                   </span>{" "}
                 </li>
                 <li className="flex items-center gap-2 px-3 py-2 hover:bg-[#1a2233] rounded cursor-pointer text-white">
-                  <i className="fa-solid fa-right-from-bracket text-[14px]"></i>
-                  <span className="material-icons text-[14px]">
+                  <Button onClick={logout}>
                     {" "}
-                    Đăng xuất
-                  </span>{" "}
+                    <i className="fa-solid fa-right-from-bracket text-[14px]"></i>
+                    <span className="material-icons text-[14px]">
+                      {" "}
+                      Đăng xuất
+                    </span>{" "}
+                  </Button>
                 </li>
               </ul>
             )}

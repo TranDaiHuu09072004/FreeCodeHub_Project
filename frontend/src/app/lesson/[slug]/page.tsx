@@ -1,25 +1,50 @@
 "use client";
 import Footer from "@/app/layout/Footer";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "next/navigation";
-import { Lesson } from "@/app/components/User/ItemProduct";
+import axios from "@/app/utils/axiosInstance";
+import { useParams, useRouter } from "next/navigation";
+import { Lesson } from "@/components/User/ItemProduct";
+import { useAuth } from "@/app/Context/AuthContext";
+import Swal from "sweetalert2";
 
 const Learning = () => {
-  const { slug } = useParams(); // ⬅️ Lấy slug từ URL
+  const { slug } = useParams();
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
   const [currentVideoId, setCurrentVideoId] = useState<string>("");
 
   useEffect(() => {
+    if (loading) return;
+    if (!user) {
+      Swal.fire({
+        title: "Bạn chưa đăng nhập",
+        text: "Vui lòng đăng nhập để học khóa học này.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#654ea3",
+        cancelButtonColor: "#1a1f2b",
+        confirmButtonText: "Đăng nhập ngay",
+        cancelButtonText: "Hủy",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        } else {
+          router.push("/"); // Nếu hủy thì quay về trang chủ
+        }
+      });
+      return; // Không tiếp tục load dữ liệu nữa
+    }
+
     if (slug) {
-      const URL_API = process.env.NEXT_PUBLIC_API_URL;
       axios
-        .get(`${URL_API}/courses/${slug}/lessons`)
+        .get(`/courses/${slug}/lessons`)
         .then((res) => {
           setLessons(res.data);
           if (res.data.length > 0) {
-            setCurrentLesson(res.data[0]); // Set bài học đầu tiên làm mặc định
+            setCurrentLesson(res.data[0]);
             setCurrentVideoId(res.data[0]._id);
           }
         })
@@ -27,7 +52,7 @@ const Learning = () => {
           console.error("Failed to fetch lessons:", err);
         });
     }
-  }, [slug]);
+  }, [slug, user, router]);
 
   const handleLessonClick = (lessonId: string) => {
     const selected = lessons.find((lesson) => lesson._id === lessonId);
@@ -36,6 +61,9 @@ const Learning = () => {
       setCurrentVideoId(selected._id || "");
     }
   };
+
+  // Nếu chưa có user, không render nội dung
+  if (!user) return null;
 
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">

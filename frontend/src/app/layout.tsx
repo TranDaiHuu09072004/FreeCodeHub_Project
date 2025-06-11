@@ -1,9 +1,9 @@
 "use client";
 import "./globals.css";
-// import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/app/Context/AuthContext";
-import ShowSideBarMenu from "@/app/components/User/ShowSideBarMenu";
-import SidebarLayout from "@/app/components/Sidebar/SideBarLayout";
+import ShowSideBarMenu from "@/components/User/ShowSideBarMenu";
+import SidebarLayout from "@/components/Sidebar/SideBarLayout";
+import Head from "@/app/head";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -11,18 +11,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="mdl-js">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-        <title>FreeCodeHub - Học lập trình miễn phí</title>
-        <link rel="icon" href="assets/img/iconx_logo.png" type="image/x-icon" />
-      </head>
-      <body className="bg-[#121826]">
+      <Head />
+      <body className="!bg-[#121826]">
         <AuthProvider>
           <div className="wrapper_app xl:flex">
             <SidebarLayout />

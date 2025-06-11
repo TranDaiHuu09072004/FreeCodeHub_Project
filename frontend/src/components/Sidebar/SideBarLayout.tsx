@@ -1,8 +1,8 @@
 "use client";
 import { useAuth } from "@/app/Context/AuthContext";
-import SidebarUser from "@/app/components/Sidebar/SideBarUser";
-import SidebarAdmin from "@/app/components/Sidebar/SideBarAdmin";
-import SidebarAuthor from "@/app/components/Sidebar/SidebarAuthor";
+import SidebarUser from "@/components/Sidebar/SideBarUser";
+import SidebarAdmin from "@/components/Sidebar/SideBarAdmin";
+import SidebarAuthor from "@/components/Sidebar/SidebarAuthor";
 
 const SidebarLayout = ({ className = "" }) => {
   const { user } = useAuth();

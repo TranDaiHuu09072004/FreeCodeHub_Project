@@ -1,5 +1,5 @@
 "use client";
-import SidebarMobile from "@/app/components/Sidebar/SidebarMobile";
+import SidebarMobile from "@/components/Sidebar/SidebarMobile";
 import { useState } from "react";
 import { useAuth } from "@/app/Context/AuthContext"; // thêm dòng này
 

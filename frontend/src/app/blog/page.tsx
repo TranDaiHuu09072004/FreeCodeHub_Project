@@ -1,7 +1,7 @@
 "use client";
-import Banner_Blog from "@/app/components/User/BannerBlog";
-import Button from "@/app/components/User/Button";
-import ItemBlog from "@/app/components/User/ItemBlog";
+import Banner_Blog from "@/components/User/BannerBlog";
+import Button from "@/components/User/Button";
+import ItemBlog from "@/components/User/ItemBlog";
 import Footer from "@/app/layout/Footer";
 import { useState } from "react";
 
