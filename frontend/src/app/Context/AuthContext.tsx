@@ -30,7 +30,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const router = useRouter();
   useEffect(() => {
     const localUser = localStorage.getItem("user");
     if (localUser) {
@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("lastRole");
     setUser(null);
   };
 

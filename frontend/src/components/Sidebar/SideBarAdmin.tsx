@@ -93,7 +93,7 @@ const SidebarAdmin = ({ className = "" }) => {
         </ul>
       </div>
 
-      {user && user.name && (
+      {user && (
         <div className="p-4 border-t border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

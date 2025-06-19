@@ -18,14 +18,12 @@ const SidebarUser = ({ className = "" }) => {
   const menuItems = [...baseListMenu];
 
   if (user) {
-    // Add setting link if user is logged in
     menuItems.push({
       href: "/setting",
       icon: "fa-solid fa-gear",
       label: "Cài đặt",
     });
   } else {
-    // Add login link if user is not logged in
     menuItems.push({
       href: "/login",
       icon: "fa-solid fa-right-to-bracket",

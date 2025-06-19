@@ -86,7 +86,7 @@ const Course_Management = () => {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-medium">1</TableCell>
+              <TableCell className="font-medium text-white">1</TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
@@ -96,7 +96,7 @@ const Course_Management = () => {
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="">
+                  <div className="text-white">
                     <h3>HTML, CSS từ Zero đến Hero</h3>
                     <span className="text-[#677d9b]">
                       Khóa học HTML, CSS từ cơ bản đến nâng cao.
@@ -105,225 +105,25 @@ const Course_Management = () => {
                 </div>
               </TableCell>
               <TableCell>
-                <span>FrontEnd</span>
+                <span className="text-white">FrontEnd</span>
               </TableCell>
               <TableCell>
                 {" "}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 text-white">
                   <i className="fa-solid fa-user text-[20px]"></i>
                   <span>Sơn đặng</span>
                 </div>
               </TableCell>
               <TableCell>
-                <span>Cơ bản</span>
+                <span className="text-white">Cơ bản</span>
               </TableCell>
               <TableCell>
-                <span className="px-2 py-1 bg-blue-700 rounded-full">
+                <span className="px-2 py-1 bg-blue-700 rounded-full text-white">
                   Đã xuất bản
                 </span>
               </TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>HTML, CSS từ Zero đến Hero</h3>
-                    <span className="text-[#677d9b]">
-                      Khóa học HTML, CSS từ cơ bản đến nâng cao.
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>FrontEnd</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <div className="flex items-center gap-3">
-                  <i className="fa-solid fa-user text-[20px]"></i>
-                  <span>Sơn đặng</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>Cơ bản</span>
-              </TableCell>
-              <TableCell>
-                <span className="px-2 py-1 bg-blue-700 rounded-full">
-                  Đã xuất bản
-                </span>
-              </TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>HTML, CSS từ Zero đến Hero</h3>
-                    <span className="text-[#677d9b]">
-                      Khóa học HTML, CSS từ cơ bản đến nâng cao.
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>FrontEnd</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <div className="flex items-center gap-3">
-                  <i className="fa-solid fa-user text-[20px]"></i>
-                  <span>Sơn đặng</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>Cơ bản</span>
-              </TableCell>
-              <TableCell>
-                <span className="px-2 py-1 bg-blue-700 rounded-full">
-                  Đã xuất bản
-                </span>
-              </TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>HTML, CSS từ Zero đến Hero</h3>
-                    <span className="text-[#677d9b]">
-                      Khóa học HTML, CSS từ cơ bản đến nâng cao.
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>FrontEnd</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <div className="flex items-center gap-3">
-                  <i className="fa-solid fa-user text-[20px]"></i>
-                  <span>Sơn đặng</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>Cơ bản</span>
-              </TableCell>
-              <TableCell>
-                <span className="px-2 py-1 bg-blue-700 rounded-full">
-                  Đã xuất bản
-                </span>
-              </TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="">
-                    <h3>HTML, CSS từ Zero đến Hero</h3>
-                    <span className="text-[#677d9b]">
-                      Khóa học HTML, CSS từ cơ bản đến nâng cao.
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>FrontEnd</span>
-              </TableCell>
-              <TableCell>
-                {" "}
-                <div className="flex items-center gap-3">
-                  <i className="fa-solid fa-user text-[20px]"></i>
-                  <span>Sơn đặng</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span>Cơ bản</span>
-              </TableCell>
-              <TableCell>
-                <span className="px-2 py-1 bg-blue-700 rounded-full">
-                  Đã xuất bản
-                </span>
-              </TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>
+              <TableCell className="text-white">100</TableCell>
+              <TableCell className="text-white">
                 <Button
                   icon="fa-regular fa-pen-to-square !text-[14px] "
                   className="w-[40px] h-[40px] items-center cursor-pointer"

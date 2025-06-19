@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/User/Button";
 
 import {
@@ -33,11 +33,30 @@ import {
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import axiosInstance from "@/app/utils/axiosInstance";
+export interface AuthorAdmin {
+  name: string;
+  channel: string;
+  description: string;
+  avatar: string;
+  numCourses: number;
+  numSubscribers: number;
+  createdAt: Date;
+  linkYtb: string;
+}
 
 const Author_Management = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialog, setDeleteDialog] = useState(false);
+  const [authors, setAuthors] = useState<AuthorAdmin[]>([]);
   const openDialog = () => setIsDialogOpen(true);
+  useEffect(() => {
+    try {
+      axiosInstance.get("/authors").then((res) => setAuthors(res.data));
+    } catch (error) {
+      console.log("Lỗi khi lấy người dùng", error);
+    }
+  }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <div className="title_blog mb-[35px]">
@@ -78,57 +97,59 @@ const Author_Management = () => {
               <TableHead className="text-[#677d9b]">
                 Số lượng khóa học{" "}
               </TableHead>
-              <TableHead className="text-[#677d9b]">Người đăng ký</TableHead>
               <TableHead className="text-[#677d9b]">Ngày thêm</TableHead>
               <TableHead className="text-[#677d9b]">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium text-white">1</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                    <img
-                      src="https://placehold.co/100"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
+            {authors.map((au, index) => (
+              <TableRow key={index}>
+                <TableCell className="font-medium text-white">
+                  {index + 1}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
+                      <img
+                        src={au.avatar || "https://placehold.co/100"}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="">
+                      <h3 className="text-white">{au.name}</h3>
+                      <span className="text-[#677d9b]">{au.description}</span>
+                    </div>
                   </div>
-                  <div className="">
-                    <h3 className="text-white">Sơn Đặng</h3>
-                    <span className="text-[#677d9b]">
-                      Founder of F8, fullstack developer with 10+ years of
-                    </span>
+                </TableCell>
+                <TableCell className="text-white">
+                  <div className="flex items-center gap-3">
+                    {" "}
+                    <span> {au.channel} </span>
+                    <a href={au.linkYtb}>
+                      <i className="fa-solid fa-up-right-from-square"></i>
+                    </a>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell className="text-white">
-                <div className="flex items-center gap-3">
+                </TableCell>
+                <TableCell className="text-white">{au.numCourses}</TableCell>
+
+                <TableCell className="text-white">
                   {" "}
-                  <span> F8 Offical </span>
-                  <Link href="#">
-                    <i className="fa-solid fa-up-right-from-square"></i>
-                  </Link>
-                </div>
-              </TableCell>
-              <TableCell className="text-white">12</TableCell>
-              <TableCell className="text-white">
-                <span>10+</span>
-              </TableCell>
-              <TableCell className="text-white">2025-04-10</TableCell>
-              <TableCell className="text-white">
-                <Button
-                  icon="fa-regular fa-pen-to-square !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                />
-                <Button
-                  icon="fa-regular fa-trash-can !text-[14px] "
-                  className="w-[40px] h-[40px] items-center cursor-pointer"
-                  onClick={() => setDeleteDialog(true)}
-                />
-              </TableCell>
-            </TableRow>
+                  {new Date(au.createdAt).toLocaleDateString("vi-VN")}
+                </TableCell>
+                <TableCell className="text-white">
+                  <Button
+                    icon="fa-regular fa-pen-to-square !text-[14px] "
+                    className="w-[40px] h-[40px] items-center cursor-pointer"
+                  />
+                  <Button
+                    icon="fa-regular fa-trash-can !text-[14px] "
+                    className="w-[40px] h-[40px] items-center cursor-pointer"
+                    onClick={() => setDeleteDialog(true)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

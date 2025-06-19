@@ -89,7 +89,7 @@ const Dashboard = () => {
             </svg>
           </div>
           <div className="notification bg-[#020817] p-[10px] w-[40px] h-[40px] rounded-[5px] relative cursor-pointer">
-            <i className="fa-regular fa-bell text-[13px] top-[40%] left-[35%] absolute"></i>
+            <i className="fa-regular fa-bell text-white text-[13px] top-[40%] left-[35%] absolute"></i>
             <span className="bg-red-600 w-[20px] h-[20px] rounded-full absolute -top-1 right-0 text-center">
               3
             </span>
