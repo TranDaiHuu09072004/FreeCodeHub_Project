@@ -8,6 +8,7 @@ interface IAuthor extends Document {
   numCourses: number;
   numSubscribers: number;
   createdAt: Date;
+  linkYtb: string;
 }
 
 const authorSchema: Schema = new Schema(
@@ -18,6 +19,7 @@ const authorSchema: Schema = new Schema(
     avatar: { type: String },
     numCourses: { type: Number, default: 0 },
     numSubscribers: { type: Number, default: 0 },
+    linkYtb: { type: String },
   },
   { timestamps: true }
 );

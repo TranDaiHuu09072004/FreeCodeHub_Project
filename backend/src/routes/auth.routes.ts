@@ -3,7 +3,6 @@ import {
   register,
   login,
   forgotPassword,
-  // resetPassword,
   changePassword,
 } from "../controllers/auth.controler";
 import { authenticate, authorize } from "../middleware/auth.middleware";

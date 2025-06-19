@@ -8,12 +8,27 @@ export const getAllUsers = async (req: Request, res: Response) => {
   res.json(users);
 };
 
+export const createUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.create(req.body);
+    res.status(201).json(users);
+  } catch (error) {
+    console.error("Lỗi tạo user:", error);
+    res.status(500).json({ message: "Có lỗi xảy ra khi tạo mới người dùng" });
+  }
+};
+
 // http://localhost:5000/api/auth/update-profile
 export const updateProfile: RequestHandler = async (req, res) => {
-  const authReq = req as AuthRequest; // ✅ Ép kiểu tại đây
+  const authReq = req as AuthRequest;
 
   try {
     const { name, email, avatar, date_of_birth } = authReq.body;
+
+    if (!authReq.user) {
+      res.status(401).json({ message: "Người dùng chưa được xác thực" });
+      return;
+    }
 
     const user = await User.findById(authReq.user.id);
     if (!user) {

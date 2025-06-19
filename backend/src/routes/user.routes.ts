@@ -1,10 +1,15 @@
 import { Router } from "express";
-import { getAllUsers, updateProfile } from "../controllers/user.control";
+import {
+  getAllUsers,
+  updateProfile,
+  createUsers,
+} from "../controllers/user.control";
 import upload from "../middleware/upload";
 import { authenticate, authorize } from "../middleware/auth.middleware";
 const router = Router();
 
 router.get("/users", getAllUsers);
+router.post("/users", createUsers);
 router.put(
   "/update-profile",
   authenticate,

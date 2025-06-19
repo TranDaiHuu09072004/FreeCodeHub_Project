@@ -30,31 +30,6 @@ export const forgotPassword: RequestHandler = async (req, res) => {
   });
 };
 
-// export const resetPassword: RequestHandler = async (req, res) => {
-//   const { token } = req.params;
-//   const { newPassword } = req.body;
-
-//   const user = await User.findOne({
-//     resetToken: token,
-//     registeredCourses: {
-//       $gt: new Date(),
-//     },
-//   });
-
-//   if (!user) {
-//     res.status(400).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
-//     return;
-//   }
-
-//   user.password = newPassword; // sẽ được hash trong schema
-//   user.resetToken = undefined;
-//   user.resetTokenExpiry = undefined;
-
-//   await user.save();
-
-//   res.json({ message: "Mật khẩu đã được đặt lại thành công" });
-// };
-
 export const changePassword: RequestHandler = async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmPassword } = req.body;
