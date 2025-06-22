@@ -10,8 +10,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const createUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.create(req.body);
-    res.status(201).json(users);
+    const user = await User.create(req.body);
+    const userObject = user.toObject();
+    delete (userObject as any).password;
+    res.status(201).json(userObject);
   } catch (error) {
     console.error("Lỗi tạo user:", error);
     res.status(500).json({ message: "Có lỗi xảy ra khi tạo mới người dùng" });
@@ -53,5 +55,51 @@ export const updateProfile: RequestHandler = async (req, res) => {
     res.json({ message: "Cập nhật thông tin thành công", user });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const UpdateUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    // We don't want to update password to be empty if not provided.
+    const { password, ...updateData } = req.body;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      res.status(404).json({ message: "Người dùng không tồn tại!!!" });
+      return;
+    }
+
+    // Update fields from request body
+    Object.assign(user, updateData);
+
+    if (password) {
+      user.password = password;
+    }
+
+    const updatedUser = await user.save();
+
+    const userObject = updatedUser.toObject();
+    delete (userObject as any).password;
+
+    res.status(200).json(userObject);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi khi cập nhật người dùng" });
+  }
+};
+
+export const DeletedUser: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      res.status(404).json({ message: "Không xóa được người dùng!" });
+    }
+
+    res.status(200).json(deletedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi khi xóa người dùng" });
   }
 };

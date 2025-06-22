@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
+import Category from "./category.model";
 const courseSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -27,6 +28,53 @@ const courseSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Sau khi tạo mới khóa học
+
+courseSchema.post("save", async function (doc) {
+  await Category.findOneAndUpdate(
+    {
+      name: doc.category,
+    },
+    {
+      $inc: { courseCount: 1 },
+    }
+  );
+});
+
+// Sau khi xóa khóa học
+
+courseSchema.post("findOneAndDelete", async function (doc: any) {
+  if (doc?.category) {
+    await Category.findOneAndUpdate(
+      {
+        name: doc.category,
+      },
+      {
+        $inc: { courseCount: 1 },
+      }
+    );
+  }
+});
+
+// ✅ Khi cập nhật category (VD: chuyển từ "Frontend" sang "Backend")
+courseSchema.pre("findOneAndUpdate", async function (next) {
+  const docToUpdate = await this.model.findOne(this.getQuery());
+  const newCategory = this.getUpdate() as { category?: string };
+  // Nếu category thay đổi
+  if (newCategory && newCategory !== docToUpdate.category) {
+    await Category.findOneAndUpdate(
+      { name: docToUpdate.category },
+      { $inc: { courseCount: -1 } }
+    );
+
+    await Category.findOneAndUpdate(
+      { name: newCategory },
+      { $inc: { courseCount: 1 } }
+    );
+  }
+  next();
+});
 
 // Tự động tạo slug trước khi lưu
 courseSchema.pre("save", async function (next) {
