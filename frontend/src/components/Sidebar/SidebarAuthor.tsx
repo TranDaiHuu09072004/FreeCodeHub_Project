@@ -6,11 +6,6 @@ import React from "react";
 
 const baseListMenuAuthor = [
   {
-    href: "/admin/author",
-    icon: "fa-solid fa-pen-nib",
-    label: "Quản lý tác giả",
-  },
-  {
     href: "/admin/course",
     icon: "fa-solid fa-book-open",
     label: "Quản lý khóa học",
@@ -47,7 +42,7 @@ const SidebarAuthor = ({ className = "" }) => {
           <Link href="/dashboard">Admin Dashboard</Link>
         </h1>
       </div>
-      <div className="flex-grow overflow-y-auto pb-[230px]">
+      <div className="flex-grow overflow-y-auto pb-[480px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li

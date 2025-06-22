@@ -5,7 +5,7 @@ type MyButtonProps = {
   icon?: string;
   isNumber_blog?: boolean;
   number_blog?: string;
-  type?: string;
+  type?: "button" | "submit" | "reset";
 };
 const Button = ({
   children,
@@ -14,11 +14,12 @@ const Button = ({
   icon,
   isNumber_blog,
   number_blog,
+  type = "button",
 }: MyButtonProps) => {
   return (
     <>
       {" "}
-      <button className={className} onClick={onClick}>
+      <button type={type} className={className} onClick={onClick}>
         {icon && <i className={`mr-2 text-[18px] ${icon}`}></i>}
         {children} {isNumber_blog && <span>{number_blog}</span>}
       </button>

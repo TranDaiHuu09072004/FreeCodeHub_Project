@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
           icon: "question",
         });
         localStorage.removeItem("token");
-
+        localStorage.removeItem("user");
         // Nếu dùng Next.js Router (client-side)
         window.location.href = "/login";
       }

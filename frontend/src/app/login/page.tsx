@@ -46,7 +46,7 @@ const Login = () => {
         if (user.role === "admin") {
           router.push("/admin/dashboard");
         } else if (user.role === "author") {
-          router.push("/admin/authors");
+          router.push("/admin/author");
         } else {
           router.push("/");
         }
