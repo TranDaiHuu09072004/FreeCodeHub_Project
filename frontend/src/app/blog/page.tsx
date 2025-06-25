@@ -3,14 +3,45 @@ import Banner_Blog from "@/components/User/BannerBlog";
 import Button from "@/components/User/Button";
 import ItemBlog from "@/components/User/ItemBlog";
 import Footer from "@/app/layout/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axiosInstance from "@/app/utils/axiosInstance";
+import Link from "next/link";
+
+export interface Blog {
+  _id: string;
+  title: string;
+  author: string;
+  imageAuthor: string;
+  category: string;
+  status: "Đã đăng" | "Nháp" | "Đã xóa";
+  isFeatured: boolean;
+  date: string;
+  thumbnail: string;
+  excerpt: string;
+  content: string;
+  tags: string[];
+  slug: string;
+}
 
 const Blog = () => {
   const [activeButton, setActiveButton] = useState<number | null>(null);
+  const [blogFeatured, setBlogFeatured] = useState<Blog | null>(null);
   const handleButtonClick = (id: number) => {
     setActiveButton(id);
   };
 
+  useEffect(() => {
+    axiosInstance
+      .get("/blogs/featured")
+      .then((res) => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setBlogFeatured(res.data[0]); // ✅ Lấy phần tử đầu tiên
+        }
+      })
+      .catch((error) => {
+        console.log("FetchData Blogs Nổi bật thất bại", error);
+      });
+  }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner_Blog
@@ -37,46 +68,50 @@ const Blog = () => {
           ))}
         </div>
       </section>
-      <section className="blog_hot">
-        <div className="item-detail_course flex max-xl:flex-col">
-          <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px]">
-            <img
-              src="https://files.fullstack.edu.vn/f8-prod/courses/13/13.png"
-              alt=""
-              className="rounded-[10px] w-full"
-            />
-          </div>
-          <div className="content_detail xl:pl-[37px] xl:w-[50%] max-xl:w-full">
-            <h5 className="mt-[15px] bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white py-1 px-2 w-[100px] rounded-[30px]">
-              Tin nổi bật
-            </h5>
-            <h3 className="text-[25px] text-white font-bold mt-[15px] mb-[15px]">
-              Giới thiệu FreeCodeHub - Nền tảng học lập trình miễn phí từ
-              Youtube
-            </h3>
-            <p className="text-[#9d9da3] my-[20px] text-[14px]">
-              FreeCodeHub ra đời với sứ mệnh thu thập và tổ chức các khóa học
-              lập trình miễn phí chất lượng cao từ Youtube. Đọc để hiểu thêm về
-              câu chuyện, tầm nhìn và mục tiêu của chúng tôi
-            </p>
-            <div className="flex w-[200px] items-center mb-[10px] justify-between">
-              {" "}
-              <div className="create_post">
-                <i className="fa-solid fa-calendar text-[18px] text-white mr-[10px]"></i>
-                <span className="text-white">11/5/2024</span>
-              </div>
-              <div className="author">
-                <i className="fa-solid fa-user text-[18px] text-white mr-[10px]"></i>
-                <span className="text-white">Admin</span>
-              </div>
+      {blogFeatured && (
+        <section className="blog_hot">
+          <div className="item-detail_course flex max-xl:flex-col">
+            <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px]">
+              <img
+                src={blogFeatured.thumbnail || "https://placehold.co/600x400"}
+                alt=""
+                className="rounded-[10px] w-full"
+              />
             </div>
-            <Button
-              children="Đọc bài viết"
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
-            />
+            <div className="content_detail xl:pl-[37px] xl:w-[50%] max-xl:w-full">
+              {blogFeatured.isFeatured && (
+                <h5 className="mt-[15px] bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white py-1 px-2 w-[100px] rounded-[30px]">
+                  Tin nổi bật
+                </h5>
+              )}
+
+              <h3 className="text-[25px] text-white font-bold mt-[15px] mb-[15px]">
+                {blogFeatured.title}
+              </h3>
+              <p className="text-[#9d9da3] my-[20px] text-[14px]">
+                {blogFeatured.excerpt}
+              </p>
+              <div className="flex w-[200px] items-center mb-[10px] justify-between">
+                {" "}
+                <div className="create_post">
+                  <i className="fa-solid fa-calendar text-[18px] text-white mr-[10px]"></i>
+                  <span className="text-white">{blogFeatured.date}</span>
+                </div>
+                <div className="author">
+                  <i className="fa-solid fa-user text-[18px] text-white mr-[10px]"></i>
+                  <span className="text-white">{blogFeatured.author}</span>
+                </div>
+              </div>
+              <Link href={`/blog/${blogFeatured.slug}`}>
+                <Button
+                  children="Đọc bài viết"
+                  className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
+                />
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <section className="blog my-[35px] ">
         <div className="relative pl-4">
           <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>

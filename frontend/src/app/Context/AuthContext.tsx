@@ -6,7 +6,6 @@ import {
   useState,
   ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
 
 interface User {
   name: string;
@@ -30,7 +29,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   useEffect(() => {
     const localUser = localStorage.getItem("user");
     if (localUser) {

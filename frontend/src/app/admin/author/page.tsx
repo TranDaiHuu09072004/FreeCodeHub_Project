@@ -31,10 +31,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/app/utils/axiosInstance";
+import * as yup from "yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { toast, ToastContainer } from "react-toastify";
 export interface AuthorAdmin {
+  _id: string;
   name: string;
   channel: string;
   description: string;
@@ -45,20 +49,133 @@ export interface AuthorAdmin {
   linkYtb: string;
 }
 
+type AuthorFormValue = {
+  name: string;
+  channel: string;
+  description: string;
+  avatar: string;
+  numCourses: number;
+  numSubscribers: number;
+  createdAt: Date;
+  linkYtb: string;
+};
+
+const createAuthor = yup.object({
+  name: yup.string().required("Vui lòng nhập tên tác giả"),
+  channel: yup.string().required("Vui lòng nhập kênh tác giả"),
+  description: yup.string().required("Vui lòng mô tả"),
+  avatar: yup.string().required("Vui lòng nhập hình ảnh tác giả"),
+  linkYtb: yup.string().required("Vui lòng nhập đường link của tác giả"),
+});
+
 const Author_Management = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialog, setDeleteDialog] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [authors, setAuthors] = useState<AuthorAdmin[]>([]);
-  const openDialog = () => setIsDialogOpen(true);
-  useEffect(() => {
+  const [isEditingAuthor, setIsEditingAuthors] = useState<AuthorAdmin | null>(
+    null
+  );
+  const [deleteAuthor, setDeleteAuthors] = useState<AuthorAdmin | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<AuthorFormValue>({
+    resolver: yupResolver(createAuthor as yup.ObjectSchema<AuthorFormValue>),
+  });
+
+  const fetchAuthors = async () => {
     try {
-      axiosInstance.get("/authors").then((res) => setAuthors(res.data));
+      const res = await axiosInstance.get("/authors");
+      setAuthors(res.data);
     } catch (error) {
       console.log("Lỗi khi lấy người dùng", error);
     }
+  };
+
+  useEffect(() => {
+    fetchAuthors();
   }, []);
+
+  const onSubmit: SubmitHandler<AuthorFormValue> = async (data) => {
+    try {
+      const payload = {
+        ...data,
+      };
+      if (isEditingAuthor) {
+        await axiosInstance.put(`/authors/${isEditingAuthor._id}`, payload);
+        toast.success("Cập nhật tác giả thành công");
+      } else {
+        await axiosInstance.post("/authors", payload);
+        toast.success("Tạo tác giả thành công");
+      }
+
+      reset();
+      setIsDialogOpen(false);
+      setIsEditingAuthors(null);
+      fetchAuthors();
+    } catch (error) {
+      toast.error("Server lỗi");
+    }
+  };
+
+  const openEditDialog = (author: AuthorAdmin) => {
+    setIsEditingAuthors(author);
+    setValue("name", author.name);
+    setValue("channel", author.channel);
+    setValue("avatar", author.avatar);
+    setValue("description", author.description);
+    setValue("linkYtb", author.linkYtb);
+    setIsDialogOpen(true);
+  };
+
+  const openCreateDialog = () => {
+    setIsEditingAuthors(null);
+    reset();
+    setIsDialogOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Hiển thị ảnh trước khi upload thành công
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewImage(previewUrl);
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await axiosInstance.post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const imageUrl = res.data.url;
+      setValue("avatar", imageUrl);
+      toast.success("Tải ảnh thành công!");
+    } catch (err) {
+      toast.error("Tải ảnh thất bại");
+      console.error("Upload error:", err);
+    }
+  };
+
+  const handleDeletedAuthors = () => {
+    try {
+      if (!deleteAuthor) return;
+      axiosInstance.delete(`/authors/${deleteAuthor._id}`);
+      toast.success("Xóa tác giả thành công");
+    } catch (error) {
+      toast.error("Lỗi Server");
+    }
+  };
   return (
     <div className="lg:px-[32px] lg:pt-[32px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
+      <ToastContainer />
       <div className="title_blog mb-[35px]">
         <h3 className="text-2xl text-white font-bold">Quản lý tác giả</h3>
         <p className="text-[#677d9b] text-[15px] font-[450]">
@@ -74,7 +191,7 @@ const Author_Management = () => {
             </p>
           </div>
           <Button
-            onClick={openDialog}
+            onClick={openCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
             children="Thêm tác giả"
             icon="fa-solid fa-circle-plus"
@@ -141,11 +258,15 @@ const Author_Management = () => {
                   <Button
                     icon="fa-regular fa-pen-to-square !text-[14px] "
                     className="w-[40px] h-[40px] items-center cursor-pointer"
+                    onClick={() => openEditDialog(au)}
                   />
                   <Button
                     icon="fa-regular fa-trash-can !text-[14px] "
                     className="w-[40px] h-[40px] items-center cursor-pointer"
-                    onClick={() => setDeleteDialog(true)}
+                    onClick={() => {
+                      setDeleteAuthors(au);
+                      setDeleteDialog(true);
+                    }}
                   />
                 </TableCell>
               </TableRow>
@@ -153,16 +274,29 @@ const Author_Management = () => {
           </TableBody>
         </Table>
       </div>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsEditingAuthors(null);
+            reset();
+          }
+          setIsDialogOpen(open);
+        }}
+      >
         <DialogContent maxWidth="max-w-[725px]">
           <DialogHeader>
-            <DialogTitle>Thêm tác giả mới</DialogTitle>
+            <DialogTitle>
+              {isEditingAuthor ? "Cập nhật tác giả" : "Thêm tác giả mới"}
+            </DialogTitle>
             <DialogDescription>
-              Điền thông tin để tạo tác giả mới.
+              {isEditingAuthor
+                ? "Cập nhật tác giả"
+                : "Điền thông tin để tạo tác giả mới."}
             </DialogDescription>
           </DialogHeader>
           <div className="">
-            <form action="" className="flex">
+            <form action="" className="flex" onSubmit={handleSubmit(onSubmit)}>
               <div className="image_author flex flex-col items-center w-[30%]">
                 <label htmlFor="image_author" className="mb-3 font-bold">
                   Ảnh đại diện
@@ -170,75 +304,102 @@ const Author_Management = () => {
                 <div className="w-[128px] h-[128px] mb-3">
                   {" "}
                   <img
-                    src="https://avatars.githubusercontent.com/u/124599?v=4"
-                    alt=""
-                    className="w-full h-full object-cover rounded-full "
+                    src={
+                      previewImage
+                        ? previewImage
+                        : isEditingAuthor?.avatar?.startsWith("http")
+                        ? isEditingAuthor.avatar
+                        : "https://avatars.githubusercontent.com/u/124599?v=4"
+                    }
+                    alt="Ảnh đại diện"
+                    className="h-full w-full object-cover rounded-full"
                   />
                 </div>
                 <Input
                   id="image"
                   type="file"
+                  onChange={handleImageUpload}
                   placeholder="Chọn hình ảnh đại diện"
                   className="h-[40px] w-full !text-[#677d9b] border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
                 />
+                <Input type="hidden" {...register("avatar")} />
               </div>
               <div className="grid gap-4 py-4 w-[70%]">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Tên tác giả
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Tên đầy đủ của tác giả"
-                    required
-                    className="h-[40px] w-full border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
+                <div className="field_name">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Tên tác giả
+                    </Label>
+                    <Input
+                      type="text"
+                      placeholder="Tên đầy đủ của tác giả"
+                      {...register("name")}
+                      className="h-[40px] w-full border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
+                    />
+                  </div>
+                  <p className="text-red-500 w-full text-center">
+                    {errors.name?.message}
+                  </p>
+                </div>
+                <div className="field_channel">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="chanel" className="text-right">
+                      Kênh
+                    </Label>
+                    <Input
+                      type="text"
+                      {...register("channel")}
+                      placeholder="Tên kênh Youtube"
+                      className="h-[40px] w-full border font-medium border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
+                    />
+                  </div>
+                  <p className="text-red-500 w-full text-center">
+                    {errors.channel?.message}
+                  </p>
+                </div>
+                <div className="field_linkytb">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="url_youtube" className="text-right">
+                      URL Youtube
+                    </Label>
+                    <Input
+                      type="text"
+                      placeholder="Url Youtube"
+                      {...register("linkYtb")}
+                      className="h-[40px] w-full border font-medium border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
+                    />
+                  </div>
+                  <p className="text-red-500 w-full text-center">
+                    {errors.linkYtb?.message}
+                  </p>
+                </div>
+                <div className="field_description">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="introduce" className="text-right">
+                      Giới thiệu
+                    </Label>
+                    <textarea
+                      placeholder="Tên giới thiệu"
+                      id="introduce"
+                      {...register("description")}
+                      rows={5}
+                      className="col-span-3 border p-2 rounded-[10px] border-[#1e2631]"
+                    ></textarea>
+                  </div>
+                  <p className="text-red-500 w-full text-center">
+                    {errors.description?.message}
+                  </p>
+                </div>
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
+                    children={isEditingAuthor ? "Cập nhật" : "Tạo tác giả"}
                   />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="chanel" className="text-right">
-                    Kênh
-                  </Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="Tên kênh Youtube"
-                    className="h-[40px] w-full border font-medium border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="url_youtube" className="text-right">
-                    URL Youtube
-                  </Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="Url Youtube"
-                    className="h-[40px] w-full border font-medium border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px] col-span-3"
-                  />
-                </div>
-
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="introduce" className="text-right">
-                    Giới thiệu
-                  </Label>
-                  <textarea
-                    name="introduce"
-                    placeholder="Tên giới thiệu"
-                    id="introduce"
-                    rows={5}
-                    className="col-span-3 border p-2 rounded-[10px] border-[#1e2631]"
-                  ></textarea>
-                </div>
+                </DialogFooter>
               </div>
             </form>
           </div>
-          <DialogFooter>
-            <Button
-              type="submit"
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-              children="Tạo tác giả"
-            />
-          </DialogFooter>
         </DialogContent>
       </Dialog>
       <AlertDialog open={isDeleteDialog} onOpenChange={setDeleteDialog}>
@@ -252,7 +413,10 @@ const Author_Management = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Hủy</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive text-destructive-foreground">
+            <AlertDialogAction
+              onClick={handleDeletedAuthors}
+              className="bg-destructive text-destructive-foreground text-white"
+            >
               Xóa
             </AlertDialogAction>
           </AlertDialogFooter>
