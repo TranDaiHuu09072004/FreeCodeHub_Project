@@ -16,10 +16,8 @@ export const CreateBlogs: RequestHandler = async (req, res) => {
       status,
       isFeatured,
       date,
-      thumbnail,
       excerpt,
-      tags,
-      slug,
+      imageAuthor,
     } = req.body;
     const newsBlog = new Blog({
       title,
@@ -29,15 +27,14 @@ export const CreateBlogs: RequestHandler = async (req, res) => {
       status,
       isFeatured,
       date,
-      thumbnail,
       excerpt,
-      tags,
-      slug,
+      imageAuthor,
     });
 
     const saveBlogs = await newsBlog.save();
     res.status(201).json(saveBlogs);
   } catch (error) {
+    console.error("Lỗi chi tiết:", error); // 👈 thêm dòng này để xem lỗi
     res.status(500).json({ message: "Lỗi khi tạo mới blogs" });
   }
 };
@@ -92,7 +89,6 @@ export const getBlogsBySlug: RequestHandler = async (req, res) => {
 };
 
 //update Blogs
-
 export const UpdateBlogs: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
@@ -110,5 +106,20 @@ export const UpdateBlogs: RequestHandler = async (req, res) => {
     res.status(200).json(updateBlogs);
   } catch (error) {
     res.status(500).json({ message: "Lỗi khi cập nhật" });
+  }
+};
+
+//deleted Blogs
+
+export const DeletedBlogs: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBlogs = await Blog.findByIdAndDelete(id);
+    if (!deletedBlogs) {
+      res.status(404).json({ message: "Không tìm thấy bài viết cần xóa" });
+    }
+    res.status(200).json({ message: "Xóa bài viết thành công", deletedBlogs });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi Server", error });
   }
 };

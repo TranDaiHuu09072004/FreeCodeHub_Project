@@ -18,7 +18,7 @@ CategorySchema.pre("save", async function (next) {
     let slug = baseSlug;
     let count = 1;
 
-    while (await mongoose.models.Course.findOne({ slug })) {
+    while (await mongoose.models.Category.findOne({ slug })) {
       slug = `${baseSlug}-${count++}`;
     }
 

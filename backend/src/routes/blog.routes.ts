@@ -5,6 +5,7 @@ import {
   getBlogsBySlug,
   UpdateBlogs,
   getFeaturedBlogs,
+  DeletedBlogs,
 } from "../controllers/blog.control";
 
 const router = Router();
@@ -14,5 +15,6 @@ router.get("/blogs/featured", getFeaturedBlogs);
 router.post("/blogs", CreateBlogs);
 router.get("/blogs/:slug", getBlogsBySlug);
 router.put("/blogs/:id", UpdateBlogs);
+router.delete("/blogs/:id", DeletedBlogs);
 
 export default router;
