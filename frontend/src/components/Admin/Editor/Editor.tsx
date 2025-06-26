@@ -11,7 +11,6 @@ const ReactQuill = dynamic(() => import("./MyQuill"), { ssr: false });
 type EditorProps = {
   value: string;
   onChange: (value: string) => void;
-  // className: string;
 };
 
 const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
@@ -50,11 +49,13 @@ const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
     () => ({
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, false] }],
+          [{ font: [] }],
+          [{ size: [] }],
           ["bold", "italic", "underline", "strike"],
+          [{ color: [] }, { background: [] }],
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image", "code-block"],
-          ["clean"],
+          [{ align: [] }],
+          ["link", "image"],
         ],
         handlers: {
           image: imageHandler,
@@ -65,15 +66,18 @@ const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
   );
 
   const formats = [
-    "header",
+    "font",
+    "size",
     "bold",
     "italic",
     "underline",
     "strike",
+    "color",
+    "background",
     "list",
+    "align",
     "link",
     "image",
-    "code-block",
   ];
 
   return (

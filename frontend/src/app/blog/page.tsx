@@ -6,6 +6,7 @@ import Footer from "@/app/layout/Footer";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import Link from "next/link";
+import ItemBlogList from "@/components/User/ItemBlogList";
 
 export interface Blog {
   _id: string;
@@ -117,8 +118,8 @@ const Blog = () => {
           <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
           <h1 className="text-[25px] font-bold text-white">Bài viết</h1>
         </div>
-        <div className="wrapper_blog mt-[35px] grid lg:grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1  gap-[20px]">
-          <ItemBlog />
+        <div className="wrapper_blog mt-[35px] grid lg:grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1 gap-[20px]">
+          <ItemBlogList />
         </div>
       </section>
       <Banner_Blog

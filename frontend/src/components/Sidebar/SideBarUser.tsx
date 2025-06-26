@@ -6,7 +6,7 @@ import { useAuth } from "@/app/Context/AuthContext";
 const baseListMenu = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
   { href: "/courses", icon: "fa-solid fa-graduation-cap", label: "Khóa học" },
-  { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Blog" },
+  { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Bài viết" },
   { href: "/about-us", icon: "fa-solid fa-user", label: "Về Chúng Tôi" },
 ];
 
@@ -41,30 +41,34 @@ const SidebarUser = ({ className = "" }) => {
         </h1>
       </div>
 
-      <div className="flex-grow overflow-y-auto pb-[330px]">
+      <div className="flex-grow overflow-y-auto pb-[340px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
-          {menuItems.map((item, index) => (
-            <li
-              key={index}
-              className={`py-2 px-4 rounded-[3px] mb-[10px] transition-all duration-300 ${
-                pathname === item.href
-                  ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
-                  : ""
-              }`}
-            >
-              <Link href={item.href} className="flex items-center">
-                <i
-                  className={item.icon}
-                  style={{
-                    fontSize: "18px",
-                    marginLeft: "10px",
-                    marginRight: "10px",
-                  }}
-                ></i>
-                {item.label}
-              </Link>
-            </li>
-          ))}
+          {menuItems.map((item, index) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            return (
+              <li
+                key={index}
+                className={`py-2 px-4 rounded-[3px] mb-[10px] transition-all duration-300 ${
+                  isActive ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]" : ""
+                }`}
+              >
+                <Link href={item.href} className="flex items-center">
+                  <i
+                    className={item.icon}
+                    style={{
+                      fontSize: "18px",
+                      marginLeft: "10px",
+                      marginRight: "10px",
+                    }}
+                  ></i>
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
 

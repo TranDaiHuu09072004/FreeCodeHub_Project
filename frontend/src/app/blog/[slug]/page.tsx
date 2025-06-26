@@ -1,5 +1,4 @@
 "use client";
-import Button from "@/components/User/Button";
 import ItemBlog from "@/components/User/ItemBlog";
 import Footer from "@/app/layout/Footer";
 import Link from "next/link";
@@ -10,6 +9,7 @@ import { Blog } from "@/app/blog/page";
 import Comment from "@/components/User/Comment";
 const DetailBlog = () => {
   const [detailBlog, setDetailBlog] = useState<Blog | null>(null);
+  const [relatedblog, setRelatedBlogs] = useState<Blog[]>([]);
   const { slug } = useParams();
 
   useEffect(() => {
@@ -19,8 +19,20 @@ const DetailBlog = () => {
         .then((res) => setDetailBlog(res.data));
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (slug) {
+      axiosInstance.get(`/blogs/${slug}/related`).then((res) => {
+        setRelatedBlogs(res.data);
+      });
+    }
+  }, [slug]);
+
   return (
-    <div className="lg:px-[32px] lg:pt-[32px]  max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
+    <div
+      key={detailBlog?._id}
+      className="lg:px-[32px] lg:pt-[32px]  max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4"
+    >
       <div className="wrapper_detail-blog max-w-4xl mx-auto">
         <div className="turnback_blog cursor-pointer">
           <Link href="/blog" className="flex items-center gap-[10px]">
@@ -74,13 +86,11 @@ const DetailBlog = () => {
               </span>
             </div>
           </div>
-          <div className="content_blog">
-            <img
-              src={detailBlog?.thumbnail || "https://github.com/shadcn.png"}
-              alt=""
-              className="blog w-full rounded-[10px]"
-            />
-            <p className="my-5 text-white">{detailBlog?.excerpt}</p>
+          <div className="content_blog !text-white w-full">
+            <div
+              className="prose prose-invert max-w-none w-full [&_*]:!text-white [&_*]:!max-w-full [&_img]:w-full [&_img]:mb-2"
+              dangerouslySetInnerHTML={{ __html: detailBlog?.content || "" }}
+            ></div>
           </div>
           <div className=" my-5 border-b border-[#1F2937]"></div>
           <Comment />
@@ -88,7 +98,9 @@ const DetailBlog = () => {
         <section className="blog_related">
           <h3 className="text-2xl font-bold text-white">Bài viết liên quan</h3>
           <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5 my-5">
-            <ItemBlog />
+            {relatedblog.map((item) => (
+              <ItemBlog blog={item} />
+            ))}
           </div>
         </section>
       </div>

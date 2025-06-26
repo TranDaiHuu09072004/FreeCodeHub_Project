@@ -64,7 +64,7 @@ const ItemProduct = () => {
       user.registeredCourses.includes(course.slug)
     ) {
       e.preventDefault();
-      router.push(`/lesson/${course.slug}`);
+      router.push(`/courses/lesson/${course.slug}`);
     }
   };
 

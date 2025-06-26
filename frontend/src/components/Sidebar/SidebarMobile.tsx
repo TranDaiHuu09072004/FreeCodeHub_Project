@@ -19,7 +19,7 @@ const baseAdminMenu = [
   {
     href: "/admin/blog",
     icon: "fa-solid fa-file",
-    label: "Quản lý blog",
+    label: "Quản lý bài viết",
   },
   {
     href: "/admin/user",

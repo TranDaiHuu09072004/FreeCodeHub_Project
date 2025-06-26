@@ -50,6 +50,7 @@ type BlogFormValue = {
   date: string;
   excerpt: string;
   content: string;
+  thumbnail: string;
 };
 
 const createBlog = yup.object({
@@ -65,6 +66,7 @@ const createBlog = yup.object({
   date: yup.string().required("Vui lòng chọn ngày đăng"),
   excerpt: yup.string().required("Vui lòng nhập mô tả"),
   content: yup.string().required("Vui lòng nhập nội dung bài viết"),
+  thumbnail: yup.string().required("nhập ảnh bìa bài viết"),
 });
 const Blog_Management = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -103,9 +105,11 @@ const Blog_Management = () => {
       };
       if (editingBlog) {
         await axiosInstance.put(`/blogs/${editingBlog._id}`, payload);
+        console.log("Payload gửi lên:", payload);
         toast.success("Cập nhật bài viết thành công");
       } else {
         await axiosInstance.post("/blogs", payload);
+        console.log("Payload gửi lên:", payload);
         toast.success("Tạo bài viết thành công");
       }
       reset();
@@ -117,7 +121,10 @@ const Blog_Management = () => {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldName: "thumbnail" | "imageAuthor"
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -130,7 +137,7 @@ const Blog_Management = () => {
       });
 
       const imageUrl = res.data.url;
-      setValue("imageAuthor", imageUrl);
+      setValue(fieldName, imageUrl);
       toast.success("Tải ảnh thành công!");
     } catch (err) {
       toast.error("Tải ảnh thất bại");
@@ -160,6 +167,7 @@ const Blog_Management = () => {
     setValue("date", b.date);
     setValue("imageAuthor", b.imageAuthor);
     setValue("excerpt", b.excerpt);
+    setValue("thumbnail", b.thumbnail);
     setIsDialogOpen(true);
   };
 
@@ -230,7 +238,7 @@ const Blog_Management = () => {
                 </TableCell>
                 <TableCell>
                   <h5 className="text-white">{b.title}</h5>
-                  <p className="text-[#677d9b]"> {b.excerpt} </p>
+                  <p className="text-[#677d9b] line-clamp-2 max-w-[500px] text-[14px]"> {b.excerpt} </p>
                 </TableCell>
                 <TableCell className="text-white"> {b.author}</TableCell>
                 <TableCell className="text-white"> {b.category}</TableCell>
@@ -311,6 +319,31 @@ const Blog_Management = () => {
                     {errors.title?.message}
                   </p>
                 </div>
+                <div className="field_thumbnail">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="title">Ảnh bìa bài viết</Label>
+                    <div className="col-span-3">
+                      {editingBlog?.thumbnail && (
+                        <img
+                          src={
+                            editingBlog.thumbnail.startsWith("http")
+                              ? editingBlog.thumbnail
+                              : `http://localhost:5000${editingBlog.thumbnail}`
+                          }
+                          alt="Ảnh đại diện"
+                          className="h-[80px] w-[80px] object-cover rounded-full mb-2"
+                        />
+                      )}
+                      <Input
+                        id="image"
+                        type="file"
+                        onChange={(e) => handleImageUpload(e, "thumbnail")}
+                        className="h-[40px] w-full border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                      />
+                      <Input type="hidden" {...register("thumbnail")} />
+                    </div>
+                  </div>
+                </div>
                 <div className="field_excerpt">
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="summary">Mô tả</Label>
@@ -367,7 +400,7 @@ const Blog_Management = () => {
                       <Input
                         id="image"
                         type="file"
-                        onChange={handleImageUpload}
+                        onChange={(e) => handleImageUpload(e, "imageAuthor")}
                         className="h-[40px] w-full border border-[#1e2631] !outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
                       />
                       <Input type="hidden" {...register("imageAuthor")} />

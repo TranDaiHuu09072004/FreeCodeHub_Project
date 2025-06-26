@@ -13,7 +13,7 @@ const baseListMenuAdmin = [
   {
     href: "/admin/blog",
     icon: "fa-solid fa-file",
-    label: "Quản lý blog",
+    label: "Quản lý bài viết",
   },
   {
     href: "/admin/user",
@@ -72,7 +72,12 @@ const SidebarAdmin = ({ className = "" }) => {
             <li
               key={index}
               className={`py-2 px-4 rounded-[3px]  mb-[10px] transition-all duration-300 ${
-                pathname === item.href
+                (
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname === item.href ||
+                      pathname.startsWith(item.href + "/")
+                )
                   ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                   : ""
               }`}
