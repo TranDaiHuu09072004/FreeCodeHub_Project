@@ -18,6 +18,7 @@ export const CreateBlogs: RequestHandler = async (req, res) => {
       date,
       excerpt,
       imageAuthor,
+      thumbnail,
     } = req.body;
     const newsBlog = new Blog({
       title,
@@ -29,6 +30,7 @@ export const CreateBlogs: RequestHandler = async (req, res) => {
       date,
       excerpt,
       imageAuthor,
+      thumbnail,
     });
 
     const saveBlogs = await newsBlog.save();
@@ -121,5 +123,21 @@ export const DeletedBlogs: RequestHandler = async (req, res) => {
     res.status(200).json({ message: "Xóa bài viết thành công", deletedBlogs });
   } catch (error) {
     res.status(500).json({ message: "Lỗi Server", error });
+  }
+};
+
+//Bài viết liên quan
+
+export const getRelatedBlogs: RequestHandler = async (req, res) => {
+  try {
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    if (!blog) res.status(404).json({ message: "Không tìm thấy bài viết" });
+    const relatedBlogs = await Blog.find({
+      category: blog?.category,
+      slug: { $ne: blog?.slug },
+    }).limit(5);
+    res.status(201).json(relatedBlogs);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server", error });
   }
 };
