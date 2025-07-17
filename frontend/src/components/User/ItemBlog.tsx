@@ -8,7 +8,7 @@ type Props = {
 
 const ItemBlog = ({ blog }: Props) => {
   return (
-    <>
+    <Link href={`/blog/${blog.slug}`}>
       <div
         key={blog._id}
         className="item_blog bg-[#1A1F2B] rounded-[10px] hover:translate-y-[-10px] transition-all duration-300"
@@ -45,17 +45,14 @@ const ItemBlog = ({ blog }: Props) => {
             <h3 className="bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white px-2 py-1 rounded-[10px]">
               {blog.category}
             </h3>
-            <Link
-              href={`/blog/${blog.slug}`}
-              className="font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text"
-            >
+            <div className="font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text">
               Đọc Thêm{" "}
               <i className="fa-solid fa-arrow-right bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text"></i>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
 };
 

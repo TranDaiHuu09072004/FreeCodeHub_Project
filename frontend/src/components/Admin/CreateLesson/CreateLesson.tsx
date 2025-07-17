@@ -1,122 +1,223 @@
-import { useState, useEffect } from "react";
-
+"use client";
+import React, { useState } from "react";
+import Button from "@/components/User/Button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select } from "@/components/ui/select";
+import axiosInstance from "@/app/utils/axiosInstance";
+import * as yup from "yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 
-const CreateLesson = () => {
-  const [courses, setCourses] = useState([]);
-  const [formData, setFormData] = useState({
-    courseId: "",
-    title: "",
-    description: "",
-    videoId: "",
-    videoUrl: "",
-    order: 1,
-    duration: "",
+type LessonValue = {
+  courseId: string;
+  title: string;
+  description: string;
+  videoId?: string; // optional
+  videoUrl: string;
+  order: number;
+  duration: string;
+};
+
+const createLessonSchema = yup.object({
+  courseId: yup.string().required("Course ID là bắt buộc"),
+  title: yup.string().required("Vui lòng nhập tiêu đề bài học"),
+  description: yup.string().required("Vui lòng nhập mô tả bài học"),
+  // videoId: yup.string().required("Vui lòng nhập Video ID"), // đã bỏ validate này
+  videoUrl: yup.string().required("Vui lòng nhập URL video"),
+  order: yup.number().required("Vui lòng nhập thứ tự bài học"),
+  duration: yup.string().required("Vui lòng nhập thời lượng bài học"),
+});
+
+interface CreateLessonProps {
+  isOpen: boolean;
+  onClose: () => void;
+  courseId: string;
+  courseTitle: string;
+}
+
+const CreateLesson: React.FC<CreateLessonProps> = ({
+  isOpen,
+  onClose,
+  courseId,
+  courseTitle,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<LessonValue>({
+    resolver: yupResolver(createLessonSchema),
+    defaultValues: {
+      courseId: courseId,
+      order: 1,
+    },
   });
 
-  const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
-  useEffect(() => {
-    // Fetch courses for the dropdown
-    async function fetchCourses() {
-      const res = await fetch(`${ApiUrl}/courses`);
-      const data = await res.json();
-      // setCourses(data);
-      console.log("data", data);
+  // Tự động lấy order tiếp theo khi component mount
+  React.useEffect(() => {
+    const fetchNextOrder = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/lessons?courseId=${courseId}`
+        );
+        const lessons = response.data;
+        const maxOrder =
+          lessons.length > 0
+            ? Math.max(...lessons.map((l: any) => l.order))
+            : 0;
+        setValue("order", maxOrder + 1);
+      } catch (error) {
+        console.error("Error fetching lessons for order:", error);
+      }
+    };
+
+    if (isOpen && courseId) {
+      fetchNextOrder();
     }
-    fetchCourses();
-  }, []);
+  }, [isOpen, courseId, setValue]);
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    // Submit form data (You can replace this with your API call)
-    console.log(formData);
+  const onSubmit: SubmitHandler<LessonValue> = async (data) => {
+    try {
+      await axiosInstance.post("/lessons", data);
+      toast.success("Tạo bài học thành công!");
+      reset();
+      onClose();
+    } catch (error: any) {
+      console.error("Error creating lesson:", error);
+      if (error.response?.data?.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Lỗi khi tạo bài học");
+      }
+    }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Thêm bài học</Button>
-      </DialogTrigger>
-      <DialogContent maxWidth="max-w-xl">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Thêm bài học mới</DialogTitle>
+          <DialogTitle>Tạo bài học mới</DialogTitle>
+          <DialogDescription>
+            Tạo bài học cho khóa học: {courseTitle}
+          </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Label>Tiêu đề</Label>
-          <Input
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            placeholder="Nhập tiêu đề"
-          />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-4 py-4">
+            <div className="field_title">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="title">Tiêu đề bài học</Label>
+                <Input
+                  type="text"
+                  placeholder="Nhập tiêu đề bài học"
+                  {...register("title")}
+                  className="h-[40px] w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                />
+              </div>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title?.message}
+              </p>
+            </div>
 
-          <Label>Mô tả</Label>
-          <Textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Nhập mô tả"
-          />
+            <div className="field_description">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="description">Mô tả bài học</Label>
+                <textarea
+                  placeholder="Nhập mô tả chi tiết bài học"
+                  rows={3}
+                  {...register("description")}
+                  className="w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                />
+              </div>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.description?.message}
+              </p>
+            </div>
 
-          <Label>Video ID</Label>
-          <Input
-            name="videoId"
-            value={formData.videoId}
-            onChange={handleChange}
-            placeholder="Nhập ID video"
-          />
+            {/* <div className="grid grid-cols-2 gap-4">
+              <div className="field_videoId">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="videoId">Video ID</Label>
+                  <Input
+                    type="text"
+                    placeholder="Nhập Video ID"
+                    {...register("videoId")}
+                    className="h-[40px] w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                  />
+                </div>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.videoId?.message}
+                </p>
+              </div>
 
-          <Label>Video URL</Label>
-          <Input
-            name="videoUrl"
-            value={formData.videoUrl}
-            onChange={handleChange}
-          />
+              <div className="field_order">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="order">Thứ tự bài học</Label>
+                  <Input
+                    type="number"
+                    placeholder="Nhập thứ tự"
+                    {...register("order", { valueAsNumber: true })}
+                    className="h-[40px] w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                  />
+                </div>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.order?.message}
+                </p>
+              </div>
+            </div> */}
 
-          <Label>Thứ tự</Label>
-          <Input
-            type="number"
-            name="order"
-            value={formData.order}
-            onChange={handleChange}
-            required
-          />
+            <div className="field_videoUrl">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="videoUrl">URL Video</Label>
+                <Input
+                  type="url"
+                  placeholder="Nhập URL video bài học"
+                  {...register("videoUrl")}
+                  className="h-[40px] w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                />
+              </div>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.videoUrl?.message}
+              </p>
+            </div>
 
-          <Label>Thời lượng</Label>
-          <Input
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            placeholder="HH:MM"
-            type="text"
-          />
-
+            <div className="field_duration">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="duration">Thời lượng</Label>
+                <Input
+                  type="text"
+                  placeholder="VD: 15:30"
+                  {...register("duration")}
+                  className="h-[40px] w-full border border-[#1e2631] focus:!outline-[#677d9b] py-[8px] px-[12px] rounded-[10px]"
+                />
+              </div>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.duration?.message}
+              </p>
+            </div>
+          </div>
           <DialogFooter>
-            <Button type="submit">Lưu</Button>
-            <DialogClose asChild>
-              <Button variant="outline" type="button">
-                Hủy
-              </Button>
-            </DialogClose>
+            <Button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-500 text-white py-[8px] px-[15px] rounded-[5px] cursor-pointer"
+              children="Hủy"
+            />
+            <Button
+              type="submit"
+              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
+              children="Tạo bài học"
+            />
           </DialogFooter>
         </form>
       </DialogContent>

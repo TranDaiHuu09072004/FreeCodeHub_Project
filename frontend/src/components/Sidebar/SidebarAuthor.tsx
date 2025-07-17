@@ -15,7 +15,7 @@ const baseListMenuAuthor = [
 const SidebarAuthor = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-
+  console.log("User", user);
   // Dynamically create menu items including setting and logout if user exists
   const menuItems = user
     ? [

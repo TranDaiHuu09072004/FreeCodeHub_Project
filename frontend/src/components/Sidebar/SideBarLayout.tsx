@@ -12,7 +12,7 @@ const SidebarLayout = ({ className = "" }) => {
 
   useEffect(() => {
     if (!user && !loading) {
-      router.push("/");
+      router.push("/login");
     }
   }, [user, loading]);
 

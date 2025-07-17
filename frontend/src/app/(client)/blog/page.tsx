@@ -25,8 +25,10 @@ export interface Blog {
 }
 
 const Blog = () => {
-  const [activeButton, setActiveButton] = useState<number | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Tất cả");
   const [blogFeatured, setBlogFeatured] = useState<Blog | null>(null);
+  const [activeButton, setActiveButton] = useState<number | null>(0);
   const handleButtonClick = (id: number) => {
     setActiveButton(id);
   };
@@ -43,6 +45,13 @@ const Blog = () => {
         console.log("FetchData Blogs Nổi bật thất bại", error);
       });
   }, []);
+
+  useEffect(() => {
+    axiosInstance.get("/categories").then((res) => {
+      // Giả sử API trả về mảng các object có thuộc tính name
+      setCategories(["Tất cả", ...res.data.map((cat: any) => cat.name)]);
+    });
+  }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner_Blog
@@ -53,18 +62,21 @@ const Blog = () => {
       />
       <section className="select_blog my-[35px] flex justify-center">
         <div className="grid grid-cols-5 max-xl:grid-cols-3 max-sm:grid-cols-2 gap-5">
-          {Array.from({ length: 5 }, (_, index) => (
+          {categories.map((cat, index) => (
             <Button
               key={index}
-              children="Tất cả"
+              children={cat}
               isNumber_blog={true}
-              number_blog="(42)"
+              // Có thể thay bằng số bài viết từng category nếu muốn
               className={`py-[10px] px-[30px] rounded-[5px] cursor-pointer ${
                 activeButton === index
                   ? "text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                   : "text-white bg-[#1A1F2B]"
               }`}
-              onClick={() => handleButtonClick(index)}
+              onClick={() => {
+                setActiveButton(index);
+                setSelectedCategory(cat);
+              }}
             />
           ))}
         </div>
@@ -119,7 +131,7 @@ const Blog = () => {
           <h1 className="text-[25px] font-bold text-white">Bài viết</h1>
         </div>
         <div className="wrapper_blog mt-[35px] grid lg:grid-cols-3 max-xl:grid-cols-2 max-sm:grid-cols-1 gap-[20px]">
-          <ItemBlogList />
+          <ItemBlogList selectedCategory={selectedCategory} />
         </div>
       </section>
       <Banner_Blog

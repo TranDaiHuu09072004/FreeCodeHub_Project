@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Button from "@/components/User/Button";
-
+import ReactPaginate from "react-paginate";
 import {
   Table,
   TableBody,
@@ -74,7 +74,15 @@ const Blog_Management = () => {
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [deleteBlog, setDeleteBlog] = useState<Blog | null>(null);
   const [isDeleteDialog, setDeleteDialog] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  //phân trang
+  const itemsPerPage = 5;
+  const offset = currentPage * itemsPerPage;
+  const currentBlogs = blogs.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(blogs.length / itemsPerPage);
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
   const {
     register,
     handleSubmit,
@@ -88,7 +96,7 @@ const Blog_Management = () => {
 
   const fetchBlogs = () => {
     try {
-      axiosInstance.get("/blogs").then((res) => setBlogs(res.data));
+      axiosInstance.get("/blogs").then((res) => setBlogs(res.data.reverse()));
     } catch (error) {
       console.log("Fail to Fetch Data Blogs", error);
     }
@@ -193,7 +201,7 @@ const Blog_Management = () => {
           Quản lý các bài viết blog
         </p>
       </div>
-      <div className="list_title-post bg-[#1a1f2b] p-[30px] rounded-[8px]">
+      <div className="list_title-post bg-[#1a1f2b] p-[30px] rounded-[8px] overflow-x-auto">
         <div className="flex justify-between items-center">
           <div className="title_blog">
             <h3 className="text-2xl text-white font-bold">
@@ -231,14 +239,17 @@ const Blog_Management = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {blogs.map((b, index) => (
+            {currentBlogs.map((b, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium text-white">
-                  {index + 1}
+                  {offset + index + 1}
                 </TableCell>
                 <TableCell>
                   <h5 className="text-white">{b.title}</h5>
-                  <p className="text-[#677d9b] line-clamp-2 max-w-[500px] text-[14px]"> {b.excerpt} </p>
+                  <p className="text-[#677d9b] line-clamp-2 max-w-[500px] text-[14px]">
+                    {" "}
+                    {b.excerpt}{" "}
+                  </p>
                 </TableCell>
                 <TableCell className="text-white"> {b.author}</TableCell>
                 <TableCell className="text-white"> {b.category}</TableCell>
@@ -280,6 +291,20 @@ const Blog_Management = () => {
             ))}
           </TableBody>
         </Table>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          containerClassName={
+            "pagination flex gap-2 mt-6 justify-center text-white"
+          }
+          activeClassName={"font-bold text-white-400"}
+          pageClassName={"px-3 py-1 rounded-md border border-[#333]"}
+          previousClassName={"px-3 py-1 "}
+          nextClassName={"px-3 py-1"}
+        />
       </div>
       <Dialog
         open={isDialogOpen}

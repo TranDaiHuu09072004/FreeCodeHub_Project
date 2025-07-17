@@ -4,58 +4,70 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const baseListMenuAdmin = [
-  {
-    href: "/admin/dashboard",
-    icon: "fa-solid fa-border-all",
-    label: "Dashboard",
-  },
-  {
-    href: "/admin/blog",
-    icon: "fa-solid fa-file",
-    label: "Quản lý bài viết",
-  },
-  {
-    href: "/admin/user",
-    icon: "fa-solid fa-users",
-    label: "Quản lý người dùng",
-  },
-  {
-    href: "/admin/categories",
-    icon: "fa-solid fa-layer-group",
-    label: "Quản lý danh mục",
-  },
-  {
-    href: "/admin/author",
-    icon: "fa-solid fa-pen-nib",
-    label: "Quản lý tác giả",
-  },
-  {
-    href: "/admin/course",
-    icon: "fa-solid fa-book-open",
-    label: "Quản lý khóa học",
-  },
-];
-
-const SidebarAdmin = ({ className = "" }) => {
+const Sidebar = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  const menuItems = [...baseListMenuAdmin];
+  const baseMenuAdmin = [
+    {
+      href: "/admin/dashboard",
+      icon: "fa-solid fa-border-all",
+      label: "Dashboard",
+    },
+    {
+      href: "/admin/blog",
+      icon: "fa-solid fa-file",
+      label: "Quản lý bài viết",
+    },
+    {
+      href: "/admin/user",
+      icon: "fa-solid fa-users",
+      label: "Quản lý người dùng",
+    },
+    {
+      href: "/admin/categories",
+      icon: "fa-solid fa-layer-group",
+      label: "Quản lý danh mục",
+    },
+    {
+      href: "/admin/author",
+      icon: "fa-solid fa-pen-nib",
+      label: "Quản lý tác giả",
+    },
+    {
+      href: "/admin/course",
+      icon: "fa-solid fa-book-open",
+      label: "Quản lý khóa học",
+    },
+  ];
 
-  if (user) {
-    menuItems.push({
-      href: "/setting",
-      icon: "fa-solid fa-gear",
-      label: "Cài đặt",
-    });
-  } else {
-    menuItems.push({
-      href: "/login",
-      icon: "fa-solid fa-right-to-bracket",
-      label: "Đăng nhập",
-    });
-  }
+  const baseMenuAuthor = [
+    {
+      href: "/admin/course",
+      icon: "fa-solid fa-book-open",
+      label: "Quản lý khóa học",
+    },
+  ];
+
+  const menuItems = React.useMemo(() => {
+    if (!user) {
+      return [
+        {
+          href: "/admin/login",
+          icon: "fa-solid fa-right-to-bracket",
+          label: "Đăng nhập",
+        },
+      ];
+    }
+
+    const common = [
+      { href: "/admin/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
+    ];
+
+    if (user.role === "admin") return [...baseMenuAdmin, ...common];
+    if (user.role === "author") return [...baseMenuAuthor, ...common];
+    return common;
+  }, [user]);
 
   return (
     <div
@@ -66,18 +78,14 @@ const SidebarAdmin = ({ className = "" }) => {
           <Link href="/dashboard">Admin Dashboard</Link>
         </h1>
       </div>
+
       <div className="flex-grow overflow-y-auto pb-[230px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className={`py-2 px-4 rounded-[3px]  mb-[10px] transition-all duration-300 ${
-                (
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname === item.href ||
-                      pathname.startsWith(item.href + "/")
-                )
+              className={`py-2 px-4 rounded-[3px] mb-[10px] transition-all duration-300 ${
+                pathname === item.href || pathname.startsWith(item.href + "/")
                   ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                   : ""
               }`}
@@ -125,4 +133,4 @@ const SidebarAdmin = ({ className = "" }) => {
   );
 };
 
-export default SidebarAdmin;
+export default Sidebar;

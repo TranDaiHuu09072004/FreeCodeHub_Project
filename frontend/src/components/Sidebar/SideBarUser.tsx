@@ -13,7 +13,7 @@ const baseListMenu = [
 const SidebarUser = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-
+  console.log("User", user);
   // Create the menu list based on user status
   const menuItems = [...baseListMenu];
 
@@ -41,7 +41,7 @@ const SidebarUser = ({ className = "" }) => {
         </h1>
       </div>
 
-      <div className="flex-grow overflow-y-auto pb-[340px]">
+      <div className="flex-grow overflow-y-auto pb-[330px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => {
             const isActive =

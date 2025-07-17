@@ -11,8 +11,7 @@ export interface Course {
   category: string;
   description: string;
   level: string;
-  status: boolean;
-  views: number;
+  status: "Đã xuất bản" | "Nháp" | "Đã xóa";
   thumbnail: string;
   image_author: string;
   highlights: Array<string>;

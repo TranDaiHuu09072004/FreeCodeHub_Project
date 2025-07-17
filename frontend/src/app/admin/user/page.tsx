@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import ReactPaginate from "react-paginate";
 import {
   Dialog,
   DialogContent,
@@ -89,7 +89,15 @@ const User_Management = () => {
   const [users, setUsers] = useState<UserAdmin[]>([]);
   const [editingUser, setEditingUser] = useState<UserAdmin | null>(null);
   const [userToDelete, setUserToDelete] = useState<UserAdmin | null>(null);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  //phân trang
+  const itemsPerPage = 5;
+  const offset = currentPage * itemsPerPage;
+  const currentUsers = users.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(users.length / itemsPerPage);
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
   const {
     register,
     handleSubmit,
@@ -252,7 +260,7 @@ const User_Management = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((u, index) => (
+            {currentUsers.map((u, index) => (
               <TableRow key={u._id}>
                 <TableCell className="font-medium text-white">
                   {index + 1}
@@ -323,6 +331,20 @@ const User_Management = () => {
             ))}
           </TableBody>
         </Table>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          containerClassName={
+            "pagination flex gap-2 mt-6 justify-center text-white"
+          }
+          activeClassName={"font-bold text-white-400"}
+          pageClassName={"px-3 py-1 rounded-md border border-[#333]"}
+          previousClassName={"px-3 py-1 "}
+          nextClassName={"px-3 py-1"}
+        />
       </div>
 
       {/* Dialog for Create/Edit User */}

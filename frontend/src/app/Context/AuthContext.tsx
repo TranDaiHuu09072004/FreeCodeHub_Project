@@ -19,6 +19,7 @@ interface AuthContextType {
   login: (userData: User) => void;
   logout: () => void;
 }
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -29,24 +30,43 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [justLoggedOut, setJustLoggedOut] = useState(false);
+  const router = useRouter();
   useEffect(() => {
+    if (justLoggedOut) {
+      setLoading(false);
+      return;
+    }
     const localUser = localStorage.getItem("user");
-    if (localUser) {
+    if (localUser && !justLoggedOut) {
       setUser(JSON.parse(localUser));
+    } else {
+      setUser(null);
     }
     setLoading(false);
-  }, []);
+  }, [justLoggedOut]);
 
   const login = (userData: User) => {
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
+    setJustLoggedOut(false);
   };
 
   const logout = () => {
+    // Xóa localStorage, context...
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    localStorage.removeItem("lastRole");
+    // Lưu lại role trước khi setUser(null)
+    const role = user?.role;
     setUser(null);
+    setJustLoggedOut(true);
+
+    // Redirect dựa vào role
+    if (role === "admin" || role === "author") {
+      router.push("/admin/login");
+    } else {
+      router.push("/login"); // hoặc "/" nếu muốn về trang chủ
+    }
   };
 
   return (

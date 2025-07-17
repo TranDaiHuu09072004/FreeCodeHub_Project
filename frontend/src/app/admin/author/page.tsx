@@ -37,6 +37,7 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
+import ReactPaginate from "react-paginate";
 export interface AuthorAdmin {
   _id: string;
   name: string;
@@ -77,7 +78,15 @@ const Author_Management = () => {
     null
   );
   const [deleteAuthor, setDeleteAuthors] = useState<AuthorAdmin | null>(null);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  //phân trang
+  const itemsPerPage = 5;
+  const offset = currentPage * itemsPerPage;
+  const currentAuthors = authors.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(authors.length / itemsPerPage);
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
   const {
     register,
     handleSubmit,
@@ -219,7 +228,7 @@ const Author_Management = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {authors.map((au, index) => (
+            {currentAuthors.map((au, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium text-white">
                   {index + 1}
@@ -273,6 +282,20 @@ const Author_Management = () => {
             ))}
           </TableBody>
         </Table>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          containerClassName={
+            "pagination flex gap-2 mt-6 justify-center text-white"
+          }
+          activeClassName={"font-bold text-white-400"}
+          pageClassName={"px-3 py-1 rounded-md border border-[#333]"}
+          previousClassName={"px-3 py-1"}
+          nextClassName={"px-3 py-1"}
+        />
       </div>
       <Dialog
         open={isDialogOpen}

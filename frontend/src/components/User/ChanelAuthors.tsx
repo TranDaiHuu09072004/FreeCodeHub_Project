@@ -49,9 +49,6 @@ const ChannelAuthor = () => {
             <div className="des text-center">
               <p className=" text-white"> {listau.description}</p>
             </div>
-            <div className="sub_chanel text-white text-xl">
-              {formatSubscribers(listau.numSubscribers)} Subscribers
-            </div>
           </div>
         );
       })}
