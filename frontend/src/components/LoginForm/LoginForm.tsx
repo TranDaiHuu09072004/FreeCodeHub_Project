@@ -50,7 +50,7 @@ const LoginForm = ({ roleScope }: Props) => {
         (roleScope === "admin" && role === "user") ||
         (roleScope === "client" && role !== "client")
       ) {
-        toast.error("Không có quyền đăng nhập ở khu vực này!");
+        toast.error("Thất bại!");
         // ✅ Xóa token + clear context nếu sai quyền
         localStorage.removeItem("token");
         logout(); // tùy cách Hữu thiết kế context
@@ -61,9 +61,9 @@ const LoginForm = ({ roleScope }: Props) => {
 
       setTimeout(() => {
         if (role === "admin") {
-          router.push("/admin/dashboard");
+          router.push("/dashboard");
         } else if (role === "author") {
-          router.push("/admin/author");
+          router.push("/dashboard/author");
         } else {
           router.push("/");
         }

@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
@@ -11,53 +12,69 @@ const baseClientMenu = [
 ];
 
 const baseAdminMenu = [
+  { href: "/dashboard", icon: "fa-solid fa-border-all", label: "Dashboard" },
   {
-    href: "/admin/dashboard",
-    icon: "fa-solid fa-border-all",
-    label: "Dashboard",
-  },
-  {
-    href: "/admin/blog",
+    href: "/dashboard/blog",
     icon: "fa-solid fa-file",
     label: "Quản lý bài viết",
   },
   {
-    href: "/admin/user",
+    href: "/dashboard/users",
     icon: "fa-solid fa-users",
     label: "Quản lý người dùng",
   },
   {
-    href: "/admin/categories",
+    href: "/dashboard/categories",
     icon: "fa-solid fa-layer-group",
     label: "Quản lý danh mục",
   },
   {
-    href: "/admin/author",
+    href: "/dashboard/author",
     icon: "fa-solid fa-pen-nib",
     label: "Quản lý tác giả",
   },
   {
-    href: "/admin/course",
+    href: "/dashboard/course",
     icon: "fa-solid fa-book-open",
     label: "Quản lý khóa học",
   },
 ];
 
-const SidebarMobile = ({ className = "", type = "client" }) => {
+const baseAuthorMenu = [
+  {
+    href: "/dashboard/course",
+    icon: "fa-solid fa-book-open",
+    label: "Khóa học của tôi",
+  },
+  {
+    href: "/dashboard/blog",
+    icon: "fa-solid fa-file",
+    label: "Bài viết của tôi",
+  },
+];
+
+const SidebarMobile = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  const baseMenu = type === "admin" ? baseAdminMenu : baseClientMenu;
+  // 🧠 Tự động chọn menu theo role
+  let baseMenu = baseClientMenu;
+  if (user?.role === "admin") baseMenu = baseAdminMenu;
+  else if (user?.role === "author") baseMenu = baseAuthorMenu;
 
   const menuItems = [...baseMenu];
 
+  // ✅ Thêm Cài đặt hoặc Đăng nhập
   if (user) {
     menuItems.push({
-      href: "/setting",
+      href:
+        user.role === "admin" || user.role === "author"
+          ? "/dashboard/settings"
+          : "/setting",
       icon: "fa-solid fa-gear",
       label: "Cài đặt",
     });
-  } else if (type === "client") {
+  } else {
     menuItems.push({
       href: "/login",
       icon: "fa-solid fa-right-to-bracket",
@@ -71,21 +88,28 @@ const SidebarMobile = ({ className = "", type = "client" }) => {
     >
       <div className="header_logo relative pb-[2px] text-center">
         <h1 className="text-3xl max-sm:text-[20px] max-sm:pr-[10px] xl:mx-[20px] font-bold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-transparent bg-clip-text drop-shadow leading-[60px] after:content-[''] max-sm:after:w-full after:absolute after:left-[-20px] max-sm:after:left-0 after:right-[-20px] max-sm:after:right-0 after:bottom-0 after:h-[2px] after:bg-gradient-to-b after:from-[#eaafc8] after:to-[#654ea3]">
-          <Link href="/">FreeCodeHub</Link>
+          <Link
+            href={
+              user?.role === "admin" || user?.role === "author"
+                ? "/dashboard"
+                : "/"
+            }
+          >
+            {user?.role === "admin" ? "Admin Dashboard" : "FreeCodeHub"}
+          </Link>
         </h1>
       </div>
+
       <div className="flex-grow overflow-y-auto pb-[280px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li
               key={index}
               className={`xl:py-2 xl:px-4 max-xl:py-2 max-xl:px-1 rounded-[3px] mb-[10px] transition-all duration-300 ${
-                (
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname === item.href ||
-                      pathname.startsWith(item.href + "/")
-                )
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href ||
+                    pathname.startsWith(item.href + "/")
                   ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                   : ""
               }`}
@@ -108,6 +132,7 @@ const SidebarMobile = ({ className = "", type = "client" }) => {
           ))}
         </ul>
       </div>
+
       {user && (
         <div className="p-4 border-t border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">

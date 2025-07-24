@@ -10,32 +10,27 @@ const Sidebar = ({ className = "" }) => {
 
   const baseMenuAdmin = [
     {
-      href: "/admin/dashboard",
-      icon: "fa-solid fa-border-all",
-      label: "Dashboard",
-    },
-    {
-      href: "/admin/blog",
+      href: "/dashboard/blogs",
       icon: "fa-solid fa-file",
       label: "Quản lý bài viết",
     },
     {
-      href: "/admin/user",
+      href: "/dashboard/users",
       icon: "fa-solid fa-users",
       label: "Quản lý người dùng",
     },
     {
-      href: "/admin/categories",
+      href: "/dashboard/categories",
       icon: "fa-solid fa-layer-group",
       label: "Quản lý danh mục",
     },
     {
-      href: "/admin/author",
+      href: "/dashboard/authors",
       icon: "fa-solid fa-pen-nib",
       label: "Quản lý tác giả",
     },
     {
-      href: "/admin/course",
+      href: "/dashboard/courses",
       icon: "fa-solid fa-book-open",
       label: "Quản lý khóa học",
     },
@@ -43,9 +38,14 @@ const Sidebar = ({ className = "" }) => {
 
   const baseMenuAuthor = [
     {
-      href: "/admin/course",
+      href: "/dashboard/courses",
       icon: "fa-solid fa-book-open",
       label: "Quản lý khóa học",
+    },
+    {
+      href: "/dashboard/blogs",
+      icon: "fa-solid fa-file",
+      label: "Quản lý bài viết",
     },
   ];
 
@@ -61,7 +61,11 @@ const Sidebar = ({ className = "" }) => {
     }
 
     const common = [
-      { href: "/admin/setting", icon: "fa-solid fa-gear", label: "Cài đặt" },
+      {
+        href: "/dashboard/setting",
+        icon: "fa-solid fa-gear",
+        label: "Cài đặt",
+      },
     ];
 
     if (user.role === "admin") return [...baseMenuAdmin, ...common];
@@ -79,7 +83,7 @@ const Sidebar = ({ className = "" }) => {
         </h1>
       </div>
 
-      <div className="flex-grow overflow-y-auto pb-[230px]">
+      <div className="flex-grow overflow-y-auto pb-[280px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li

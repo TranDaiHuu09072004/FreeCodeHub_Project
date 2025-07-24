@@ -37,7 +37,7 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
-import { Blog } from "@/app/blog/page";
+import { Blog } from "@/app/(client)/blog/page";
 import Editor from "@/components/Admin/Editor/Editor";
 
 type BlogFormValue = {

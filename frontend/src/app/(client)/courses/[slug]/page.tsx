@@ -57,7 +57,7 @@ const DetailCourses = () => {
           );
           // Redirect to the lesson page
           setTimeout(() => {
-            router.push(`/lesson/${slug}`);
+            router.push(`/courses/lesson/${slug}`);
           }, 1500);
         } else {
           // Assuming API returns { success: false, message: '...' }

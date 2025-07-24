@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
-import { Blog } from "@/app/blog/page";
+import { Blog } from "@/app/(client)/blog/page";
 import Comment from "@/components/User/Comment";
 const DetailBlog = () => {
   const [detailBlog, setDetailBlog] = useState<Blog | null>(null);

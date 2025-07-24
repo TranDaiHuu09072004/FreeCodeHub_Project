@@ -26,8 +26,13 @@ const InputSearch = ({
       const API = process.env.NEXT_PUBLIC_API_URL;
       const url = `${API}${apiEndpoint}?${queryParam}=${input}`;
       const res = await axiosInstance.get(url);
+
       onResults(res.data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        window.location.href = "/not-found";
+        return;
+      }
       onResults([]);
       toast.error("Tìm kiếm không hợp lệ");
     }
