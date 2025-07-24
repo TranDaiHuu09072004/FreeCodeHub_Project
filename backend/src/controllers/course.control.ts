@@ -14,6 +14,11 @@ export const searchCourse: RequestHandler = async (req, res) => {
       $or: [{ title: regex }, { author: regex }, { category: regex }],
     });
 
+    if (result.length === 0) {
+      res.status(404).json({ message: "Không tìm thấy khóa học phù hợp" });
+      return;
+    }
+
     res.json(result);
     return;
   } catch (error) {
@@ -98,9 +103,35 @@ export const getLessonsByCourseSlug: RequestHandler = async (req, res) => {
 // POST create new course
 export const createCourse: RequestHandler = async (req, res) => {
   try {
-    const newCourse = new Course(req.body);
-    await newCourse.save();
-    res.status(201).json(newCourse);
+    const {
+      title,
+      author,
+      category,
+      description,
+      level,
+      status,
+      thumbnail,
+      highlights,
+      isFeatured,
+      image_author,
+      slogan,
+    } = req.body;
+    const newsCourse = new Course({
+      title,
+      author,
+      category,
+      description,
+      level,
+      status,
+      thumbnail,
+      highlights,
+      isFeatured,
+      image_author,
+      slogan,
+    });
+
+    const saveCourses = await newsCourse.save();
+    res.status(201).json(saveCourses);
     return;
   } catch (error) {
     res.status(400).json({ error: "Lỗi khi tạo mới khóa học" });
@@ -128,15 +159,15 @@ export const getFeaturedCourses: RequestHandler = async (req, res) => {
 // GET course detail + lessons by slug
 export const getCourseDetail: RequestHandler = async (req, res) => {
   try {
-    const courseSlug = req.params.id; // Lấy slug từ params
+    const { slug } = req.params; // Lấy slug từ params
 
     // Tìm khóa học bằng slug
-    const course = await Course.findOne({ slug: courseSlug });
+    const course = await Course.findOne({ slug });
 
     if (!course) {
       res
         .status(404)
-        .json({ error: `Không tìm thấy khóa học với slug: ${courseSlug}` });
+        .json({ error: `Không tìm thấy khóa học với slug: ${slug}` });
       return;
     }
 
@@ -154,26 +185,48 @@ export const getCourseDetail: RequestHandler = async (req, res) => {
   }
 };
 
-// PUT update course
-export const updateCourse: RequestHandler = async (req, res) => {
+export const UpdateCourse: RequestHandler = async (req, res) => {
   try {
-    const courseId = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(courseId)) {
-      res.status(400).json({ error: "ID khóa học không hợp lệ" });
-      return;
+    const { id } = req.params;
+    const updateData = { ...req.body };
+
+    // Chặn các key nguy hiểm bắt đầu bằng $
+    for (const key in updateData) {
+      if (key.startsWith("$")) {
+        delete updateData[key];
+      }
     }
-    const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
+
+    console.log("Dữ liệu cần cập nhật:", updateData);
+
+    const updateCourse = await Course.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     });
-    if (!updatedCourse) {
-      res.status(404).json({ error: "Không tìm thấy khóa học" });
+
+    if (!updateCourse) {
+      res.status(404).json({ message: "Không tìm thấy khóa học cần cập nhật" });
       return;
     }
-    res.json(updatedCourse);
-    return;
+
+    res.status(200).json(updateCourse);
   } catch (error) {
-    res.status(400).json({ error: "Lỗi khi cập nhật khóa học" });
-    return;
+    console.error("Lỗi cập nhật:", error);
+    res.status(500).json({ message: "Lỗi khi cập nhật" });
+  }
+};
+
+export const DeletedCourses: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const detetedCourses = await Course.findByIdAndDelete(id);
+    if (!detetedCourses) {
+      res.status(404).json({ message: "Không tìm thấy khóa học cần xóa" });
+    }
+    res
+      .status(200)
+      .json({ message: "Xóa khóa học thành công", detetedCourses });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server" });
   }
 };

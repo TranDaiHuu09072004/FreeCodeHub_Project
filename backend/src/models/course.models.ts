@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { UpdateQuery } from "mongoose";
 import slugify from "slugify";
 import Category from "./category.model";
 const courseSchema = new mongoose.Schema(
@@ -10,8 +10,7 @@ const courseSchema = new mongoose.Schema(
     level: { type: String },
     isFeatured: { type: Boolean },
     slogan: { type: String },
-    status: { type: Boolean },
-    views: { type: Number },
+    status: { type: String },
     thumbnail: { type: String },
     image_author: { type: String },
     highlights: { type: [String] },
@@ -57,25 +56,6 @@ courseSchema.post("findOneAndDelete", async function (doc: any) {
   }
 });
 
-// ✅ Khi cập nhật category (VD: chuyển từ "Frontend" sang "Backend")
-courseSchema.pre("findOneAndUpdate", async function (next) {
-  const docToUpdate = await this.model.findOne(this.getQuery());
-  const newCategory = this.getUpdate() as { category?: string };
-  // Nếu category thay đổi
-  if (newCategory && newCategory !== docToUpdate.category) {
-    await Category.findOneAndUpdate(
-      { name: docToUpdate.category },
-      { $inc: { courseCount: -1 } }
-    );
-
-    await Category.findOneAndUpdate(
-      { name: newCategory },
-      { $inc: { courseCount: 1 } }
-    );
-  }
-  next();
-});
-
 // Tự động tạo slug trước khi lưu
 courseSchema.pre("save", async function (next) {
   if (this.isModified("title")) {
@@ -89,6 +69,54 @@ courseSchema.pre("save", async function (next) {
 
     this.slug = slug;
   }
+  next();
+});
+courseSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+
+  // Lấy document hiện tại để so sánh category
+  const docToUpdate = await this.model.findOne(this.getQuery());
+
+  // Convert update về dạng chuẩn
+  const updateQuery =
+    typeof update === "object" && !Array.isArray(update)
+      ? (update as UpdateQuery<any>)
+      : {};
+
+  // 1. Cập nhật slug nếu title thay đổi
+  const newTitle = updateQuery.title ?? updateQuery.$set?.title;
+  if (newTitle) {
+    const baseSlug = slugify(newTitle, { lower: true, strict: true });
+    let slug = baseSlug;
+    let count = 1;
+
+    while (await mongoose.models.Course.findOne({ slug })) {
+      slug = `${baseSlug}-${count++}`;
+    }
+
+    if (updateQuery.$set) {
+      updateQuery.$set.slug = slug;
+    } else {
+      updateQuery.slug = slug;
+    }
+
+    this.setUpdate(updateQuery);
+  }
+
+  // 2. Cập nhật lại category count nếu category thay đổi
+  const newCategory = updateQuery.category ?? updateQuery.$set?.category;
+  if (newCategory && newCategory !== docToUpdate.category) {
+    await Category.findOneAndUpdate(
+      { name: docToUpdate.category },
+      { $inc: { courseCount: -1 } }
+    );
+
+    await Category.findOneAndUpdate(
+      { name: newCategory },
+      { $inc: { courseCount: 1 } }
+    );
+  }
+
   next();
 });
 

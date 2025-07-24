@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import Lesson from "../models/lesson.model";
 import mongoose from "mongoose";
+import { Types } from "mongoose";
 // GET: /api/lessons/video/:videoId - Lấy bài học theo videoId
 export const getLessonByVideoId: RequestHandler = async (req, res) => {
   try {
@@ -46,15 +47,15 @@ export const getAllLessons: RequestHandler = async (req, res) => {
 };
 
 // POST: /api/lessons - Tạo 1 hoặc nhiều bài học
+
 export const createLesson: RequestHandler = async (req, res) => {
   try {
-    // Nếu gửi 1 object thì chuyển thành mảng
     const lessonsData = Array.isArray(req.body) ? req.body : [req.body];
 
-    // Validate tất cả phần tử
+    // Validate đầu vào
     for (const item of lessonsData) {
-      const { courseId, title, videoId } = item;
-      if (!courseId || !title || !videoId) {
+      const { courseId, title } = item;
+      if (!courseId || !title) {
         res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
         return;
       }
@@ -62,33 +63,87 @@ export const createLesson: RequestHandler = async (req, res) => {
         res.status(400).json({ error: "courseId không hợp lệ" });
         return;
       }
+      if (!item.videoId) {
+        item.videoId = new Types.ObjectId().toString();
+      }
     }
 
-    // Chuyển courseId thành ObjectId cho từng lesson
-    const lessonsToInsert = lessonsData.map((item) => ({
-      ...item,
-      courseId: mongoose.Types.ObjectId.createFromHexString(item.courseId),
-    }));
+    // Gom các bài học theo courseId để xử lý order hiệu quả
+    const lessonsGrouped: Record<string, typeof lessonsData> = {};
+    for (const lesson of lessonsData) {
+      const courseId = lesson.courseId;
+      if (!lessonsGrouped[courseId]) {
+        lessonsGrouped[courseId] = [];
+      }
+      lessonsGrouped[courseId].push(lesson);
+    }
 
-    // Thực hiện chèn nhiều
+    const lessonsToInsert: any[] = [];
+
+    // Duyệt từng nhóm courseId để lấy order lớn nhất hiện tại
+    for (const courseIdStr in lessonsGrouped) {
+      const group = lessonsGrouped[courseIdStr];
+      const courseId = new mongoose.Types.ObjectId(courseIdStr);
+
+      // Lấy order lớn nhất hiện tại trong DB
+      const lastLesson = await Lesson.findOne({ courseId })
+        .sort({ order: -1 })
+        .limit(1);
+
+      let currentOrder = lastLesson?.order ?? 0;
+
+      // Duyệt qua từng bài học trong nhóm đó
+      for (const item of group) {
+        lessonsToInsert.push({
+          ...item,
+          courseId,
+          order: item.order ?? ++currentOrder, // tự tăng nếu không có
+        });
+      }
+    }
+
+    // Chèn tất cả bài học sau khi xử lý order
     const createdLessons = await Lesson.insertMany(lessonsToInsert, {
       ordered: true,
     });
-    // ordered: true => nếu bất kỳ 1 phần tử lỗi unique, toàn bộ sẽ rollback
 
+    // Trả về kết quả
     res.status(201).json(
       createdLessons.map((lesson) => ({
         ...lesson.toObject(),
-        courseId: lesson.courseId ? lesson.courseId.toString() : null,
+        courseId: lesson.courseId?.toString() ?? null,
       }))
     );
   } catch (error: any) {
     console.error(error);
-    // Bắt lỗi duplicate key (videoId unique)
     if (error.code === 11000) {
       res.status(409).json({ error: "Có bài học đã tồn tại (videoId trùng)" });
       return;
     }
     res.status(500).json({ error: "Lỗi server khi tạo bài học" });
+  }
+};
+
+// DELETE: /api/lessons/:id - Xóa bài học
+export const deleteLesson: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "ID bài học không hợp lệ" });
+      return;
+    }
+
+    const lesson = await Lesson.findByIdAndDelete(id);
+
+    if (!lesson) {
+      res.status(404).json({ error: "Không tìm thấy bài học" });
+      return;
+    }
+
+    res.json({ message: "Xóa bài học thành công" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Lỗi server khi xóa bài học" });
   }
 };

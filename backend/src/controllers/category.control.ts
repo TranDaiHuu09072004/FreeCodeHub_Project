@@ -3,8 +3,21 @@ import Category from "../models/category.model";
 import Course from "../models/course.models";
 
 export const getAllCategory = async (req: Request, res: Response) => {
-  const categories = await Category.find();
-  res.json(categories);
+  try {
+    const categories = await Category.find();
+    // Đếm số lượng course cho từng category
+    const categoriesWithCount = await Promise.all(
+      categories.map(async (cat) => {
+        // Nếu trường category trong Course là id:
+        const count = await Course.countDocuments({ category: cat.name });
+        // Nếu là name thì dùng: { category: cat.name }
+        return { ...cat.toObject(), courseCount: count };
+      })
+    );
+    res.json(categoriesWithCount);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
+  }
 };
 
 export const CreateCategory: RequestHandler = async (req, res) => {
