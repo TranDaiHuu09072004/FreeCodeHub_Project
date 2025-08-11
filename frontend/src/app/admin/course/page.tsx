@@ -51,7 +51,7 @@ type CoursesValue = {
   level: string;
   status: "Đã xuất bản" | "Nháp" | "Đã xóa";
   thumbnail: string;
-  highlights: { value: string }[];
+  highlights?: { value: string }[];
   isFeatured: boolean;
   image_author: string;
   slogan: string;
@@ -72,16 +72,16 @@ const createCourses = yup.object({
   slogan: yup.string().required("Vui lòng nhập nội dung bài viết"),
   thumbnail: yup.string().required("nhập ảnh bìa bài viết"),
 
-  // ✅ Thêm trường highlights (mảng chuỗi)
+  // ✅ Thêm trường highlights (mảng chuỗi) - giờ là tùy chọn
   highlights: yup
     .array()
     .of(
       yup.object({
-        value: yup.string().required("Highlight không được để trống"),
+        value: yup.string().trim().required("Highlight không được để trống"),
       })
     )
-    .min(1, "Vui lòng nhập ít nhất 1 highlight")
-    .required("Vui lòng nhập các highlight"),
+    .optional()
+    .default([]),
 });
 
 const Course_Management = () => {
@@ -136,7 +136,7 @@ const Course_Management = () => {
     try {
       const payload = {
         ...data,
-        highlights: data.highlights.map((item) => item.value),
+        highlights: (data.highlights ?? []).map((item) => item.value),
       };
       if (editingCourses) {
         await axiosInstance.put(`/courses/${editingCourses._id}`, payload);
@@ -203,7 +203,7 @@ const Course_Management = () => {
     setValue("isFeatured", c.isFeatured);
     setValue(
       "highlights",
-      c.highlights.map((h) => ({ value: h }))
+      (c.highlights ?? []).map((h) => ({ value: h }))
     );
     setValue("image_author", c.image_author);
     setValue("description", c.description);
@@ -299,7 +299,7 @@ const Course_Management = () => {
                       />
                     </div>
                     <div className="text-white">
-                      <h3>{c.title}</h3>
+                      <h3 className="max-w-[400px] truncate">{c.title}</h3>
                       <span className="text-[#677d9b]">{c.slogan}</span>
                     </div>
                   </div>

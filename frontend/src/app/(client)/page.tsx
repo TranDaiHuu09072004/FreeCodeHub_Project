@@ -1,10 +1,32 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Banner from "@/components/User/Banner";
 import ItemProduct from "@/components/User/ItemProduct";
 import Footer from "@/app/layout/Footer";
 import ChannelAuthor from "@/components/User/ChanelAuthors";
+import { Course } from "@/components/User/ItemProduct";
+import axiosInstance from "@/app/utils/axiosInstance";
 
 const Home = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/courses") // Lấy tất cả courses
+      .then((res) => setCourses(res.data))
+      .catch((err) => console.error("Lỗi khi lấy danh sách khóa học:", err));
+  }, []);
+
+  const featuredCourses = courses.filter((c) => c.isFeatured === true);
+  const frontendCourses = courses.filter(
+    (c) => c.category?.toLowerCase() === "frontend"
+  );
+  const backendCourses = courses.filter(
+    (c) => c.category?.toLowerCase() === "backend"
+  );
+  const devopsCourses = courses.filter(
+    (c) => c.category?.toLowerCase() === "devops"
+  );
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
       <Banner
@@ -20,7 +42,36 @@ const Home = () => {
           <h1 className="text-[25px] font-bold text-white">Khóa học nổi bật</h1>
         </div>
         <div className="wrapper_course my-[35px] grid grid-cols-3 max-xl:grid-cols-1 gap-[20px]">
-          <ItemProduct />
+          <ItemProduct courses={featuredCourses} />
+        </div>
+      </section>
+      <section className="course_popular my-[35px]">
+        <div className="relative pl-4">
+          <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
+          <h1 className="text-[25px] font-bold text-white">
+            Khóa học FrontEnd
+          </h1>
+        </div>
+        <div className="wrapper_course my-[35px] grid grid-cols-3 max-xl:grid-cols-1 gap-[20px]">
+          <ItemProduct courses={frontendCourses} />
+        </div>
+      </section>
+      <section className="course_popular my-[35px]">
+        <div className="relative pl-4">
+          <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
+          <h1 className="text-[25px] font-bold text-white">Khóa học BackEnd</h1>
+        </div>
+        <div className="wrapper_course my-[35px] grid grid-cols-3 max-xl:grid-cols-1 gap-[20px]">
+          <ItemProduct courses={backendCourses} />
+        </div>
+      </section>
+      <section className="course_popular my-[35px]">
+        <div className="relative pl-4">
+          <div className="absolute top-0 left-0 h-full w-[10px] bg-gradient-to-b from-[#eaafc8] to-[#654ea3] rounded"></div>
+          <h1 className="text-[25px] font-bold text-white">Khóa học Devops</h1>
+        </div>
+        <div className="wrapper_course my-[35px] grid grid-cols-3 max-xl:grid-cols-1 gap-[20px]">
+          <ItemProduct courses={devopsCourses} />
         </div>
       </section>
       <section className="max-sm:-mx-[16px] my-[35px] quantity bg-gradient-to-l from-[#eaafc8] to-[#654ea3] grid grid-cols-3 max-xl:grid-cols-1 max-lg:overflow-x-hidden">

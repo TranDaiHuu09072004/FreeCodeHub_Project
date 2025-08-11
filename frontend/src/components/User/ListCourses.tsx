@@ -82,8 +82,8 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
               <h3 className="text-[#E5E4E4] text-[18px] max-sm:text-[15px] max-w-[160px] truncate">
                 {listcourse.title}
               </h3>
-              <p>
-                <i className="text-[#9D9DA3] max-sm:text-[14px]">
+              <p className="max-w-[170px] truncate">
+                <i className="text-[#9D9DA3] max-sm:text-[14px] ">
                   {listcourse.slogan}
                 </i>
               </p>

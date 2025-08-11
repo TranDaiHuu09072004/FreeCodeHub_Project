@@ -88,7 +88,8 @@ const DetailBlog = () => {
           </div>
           <div className="content_blog !text-white w-full">
             <div
-              className="prose prose-invert max-w-none w-full [&_*]:!text-white [&_*]:!max-w-full [&_img]:w-full [&_img]:mb-2"
+              className="prose prose-invert max-w-none w-full [&_*]:!text-white [&_*]:!max-w-full [&_img]:w-full [&_img]:mb-2 
+  [&_span]:!bg-transparent [&_ol]:!bg-transparent [&_strong]:!bg-transparent [&_ul]:!bg-transparent [&_li]:!bg-transparent"
               dangerouslySetInnerHTML={{ __html: detailBlog?.content || "" }}
             ></div>
           </div>
@@ -99,7 +100,7 @@ const DetailBlog = () => {
           <h3 className="text-2xl font-bold text-white">Bài viết liên quan</h3>
           <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5 my-5">
             {relatedblog.map((item) => (
-              <ItemBlog blog={item} />
+              <ItemBlog key={item._id} blog={item} />
             ))}
           </div>
         </section>

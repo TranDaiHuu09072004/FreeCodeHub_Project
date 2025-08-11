@@ -12,10 +12,28 @@ import UserDistributionChart from "@/components/Admin/chart/UserDistributionChar
 import CoursePerformanceChart from "@/components/Admin/chart/CoursePerformanceChart";
 import Button from "@/components/User/Button";
 import { useAuth } from "@/app/Context/AuthContext";
+import axios from "@/app/utils/axiosInstance";
+
 const Dashboard = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const { logout } = useAuth();
+
+  // Dynamic counts
+  const [usersCount, setUsersCount] = useState(0);
+  const [coursesCount, setCoursesCount] = useState(0);
+  const [lessonsCount, setLessonsCount] = useState(0);
+  const [blogsCount, setBlogsCount] = useState(0);
+
+  // Dynamic chart data
+  const [userActivity, setUserActivity] = useState(userActivityData);
+  const [coursePerformance, setCoursePerformance] = useState(
+    coursePerformanceData
+  );
+  const [userDistribution, setUserDistribution] = useState(
+    userDistributionData
+  );
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -31,31 +49,118 @@ const Dashboard = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchCountsAndCharts = async () => {
+      try {
+        const [usersRes, coursesRes, lessonsRes, blogsRes] = await Promise.all([
+          axios.get("/users"),
+          axios.get("/courses"),
+          axios.get("/lessons"),
+          axios.get("/blogs"),
+        ]);
+
+        const users: any[] = Array.isArray(usersRes.data) ? usersRes.data : [];
+        const courses: any[] = Array.isArray(coursesRes.data)
+          ? coursesRes.data
+          : [];
+        const lessons: any[] = Array.isArray(lessonsRes.data)
+          ? lessonsRes.data
+          : [];
+
+        // Counts
+        setUsersCount(users.length);
+        setCoursesCount(courses.length);
+        setLessonsCount(lessons.length);
+        setBlogsCount(Array.isArray(blogsRes.data) ? blogsRes.data.length : 0);
+
+        // User Activity by month (current year)
+        const currentYear = new Date().getFullYear();
+        const monthlyActivity = Array.from({ length: 12 }, (_, i) => {
+          const count = users.filter((u) => {
+            const created = new Date(u.createdAt);
+            return (
+              !isNaN(created.getTime()) &&
+              created.getFullYear() === currentYear &&
+              created.getMonth() === i
+            );
+          }).length;
+          return { name: `T${i + 1}`, users: count };
+        });
+        setUserActivity(monthlyActivity);
+
+        // Course Performance: registrations (views) + lessons count (completions)
+        const registrationsBySlug: Record<string, number> = {};
+        for (const u of users) {
+          const regs: string[] = u?.registeredCourses ?? [];
+          for (const slug of regs) {
+            registrationsBySlug[slug] = (registrationsBySlug[slug] || 0) + 1;
+          }
+        }
+
+        const lessonsByCourseId: Record<string, number> = {};
+        for (const l of lessons) {
+          const cid = l?.courseId?.toString?.() ?? String(l?.courseId ?? "");
+          if (!cid) continue;
+          lessonsByCourseId[cid] = (lessonsByCourseId[cid] || 0) + 1;
+        }
+
+        const performance = courses
+          .map((c) => ({
+            name: c.title as string,
+            views: registrationsBySlug[c.slug] ?? 0,
+            completions: lessonsByCourseId[c._id] ?? 0,
+          }))
+          .sort((a, b) => b.views - a.views)
+          .slice(0, 5);
+
+        setCoursePerformance(performance);
+
+        // User Distribution by role (as percentage)
+        const roleCounts = users.reduce((acc: Record<string, number>, u) => {
+          const role = u.role || "client";
+          acc[role] = (acc[role] || 0) + 1;
+          return acc;
+        }, {});
+        const totalUsers = users.length || 1;
+        const distribution = Object.entries(roleCounts).map(([name, value]) => ({
+          name,
+          value: Math.round((value * 100) / totalUsers),
+        }));
+        setUserDistribution(distribution);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("Failed to fetch dashboard data", error);
+      }
+    };
+
+    fetchCountsAndCharts();
+  }, []);
+
   const statsCards = [
     {
       title: "Tổng người dùng",
-      value: "2,419",
+      value: usersCount.toLocaleString(),
       icon: "fa-solid fa-users text-white text-[20px]",
       change: "+12%",
       color: "#7c3aed1a",
     },
     {
       title: "Khóa học",
-      value: "48",
+      value: coursesCount.toLocaleString(),
       icon: "fa-solid fa-book-open text-white text-[20px]",
       change: "+3",
       color: "#7c3aed1a",
     },
     {
       title: "Tổng video",
-      value: "364",
+      value: lessonsCount.toLocaleString(),
       icon: "fa-solid fa-video text-white text-[20px]",
       change: "+24",
       color: "#7c3aed1a",
     },
     {
       title: "Bài viết blog",
-      value: "32",
+      value: blogsCount.toLocaleString(),
       icon: "fa-solid fa-file text-white text-[20px]",
       change: "+5",
       color: "#7c3aed1a",
@@ -150,12 +255,12 @@ const Dashboard = () => {
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-[20px]">
-        <UserActivityChart data={userActivityData} />
-        <UserDistributionChart data={userDistributionData} colors={COLORS} />
+        <UserActivityChart data={userActivity} />
+        <UserDistributionChart data={userDistribution} colors={COLORS} />
       </div>
 
       <div className="grid grid-cols-1 my-[30px]">
-        <CoursePerformanceChart data={coursePerformanceData} />
+        <CoursePerformanceChart data={coursePerformance} />
       </div>
     </div>
   );

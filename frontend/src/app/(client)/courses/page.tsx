@@ -69,7 +69,7 @@ const CoursesPage = () => {
           <ListCourses />
         )}
       </section>
-      <section className="flex items-center justify-center gap-2 my-8">
+      {/* <section className="flex items-center justify-center gap-2 my-8">
         <button
           className="w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] hover:bg-gradient-to-r from-[#eaafc8] to-[#654ea3] hover:border-transparent hover:text-white transition-colors"
           onClick={() => handlePageChange(currentPage - 1)}
@@ -97,7 +97,7 @@ const CoursesPage = () => {
         >
           <i className="fa-solid fa-chevron-right text-[#E5E4E4]"></i>
         </button>
-      </section>
+      </section> */}
       <Footer />
     </div>
   );

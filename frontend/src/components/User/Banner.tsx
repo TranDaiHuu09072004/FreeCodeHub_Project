@@ -27,17 +27,18 @@ const Banner = ({
           <p className="text-[14px] text-white font-normal mb-[10px]">
             {description}
           </p>
-          {isSearch && (
+          {/* {isSearch && (
             <InputSearch
               placeholder={placeholder}
               w="470px"
               h="40px"
+              onResults=""
               className="search_courses flex justify-center items-center mx-auto w-[250px] max-xl:mb-[10px]"
             />
-          )}
+          )} */}
           {showButton && (
             <a
-              href="#"
+              href="/courses"
               className="bg-[#E7E3E3] rounded-[30px] py-2 px-4 text-[#121826] inline-block cursor-pointer"
             >
               Xem ngay

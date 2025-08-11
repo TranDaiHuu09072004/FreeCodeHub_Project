@@ -87,7 +87,7 @@ const DetailCourses = () => {
             <img
               src={detailCourses?.thumbnail}
               alt=""
-              className="rounded-[10px] w-full"
+              className="rounded-[10px] w-full h-full object-cover"
             />
           </div>
           <div className="content_detail 2xl:pl-[37px] 2xl:w-[50%] max-2xl:w-full">
@@ -119,12 +119,18 @@ const DetailCourses = () => {
           Mô tả thông tin
         </h1>
         <ul className="list_des--detail-course grid grid-cols-2 max-sm:grid-cols-1 gap-[20px] pb-[35px]">
-          {detailCourses?.highlights.map((highlight, index) => (
-            <li key={index} className="flex items-center gap-[10px]">
-              <i className="fa-solid fa-circle-check bg-gradient-to-r from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent text-[30px]"></i>{" "}
-              <span className=" text-[#E5E4E4]">{highlight}</span>
+          {(detailCourses?.highlights?.length ?? 0) > 0 ? (
+            (detailCourses?.highlights ?? []).map((highlight, index) => (
+              <li key={index} className="flex items-center gap-[10px]">
+                <i className="fa-solid fa-circle-check bg-gradient-to-r from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent text-[30px]"></i>{" "}
+                <span className=" text-[#E5E4E4]">{highlight}</span>
+              </li>
+            ))
+          ) : (
+            <li className="col-span-2 text-center text-[#9d9da3]">
+              Không có nội dung nào
             </li>
-          ))}
+          )}
         </ul>
       </section>
       <Footer />

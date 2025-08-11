@@ -14,7 +14,7 @@ export interface Course {
   status: "Đã xuất bản" | "Nháp" | "Đã xóa";
   thumbnail: string;
   image_author: string;
-  highlights: Array<string>;
+  highlights?: Array<string>;
   isFeatured: true;
   slug?: string;
   badge?: string;
@@ -35,23 +35,18 @@ export interface Lesson {
   updatedAt?: string;
 }
 
+interface ItemProductProps {
+  courses: Course[];
+  title?: string;
+}
+
 export interface CourseDetail extends Course {
   lessons: Lesson[];
 }
 
-const ItemProduct = () => {
-  const [courses, setCourses] = useState<Course[]>([]);
+const ItemProduct = ({ courses, title }: ItemProductProps) => {
   const router = useRouter();
   const { user } = useAuth();
-
-  useEffect(() => {
-    axios
-      .get("/courses/featured")
-      .then((res) => {
-        setCourses(res.data);
-      })
-      .catch((err) => console.log("Fetch Data Fail", err));
-  }, []);
 
   const handleRegisterCourse = (
     e: React.MouseEvent<HTMLAnchorElement>,
