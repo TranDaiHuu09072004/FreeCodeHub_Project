@@ -9,6 +9,7 @@ import UserRoutes from "./routes/user.routes";
 import AuthorRoutes from "./routes/author.routes";
 import LessonRoutes from "./routes/lesson.routes";
 import authRoutes from "./routes/auth.routes";
+import commentRoutes from "./routes/comment.routes";
 import uploadRoutes from "./routes/upload.routes";
 import path from "path";
 const allowedOrigins = [
@@ -42,5 +43,6 @@ app.use("/api/auth", AuthorRoutes);
 app.use("/api/auth", LessonRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", uploadRoutes);
+app.use("/api/auth", commentRoutes);
 
 export default app;

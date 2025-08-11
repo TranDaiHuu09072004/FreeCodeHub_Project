@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import mongoose from "mongoose";
 import Course from "../models/course.models";
 import Lesson from "../models/lesson.model";
 import User from "../models/user.model";
@@ -124,7 +123,7 @@ export const createCourse: RequestHandler = async (req, res) => {
       level,
       status,
       thumbnail,
-      highlights,
+      highlights: Array.isArray(highlights) ? highlights : [],
       isFeatured,
       image_author,
       slogan,
