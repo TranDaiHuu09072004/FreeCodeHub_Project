@@ -19,26 +19,6 @@ const Learning = () => {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) {
-      Swal.fire({
-        title: "Bạn chưa đăng nhập",
-        text: "Vui lòng đăng nhập để học khóa học này.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#654ea3",
-        cancelButtonColor: "#1a1f2b",
-        confirmButtonText: "Đăng nhập ngay",
-        cancelButtonText: "Hủy",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push("/login");
-        } else {
-          router.push("/"); // Nếu hủy thì quay về trang chủ
-        }
-      });
-      return; // Không tiếp tục load dữ liệu nữa
-    }
-
     if (slug) {
       axios
         .get(`/courses/${slug}/lessons`)
@@ -53,7 +33,7 @@ const Learning = () => {
           console.error("Failed to fetch lessons:", err);
         });
     }
-  }, [slug, user, router]);
+  }, [slug, loading, router]);
 
   const handleLessonClick = (lessonId: string) => {
     const selected = lessons.find((lesson) => lesson._id === lessonId);
@@ -63,8 +43,7 @@ const Learning = () => {
     }
   };
 
-  // Nếu chưa có user, không render nội dung
-  if (!user) return null;
+  // Vẫn render nội dung và bình luận ngay cả khi chưa đăng nhập
 
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
@@ -89,7 +68,7 @@ const Learning = () => {
                 ></iframe>
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-white">
-                  Video not available.
+                  Video không hoạt động.
                 </div>
               )}
             </div>
@@ -161,7 +140,7 @@ const Learning = () => {
         </div>
       </section>
       <div className=" my-5 border-b border-[#1F2937]"></div>
-      <Comment />
+      <Comment targetId={currentLesson?._id} targetType="Lesson" />
       <Footer />
     </div>
   );

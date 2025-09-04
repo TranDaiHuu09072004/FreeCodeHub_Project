@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { Blog } from "@/app/(client)/blog/page";
-import Comment from "@/components/User/Comment";
+// import Comment from "@/components/User/Comment";
 const DetailBlog = () => {
   const [detailBlog, setDetailBlog] = useState<Blog | null>(null);
   const [relatedblog, setRelatedBlogs] = useState<Blog[]>([]);
@@ -93,8 +93,6 @@ const DetailBlog = () => {
               dangerouslySetInnerHTML={{ __html: detailBlog?.content || "" }}
             ></div>
           </div>
-          <div className=" my-5 border-b border-[#1F2937]"></div>
-          <Comment />
         </section>
         <section className="blog_related">
           <h3 className="text-2xl font-bold text-white">Bài viết liên quan</h3>

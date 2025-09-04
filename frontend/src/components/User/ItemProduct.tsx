@@ -4,6 +4,7 @@ import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
+import Image from "next/image";
 
 export interface Course {
   title: string;
@@ -71,12 +72,8 @@ const ItemProduct = ({ courses, title }: ItemProductProps) => {
           onClick={(e) => handleRegisterCourse(e, course)}
         >
           <div className="item_course bg-[#1A1F2B] rounded-t-[10px] rounded-b-[10px] hover:translate-y-[-10px] transition-all duration-300">
-            <div className="img_course ">
-              <img
-                src={course.thumbnail}
-                alt=""
-                className="w-[100%] h-[100%] rounded-t-[10px] object-cover "
-              />
+            <div className="w-full h-[200px] object-cover relative rounded-t-[10px] overflow-hidden">
+              <Image src={course.thumbnail} alt="" fill className="" />
             </div>
             <div className="content_course p-[25px]">
               <h1 className="text-[20px] font-bold text-white mb-[10px] line-clamp-2 overflow-hidden text-ellipsis">

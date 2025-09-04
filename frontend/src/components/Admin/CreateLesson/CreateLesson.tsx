@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 type LessonValue = {
   courseId: string;
   title: string;
-  description: string;
+  description: string | null;
   videoId?: string; // optional
   videoUrl: string;
   order: number;
@@ -30,7 +30,12 @@ type LessonValue = {
 const createLessonSchema = yup.object({
   courseId: yup.string().required("Course ID là bắt buộc"),
   title: yup.string().required("Vui lòng nhập tiêu đề bài học"),
-  description: yup.string().required("Vui lòng nhập mô tả bài học"),
+  description: yup
+    .string()
+    .transform((val, orig) => (orig === "" ? null : val))
+    .nullable()
+    .optional()
+    .default(null),
   // videoId: yup.string().required("Vui lòng nhập Video ID"), // đã bỏ validate này
   videoUrl: yup.string().required("Vui lòng nhập URL video"),
   order: yup.number().required("Vui lòng nhập thứ tự bài học"),

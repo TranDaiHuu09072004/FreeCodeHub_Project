@@ -3,12 +3,73 @@ import Banner from "@/components/User/Banner";
 import InputSearch from "@/components/User/InputSearch";
 import ListCourses from "@/components/User/ListCourses";
 import Footer from "@/app/layout/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import axios from "@/app/utils/axiosInstance";
+import type { Course } from "@/components/User/ItemProduct";
 
 const CoursesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [courses, setCourses] = useState<any[]>([]);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
+  const [searchResults, setSearchResults] = useState<Course[]>([]);
+  const [authors, setAuthors] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedAuthor, setSelectedAuthor] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const ITEMS_PER_PAGE = 5;
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [coursesRes, authorsRes, categoriesRes] = await Promise.all([
+          axios.get<Course[]>("/courses"),
+          axios.get<{ name: string }[]>("/authors"),
+          axios.get<{ name: string }[]>("/categories"),
+        ]);
+
+        setAllCourses(coursesRes.data || []);
+        setAuthors((authorsRes.data || []).map((a) => a.name).filter(Boolean));
+        setCategories(
+          (categoriesRes.data || []).map((c) => c.name).filter(Boolean)
+        );
+      } catch (error) {
+        console.error("Failed to load initial data", error);
+      }
+    };
+    fetchInitialData();
+  }, []);
+
+  const baseCourses = useMemo<Course[]>(() => {
+    return searchResults.length > 0 ? searchResults : allCourses;
+  }, [searchResults, allCourses]);
+
+  const filteredCourses = useMemo<Course[]>(() => {
+    return baseCourses.filter((course) => {
+      const authorOk = selectedAuthor ? course.author === selectedAuthor : true;
+      const categoryOk = selectedCategory
+        ? course.category === selectedCategory
+        : true;
+      return authorOk && categoryOk;
+    });
+  }, [baseCourses, selectedAuthor, selectedCategory]);
+
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(filteredCourses.length / ITEMS_PER_PAGE));
+  }, [filteredCourses.length]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
+
+  const paginatedCourses = useMemo<Course[]>(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredCourses.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredCourses, currentPage]);
+
   const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
 
@@ -26,50 +87,63 @@ const CoursesPage = () => {
           Bộ lọc tìm kiếm
         </h1>
         <select
-          name=""
-          id=""
+          name="author"
+          id="author"
           className="select_author bg-[#333647] rounded-[5px] text-white px-[4px] border-none outline-none xl:w-[172px] h-[40px] max-xl:mb-[10px] max-xl:w-[250px]"
           style={{ colorScheme: "dark" }}
+          value={selectedAuthor}
+          onChange={(e) => {
+            setSelectedAuthor(e.target.value);
+            setCurrentPage(1);
+          }}
         >
-          <option disabled hidden>
-            Chọn tác giả
-          </option>
-          <option value="F8 Offical">F8 Offical</option>
-          <option value="Hỏi Dân IT">Hỏi Dân IT</option>
-          <option value="EvonDev">EvonDev</option>
-          <option value="NineDev">NineDev</option>
+          <option value="">Tất cả tác giả</option>
+          {authors.map((a) => (
+            <option key={a} value={a}>
+              {a}
+            </option>
+          ))}
         </select>
         <select
-          name=""
-          id=""
+          name="category"
+          id="category"
           className="select_author bg-[#333647] rounded-[5px] text-white px-[4px] border-none outline-none xl:w-[172px] h-[40px] max-xl:mb-[10px] max-xl:w-[250px]"
           style={{ colorScheme: "dark" }}
+          value={selectedCategory}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+            setCurrentPage(1);
+          }}
         >
-          <option disabled hidden>
-            Chọn lĩnh vực
-          </option>
-          <option value="F8 Offical">Front End</option>
-          <option value="Hỏi Dân IT">Back End</option>
-          <option value="EvonDev">FullStack</option>
-          <option value="NineDev">Mobile</option>
+          <option value="">Tất cả danh mục</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
         </select>
         <InputSearch
           placeholder="Tìm kiếm theo khóa học..."
           h={"40px"}
           w={"250px"}
           apiEndpoint="/courses/search"
-          onResults={(data) => setCourses(data)}
+          onResults={(data) => {
+            setSearchResults(data as Course[]);
+            setCurrentPage(1);
+          }}
           className="search_courses flex justify-center items-center w-[250px] max-xl:mb-[10px]"
         />
       </section>
-      <section className="listCourses bg-[#1F212C] py-[10px] px-[20px] rounded-[10px] ">
-        {courses.length > 0 ? (
-          <ListCourses courses={courses} />
+      <section className="listCourses bg-[#1F212C] py-[10px] px-[20px] rounded-[10px] h-auto">
+        {filteredCourses.length === 0 ? (
+          <h3 className="text-[#E5E4E4] text-center">
+            Không tìm thấy khóa học nào!
+          </h3>
         ) : (
-          <ListCourses />
+          <ListCourses courses={paginatedCourses} />
         )}
       </section>
-      {/* <section className="flex items-center justify-center gap-2 my-8">
+      <section className="flex items-center justify-center gap-2 my-8">
         <button
           className="w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] hover:bg-gradient-to-r from-[#eaafc8] to-[#654ea3] hover:border-transparent hover:text-white transition-colors"
           onClick={() => handlePageChange(currentPage - 1)}
@@ -77,7 +151,7 @@ const CoursesPage = () => {
         >
           <i className="fa-solid fa-chevron-left text-[#E5E4E4]"></i>
         </button>
-        {[1, 2, 3, 4, 5].map((page) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
             className={`w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] transition-colors ${
@@ -93,11 +167,11 @@ const CoursesPage = () => {
         <button
           className="w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] hover:bg-gradient-to-r from-[#eaafc8] to-[#654ea3] hover:border-transparent hover:text-white transition-colors"
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === 5}
+          disabled={currentPage === totalPages}
         >
           <i className="fa-solid fa-chevron-right text-[#E5E4E4]"></i>
         </button>
-      </section> */}
+      </section>
       <Footer />
     </div>
   );

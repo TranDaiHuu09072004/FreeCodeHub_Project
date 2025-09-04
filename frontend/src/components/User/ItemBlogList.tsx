@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { ItemBlogs } from "@/app/types/ItemBlog.type";
 import Link from "next/link";
+import Image from "next/image";
 
 const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
   const [blogs, setBlogs] = useState<ItemBlogs[]>([]);
@@ -28,12 +29,8 @@ const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
         >
           <Link href={`/blog/${blog.slug}`}>
             {" "}
-            <div className="img_blog">
-              <img
-                src={blog.thumbnail}
-                alt={blog.title}
-                className="w-full h-[200px] rounded-t-[10px] object-cover"
-              />
+            <div className="w-full h-[250px] object-cover relative rounded-t-[10px] overflow-hidden">
+              <Image src={blog.thumbnail} alt={blog.title} fill className="" />
             </div>
             <div className="content_blog p-[25px]">
               <div className="flex items-center mb-[10px] justify-between">

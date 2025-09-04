@@ -100,7 +100,7 @@ const SidebarMobile = ({ className = "" }) => {
         </h1>
       </div>
 
-      <div className="flex-grow overflow-y-auto pb-[280px]">
+      <div className="flex-grow overflow-y-auto pb-[335px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li

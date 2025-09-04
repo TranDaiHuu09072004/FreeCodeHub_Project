@@ -7,11 +7,6 @@ const ShowSideBarMenu = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user } = useAuth(); // lấy user từ context
 
-  // Xác định type sidebar dựa trên role
-  let type = "client";
-  if (user?.role === "admin") type = "admin";
-  else if (user?.role === "author") type = "author"; // nếu Hữu muốn có sidebar riêng cho author
-
   return (
     <>
       {showSidebar && (
@@ -21,10 +16,7 @@ const ShowSideBarMenu = () => {
             onClick={() => setShowSidebar(false)}
           ></div>
           <div className="fixed top-0 left-0 h-full w-1/2 bg-[#1a1f2b] z-[999999] transition-all duration-300">
-            <SidebarMobile
-              className="w-1/2 h-full max-[1364px]:block 2xl:hidden"
-              type={type}
-            />
+            <SidebarMobile className="w-1/2 h-full max-[1364px]:block 2xl:hidden" />
             <button
               className="absolute top-4 right-4 text-white text-2xl z-[1000000]"
               onClick={() => setShowSidebar(false)}

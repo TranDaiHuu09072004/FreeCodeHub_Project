@@ -37,7 +37,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="list_footer--item max-xl:pl-5 max-sm:pl-0">
+          <div className="list_footer--item xl:pl-5 max-sm:pl-0">
             <h1 className="text-white text-xl font-bold my-[15px]">
               Liên kết nhanh
             </h1>

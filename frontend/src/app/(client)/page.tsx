@@ -6,18 +6,57 @@ import Footer from "@/app/layout/Footer";
 import ChannelAuthor from "@/components/User/ChanelAuthors";
 import { Course } from "@/components/User/ItemProduct";
 import axiosInstance from "@/app/utils/axiosInstance";
-
+import Image from "next/image";
+interface UserProps {
+  name: string;
+  email: string;
+  role: string;
+  status: boolean;
+  registeredCourses: string[];
+  avatar: string;
+  date_or_birth: string;
+}
 const Home = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [user, setUser] = useState<UserProps | null>(null);
+  const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
 
   useEffect(() => {
+    // Lấy featured courses trước
     axiosInstance
-      .get("/courses") // Lấy tất cả courses
+      .get("/courses/featured")
+      .then((res) => {
+        const featured = res.data;
+        setFeaturedCourses(featured);
+      })
+      .catch((err) => console.error("Lỗi khi lấy featured courses:", err));
+
+    // Lấy tất cả courses cho các section khác
+    axiosInstance
+      .get("/courses")
       .then((res) => setCourses(res.data))
       .catch((err) => console.error("Lỗi khi lấy danh sách khóa học:", err));
-  }, []);
 
-  const featuredCourses = courses.filter((c) => c.isFeatured === true);
+    // Lấy thông tin user nếu đã đăng nhập
+    const token = localStorage.getItem("token");
+    if (token) {
+      axiosInstance
+        .get("/users/me")
+        .then((res) => {
+          setUser(res.data);
+          // Filter out courses that user has already registered
+          setFeaturedCourses((prev) =>
+            prev.filter(
+              (c: Course) => !res.data.registeredCourses?.includes(c.slug)
+            )
+          );
+        })
+        .catch((err) => {
+          console.error("Lỗi khi lấy thông tin user:", err);
+          // Nếu không lấy được user info, vẫn hiển thị tất cả featured courses
+        });
+    }
+  }, []);
   const frontendCourses = courses.filter(
     (c) => c.category?.toLowerCase() === "frontend"
   );
@@ -136,10 +175,12 @@ const Home = () => {
         <div className="grid grid-cols-3 max-md:grid-cols-1 mt-[35px] gap-[20px]">
           <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
-              <img
-                src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
+              <Image
+                src="/assets/img/comment_1.jpg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
+                width={48}
+                height={48}
               />
               <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
@@ -175,14 +216,16 @@ const Home = () => {
           </div>
           <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
-              <img
-                src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
+              <Image
+                src="/assets/img/comment_2.jpg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
+                width={48}
+                height={48}
               />
               <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
-                  Nguyễn Văn Anh Minh
+                  Nguyễn Thị Lan
                 </h5>
                 <span className="text-[#E5E4E4]">Học viên tại FreeCodeHub</span>
               </div>
@@ -206,22 +249,25 @@ const Home = () => {
             </div>
             <div className="content">
               <p className="text-[#E5E4E4] text-[14px]">
-                Tôi đã học được rất nhiều kỹ năng lập trình web thông qua các
-                khóa học miễn phí từ FreeCodeHub. Đây là nguồn tài nguyên tuyệt
-                vời cho bất kỳ ai muốn bắt đầu sự nghiệp lập trình.
+                "Khóa học tại FreeCodeHub giúp tôi rất nhiều trong việc học lập
+                trình web. Những kiến thức tôi học được rất dễ hiểu và ứng dụng
+                ngay vào công việc. Cảm ơn FreeCodeHub đã mang đến cơ hội học
+                tập tuyệt vời này."
               </p>
             </div>
           </div>
           <div className="item_say--about_us p-7 max-xl:p-5 bg-[#1A1F2B] rounded-[10px]">
             <div className="info_say--about_us flex">
-              <img
-                src="https://cdnphoto.dantri.com.vn/prM-l0fz5Z5GghgEnW_2D0mn_XU=/thumb_w/990/2024/11/11/giap-hoang-anh-phong-vandocx-1731317640857.jpeg"
+              <Image
+                src="/assets/img/comment_3.jpg"
                 alt=""
                 className="rounded-full w-[48px] h-[48px] object-cover"
+                width={48}
+                height={48}
               />
               <div className="name_info ml-5 max-lg:ml-2">
                 <h5 className="text-white text-[18px] font-bold">
-                  Nguyễn Văn Anh Minh
+                  Trần Minh Tuấn
                 </h5>
                 <span className="text-[#E5E4E4]">Học viên tại FreeCodeHub</span>
               </div>
@@ -245,9 +291,10 @@ const Home = () => {
             </div>
             <div className="content">
               <p className="text-[#E5E4E4] text-[14px]">
-                Tôi đã học được rất nhiều kỹ năng lập trình web thông qua các
-                khóa học miễn phí từ FreeCodeHub. Đây là nguồn tài nguyên tuyệt
-                vời cho bất kỳ ai muốn bắt đầu sự nghiệp lập trình.
+                Mình rất ấn tượng với cách dạy của các giảng viên khóa học tại
+                FreeCodeHub. Mọi bài giảng đều được giải thích rõ ràng và dễ
+                tiếp thu. Từ khi tham gia khóa học, kỹ năng lập trình của mình
+                đã cải thiện rất nhiều.
               </p>
             </div>
           </div>

@@ -31,20 +31,20 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
           const userRes = await axios.get<{ registerCourses: string[] }>(
             "/users"
           );
-          console.log("userRes.data:", userRes.data);
-          console.log(
-            "userRes.data.registerCourses:",
-            userRes.data?.registerCourses
-          );
+          // console.log("userRes.data:", userRes.data);
+          // console.log(
+          //   "userRes.data.registerCourses:",
+          //   userRes.data?.registerCourses
+          // );
 
           let registeredCoursesSlugs: string[] = [];
           if (userRes.data && Array.isArray(userRes.data.registerCourses)) {
             registeredCoursesSlugs = userRes.data.registerCourses;
           }
-          console.log(
-            "registeredCoursesSlugs before filter:",
-            registeredCoursesSlugs
-          );
+          // console.log(
+          //   "registeredCoursesSlugs before filter:",
+          //   registeredCoursesSlugs
+          // );
 
           const allCoursesRes = await axios.get<Course[]>("/courses");
           const allCourses = allCoursesRes.data;

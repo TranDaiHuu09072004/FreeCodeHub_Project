@@ -7,6 +7,12 @@ import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import ItemBlogList from "@/components/User/ItemBlogList";
+export interface Comment {
+  user: string;
+  avatar?: string;
+  content: string;
+  createdAt: string; // dạng ISO string khi trả từ API
+}
 
 export interface Blog {
   _id: string;
@@ -22,6 +28,7 @@ export interface Blog {
   content: string;
   tags: string[];
   slug: string;
+  comments: Comment[];
 }
 
 const Blog = () => {
