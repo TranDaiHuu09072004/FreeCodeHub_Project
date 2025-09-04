@@ -1,18 +1,27 @@
 import mongoose, { UpdateQuery } from "mongoose";
 import slugify from "slugify";
+
 const blogSchema = new mongoose.Schema(
   {
-    title: { type: String, require: true },
-    content: { type: String, require: true },
+    title: { type: String, required: true }, // fix "require" -> "required"
+    content: { type: String, required: true },
     category: { type: String },
-    author: { type: String, require: true },
+    author: { type: String, required: true },
     imageAuthor: { type: String },
     date: { type: String },
     status: { type: String, enum: ["Đã đăng", "Nháp"], default: "Nháp" },
     excerpt: { type: String },
-    isFeatured: { type: Boolean },
+    isFeatured: { type: Boolean, default: false },
     thumbnail: { type: String },
     slug: { type: String, unique: true },
+    comments: [
+      {
+        user: { type: String, required: true },
+        avatar: { type: String },
+        content: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -37,11 +46,8 @@ blogSchema.pre("save", async function (next) {
 blogSchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
 
-  // Dùng type guard để kiểm tra nếu là UpdateQuery
   if (update && typeof update === "object" && !Array.isArray(update)) {
     const updateQuery = update as UpdateQuery<any>;
-
-    // Kiểm tra nếu title được update (có thể trong $set hoặc trực tiếp)
     const newTitle = updateQuery.title ?? updateQuery.$set?.title;
 
     if (newTitle) {
@@ -53,7 +59,6 @@ blogSchema.pre("findOneAndUpdate", async function (next) {
         slug = `${baseSlug}-${count++}`;
       }
 
-      // Gán slug mới vào đúng chỗ ($set hoặc root)
       if (updateQuery.$set) {
         updateQuery.$set.slug = slug;
       } else {
@@ -68,5 +73,4 @@ blogSchema.pre("findOneAndUpdate", async function (next) {
 });
 
 const Blog = mongoose.model("Blog", blogSchema);
-
 export default Blog;

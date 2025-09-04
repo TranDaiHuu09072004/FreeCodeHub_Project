@@ -5,7 +5,7 @@ const LessonSchema = new mongoose.Schema(
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
-      require: true,
+      required: true, // fix "require" -> "required"
     },
     title: { type: String, required: true },
     description: { type: String },
@@ -13,6 +13,14 @@ const LessonSchema = new mongoose.Schema(
     videoUrl: { type: String },
     order: { type: Number },
     duration: { type: String },
+    comments: [
+      {
+        user: { type: String, required: true },
+        avatar: { type: String },
+        content: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

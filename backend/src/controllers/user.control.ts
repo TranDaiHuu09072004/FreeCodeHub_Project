@@ -2,6 +2,28 @@ import { Response, Request, RequestHandler } from "express";
 import User from "../models/user.model";
 import { AuthRequest } from "../middleware/auth.middleware";
 
+// Get current user information
+export const getCurrentUser: RequestHandler = async (req, res) => {
+  const authReq = req as AuthRequest;
+
+  try {
+    if (!authReq.user) {
+      res.status(401).json({ message: "Người dùng chưa được xác thực" });
+      return;
+    }
+
+    const user = await User.findById(authReq.user.id).select("-password");
+    if (!user) {
+      res.status(404).json({ message: "Không tìm thấy người dùng" });
+      return;
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
 //http://localhost:5000/api/auth/users
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find().select("-password");

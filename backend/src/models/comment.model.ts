@@ -38,5 +38,13 @@ const CommentSchema = new Schema<IComment>(
   { timestamps: true }
 );
 
+CommentSchema.pre("findOneAndDelete", async function (next) {
+  const comment = await this.model.findOne(this.getFilter());
+  if (comment) {
+    await comment.model("Comment").deleteMany({ parentId: comment._id });
+  }
+  next();
+});
+
 const Comment = mongoose.model<IComment>("Comment", CommentSchema);
 export default Comment;

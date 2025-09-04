@@ -1,12 +1,14 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 
 import connectDB from "./config/db";
 import app from "./app";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 0;
+const PORT = Number(process.env.PORT) || 5000;
 
 app.use(express.json());
 

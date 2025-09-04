@@ -16,7 +16,6 @@ const allowedOrigins = [
   "http://localhost:3000", // FE dev
   "http://127.0.0.1:3000",
   "https://your-frontend.com", // FE production
-  "http://localhost:5000/api/auth",
 ];
 
 app.use(

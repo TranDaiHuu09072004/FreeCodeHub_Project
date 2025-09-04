@@ -1,16 +1,16 @@
 import { Router } from "express";
 import {
   getAllAuthors,
-  CreateAuthor,
-  UpdateAuthor,
-  DeletedAuthor,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor,
 } from "../controllers/author.control";
 
 const router = Router();
 
 router.get("/authors", getAllAuthors);
-router.post("/authors", CreateAuthor);
-router.put("/authors/:id", UpdateAuthor);
-router.delete("/authors/:id", DeletedAuthor);
+router.post("/authors", createAuthor);
+router.put("/authors/:id", updateAuthor);
+router.delete("/authors/:id", deleteAuthor);
 
 export default router;

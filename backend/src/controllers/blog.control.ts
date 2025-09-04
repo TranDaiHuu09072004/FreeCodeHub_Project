@@ -141,3 +141,18 @@ export const getRelatedBlogs: RequestHandler = async (req, res) => {
     res.status(500).json({ message: "Lỗi server", error });
   }
 };
+
+// Lấy bài viết theo slug
+
+export const getBlogBySlug: RequestHandler = async (req, res) => {
+  try {
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    if (!blog) {
+      res.status(404).json({ message: "Not found" });
+      return;
+    }
+    res.json(blog);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
