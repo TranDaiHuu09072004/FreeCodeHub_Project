@@ -45,12 +45,12 @@ courseSchema.post("save", async function (doc) {
 
 courseSchema.post("findOneAndDelete", async function (doc: any) {
   if (doc?.category) {
-    await Category.findOneAndUpdate(
+    await Category.findOneAndDelete(
       {
         name: doc.category,
       },
       {
-        $inc: { courseCount: 1 },
+        $inc: { courseCount: -1 },
       }
     );
   }

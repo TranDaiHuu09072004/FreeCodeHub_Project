@@ -1,14 +1,43 @@
 import { RequestHandler } from "express";
 import mongoose from "mongoose";
 import Comment from "../models/comment.model";
+import Lesson from "../models/lesson.model";
+
+// Helper: ensure targetId belongs to Lesson only
+const ensureLessonTarget = async (targetId: string): Promise<boolean> => {
+  if (!mongoose.Types.ObjectId.isValid(targetId)) return false;
+  const exists = await Lesson.exists({ _id: targetId });
+  return Boolean(exists);
+};
+
+// getAll Comment
+
+export const getAllComments: RequestHandler = async (req, res) => {
+  try {
+    const comments = await Comment.find()
+      .populate("userId", "name avatar createdAt")
+      .populate({
+        path: "targetId",
+        select: "title name", // giả sử Lesson có trường "title" hoặc "name"
+        model: "Lesson", // Replace with the specific model name or handle dynamic models outside populate
+      })
+      .select("userId content targetType targetId");
+    if (!comments) res.status(404).json({ message: "Không tìm thấy Comments" });
+    res
+      .status(200)
+      .json({ message: "Lấy tất cả comments thành công", comments });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi Server", error });
+  }
+};
 
 // 👉 Client: Tạo comment
 export const createComment: RequestHandler = async (req, res) => {
   try {
-    const { targetId, targetType, content, parentId } = req.body;
+    const { targetId, content, parentId } = req.body;
     const userId = (req as any).user?.id; // align with auth.middleware
 
-    if (!targetId || !targetType || !content) {
+    if (!targetId || !content) {
       res.status(400).json({ message: "Thiếu dữ liệu bắt buộc" });
       return;
     }
@@ -23,17 +52,16 @@ export const createComment: RequestHandler = async (req, res) => {
       return;
     }
 
-    if (!["Lesson", "Blog"].includes(String(targetType))) {
-      res
-        .status(400)
-        .json({ message: "targetType phải là 'Lesson' hoặc 'Blog'" });
+    const isLesson = await ensureLessonTarget(targetId);
+    if (!isLesson) {
+      res.status(400).json({ message: "targetId không thuộc Lesson hợp lệ" });
       return;
     }
 
     const newComment = await Comment.create({
       userId,
       targetId,
-      targetType,
+      targetType: "Lesson",
       content,
       parentId: parentId || null,
     });
@@ -48,10 +76,10 @@ export const createComment: RequestHandler = async (req, res) => {
 // 👉 Lấy comment theo targetId + targetType
 export const getComment: RequestHandler = async (req, res) => {
   try {
-    const { targetId, targetType } = req.query;
+    const { targetId } = req.query;
 
-    if (!targetId || !targetType) {
-      res.status(400).json({ message: "Thiếu targetId hoặc targetType" });
+    if (!targetId) {
+      res.status(400).json({ message: "Thiếu targetId" });
       return;
     }
 
@@ -60,16 +88,15 @@ export const getComment: RequestHandler = async (req, res) => {
       return;
     }
 
-    if (!["Lesson", "Blog"].includes(String(targetType))) {
-      res
-        .status(400)
-        .json({ message: "targetType phải là 'Lesson' hoặc 'Blog'" });
+    const isLesson = await ensureLessonTarget(String(targetId));
+    if (!isLesson) {
+      res.status(400).json({ message: "targetId không thuộc Lesson hợp lệ" });
       return;
     }
 
     const comments = await Comment.find({
       targetId,
-      targetType,
+      targetType: "Lesson",
       parentId: null,
     })
       .populate("userId", "name avatar")
@@ -81,7 +108,6 @@ export const getComment: RequestHandler = async (req, res) => {
   }
 };
 
-// 👉 Admin xoá comment
 export const deleteComment: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;

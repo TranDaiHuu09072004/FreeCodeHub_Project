@@ -5,7 +5,7 @@ interface IAuthor extends Document {
   description: string;
   avatar: string;
   channel: string;
-  numCourses: number;
+  courseCount: { type: Number; default: 0 };
   numSubscribers: number;
   createdAt: Date;
   linkYtb: string;
@@ -17,7 +17,7 @@ const authorSchema: Schema = new Schema(
     channel: { type: String, required: true },
     description: { type: String },
     avatar: { type: String },
-    numCourses: { type: Number, default: 0 },
+    courseCount: { type: Number, default: 0 },
     numSubscribers: { type: Number, default: 0 },
     linkYtb: { type: String },
   },

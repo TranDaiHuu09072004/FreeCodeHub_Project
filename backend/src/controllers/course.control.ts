@@ -65,7 +65,10 @@ export const registerCourse: RequestHandler = async (req, res) => {
 // GET all courses
 export const getAllCourses: RequestHandler = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ updatedAt: -1 });
+    const courses = await Course.find()
+      .populate("author", "name image_author")
+      .populate("category", "name")
+      .sort({ updatedAt: -1 });
     res.json(courses);
     return;
   } catch (error) {
