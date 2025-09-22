@@ -8,8 +8,17 @@ import axiosInstance from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import ItemBlogList from "@/components/User/ItemBlogList";
 export interface Comment {
-  user: string;
-  avatar?: string;
+  _id: string;
+  userId: {
+    _id: string;
+    name: string;
+    avatar: string;
+    createdAt: string;
+  };
+  targetId: {
+    _id: string;
+    title: string;
+  };
   content: string;
   createdAt: string; // dạng ISO string khi trả từ API
 }

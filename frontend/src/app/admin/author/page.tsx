@@ -44,7 +44,7 @@ export interface AuthorAdmin {
   channel: string;
   description: string;
   avatar: string;
-  numCourses: number;
+  courseCount: number;
   numSubscribers: number;
   createdAt: Date;
   linkYtb: string;
@@ -55,7 +55,7 @@ type AuthorFormValue = {
   channel: string;
   description: string;
   avatar: string;
-  numCourses: number;
+  courseCount: number;
   numSubscribers: number;
   createdAt: Date;
   linkYtb: string;
@@ -257,7 +257,7 @@ const Author_Management = () => {
                     </a>
                   </div>
                 </TableCell>
-                <TableCell className="text-white">{au.numCourses}</TableCell>
+                <TableCell className="text-white">{au.courseCount}</TableCell>
 
                 <TableCell className="text-white">
                   {" "}

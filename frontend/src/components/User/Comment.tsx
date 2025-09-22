@@ -1,12 +1,11 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "@/components/User/Button";
 import { useAuth } from "@/app/Context/AuthContext";
 import axiosInstance from "@/app/utils/axiosInstance";
 
 interface CommentProps {
   targetId?: string;
-  targetType: "Lesson" | "Blog";
 }
 
 type RenderableComment = {
@@ -16,20 +15,33 @@ type RenderableComment = {
   createdAt: string;
 };
 
-const Comment: React.FC<CommentProps> = ({ targetId, targetType }) => {
+const Comment: React.FC<CommentProps> = ({ targetId }) => {
   const { user } = useAuth();
   const [content, setContent] = useState("");
   const [commentList, setCommentList] = useState<RenderableComment[]>([]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+  const isFetchingRef = useRef(false);
   const canSubmit = useMemo(
     () => Boolean(user && content.trim() && targetId),
     [user, content, targetId]
   );
 
-  // Fetch comments initially and poll for realtime-like updates
+  // Fetch comments initially and poll; prevent duplicate intervals and cancel inflight on unmount
   useEffect(() => {
     if (!targetId) return;
 
     let isMounted = true;
+
+    // Clear previous interval and abort previous request (StrictMode safe)
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
+    controllerRef.current = new AbortController();
 
     const mapApiToRenderable = (items: any[]): RenderableComment[] => {
       return items.map((item) => ({
@@ -41,25 +53,36 @@ const Comment: React.FC<CommentProps> = ({ targetId, targetType }) => {
     };
 
     const fetchComments = async () => {
+      if (isFetchingRef.current) return;
+      isFetchingRef.current = true;
       try {
         const res = await axiosInstance.get("/comments", {
-          params: { targetId, targetType },
+          params: { targetId },
+          signal: controllerRef.current?.signal as any,
         });
         if (!isMounted) return;
         setCommentList(mapApiToRenderable(res.data || []));
-      } catch (error) {}
+      } catch (error: any) {
+        if (error?.name === "CanceledError") return;
+      } finally {
+        isFetchingRef.current = false;
+      }
     };
 
     // initial fetch
     fetchComments();
 
     // poll every 8 seconds
-    const intervalId = setInterval(fetchComments, 8000);
+    intervalRef.current = setInterval(fetchComments, 8000);
     return () => {
       isMounted = false;
-      clearInterval(intervalId);
+      if (controllerRef.current) controllerRef.current.abort();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [targetId, targetType]);
+  }, [targetId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +95,6 @@ const Comment: React.FC<CommentProps> = ({ targetId, targetType }) => {
         "/comments",
         {
           targetId: targetId,
-          targetType: targetType,
           content,
         },
         {

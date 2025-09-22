@@ -10,6 +10,11 @@ const Sidebar = ({ className = "" }) => {
 
   const baseMenuAdmin = [
     {
+      href: "/dashboard/courses",
+      icon: "fa-solid fa-book-open",
+      label: "Quản lý khóa học",
+    },
+    {
       href: "/dashboard/blogs",
       icon: "fa-solid fa-file",
       label: "Quản lý bài viết",
@@ -20,6 +25,11 @@ const Sidebar = ({ className = "" }) => {
       label: "Quản lý người dùng",
     },
     {
+      href: "/dashboard/comments",
+      icon: "fa-solid fa-comments",
+      label: "Quản lý bình luận",
+    },
+    {
       href: "/dashboard/categories",
       icon: "fa-solid fa-layer-group",
       label: "Quản lý danh mục",
@@ -28,11 +38,6 @@ const Sidebar = ({ className = "" }) => {
       href: "/dashboard/authors",
       icon: "fa-solid fa-pen-nib",
       label: "Quản lý tác giả",
-    },
-    {
-      href: "/dashboard/courses",
-      icon: "fa-solid fa-book-open",
-      label: "Quản lý khóa học",
     },
   ];
 

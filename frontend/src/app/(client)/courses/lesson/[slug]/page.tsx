@@ -5,13 +5,12 @@ import axios from "@/app/utils/axiosInstance";
 import { useParams, useRouter } from "next/navigation";
 import { Lesson } from "@/components/User/ItemProduct";
 import { useAuth } from "@/app/Context/AuthContext";
-import Swal from "sweetalert2";
 import Comment from "@/components/User/Comment";
 
 const Learning = () => {
   const { slug } = useParams();
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
@@ -140,7 +139,7 @@ const Learning = () => {
         </div>
       </section>
       <div className=" my-5 border-b border-[#1F2937]"></div>
-      <Comment targetId={currentLesson?._id} targetType="Lesson" />
+      <Comment targetId={currentLesson?._id} />
       <Footer />
     </div>
   );
