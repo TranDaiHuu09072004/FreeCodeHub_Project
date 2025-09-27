@@ -10,7 +10,7 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "github.com",
       "placehold.co",
-      "https://freecodehub-project.onrender.com",
+      "freecodehub-project.onrender.com",
     ],
   }, // 👈 THÊM DÒNG NÀY
 };
