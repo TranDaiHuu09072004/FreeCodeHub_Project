@@ -66,7 +66,17 @@ export const createComment: RequestHandler = async (req, res) => {
       parentId: parentId || null,
     });
 
-    res.status(201).json(newComment);
+    const populatedComment = await Comment.findById(newComment._id)
+      .populate("userId", "name avatar createdAt")
+      .populate({
+        path: "targetId",
+        select: "title name",
+        model: "Lesson",
+      });
+
+    res
+      .status(201)
+      .json({ message: "Tạo comment thành công", comment: populatedComment });
   } catch (error) {
     console.error("Lỗi tạo comment:", error);
     res.status(500).json({ message: "Server Error", error });
