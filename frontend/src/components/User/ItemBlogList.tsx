@@ -29,8 +29,13 @@ const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
         >
           <Link href={`/blog/${blog.slug}`}>
             {" "}
-            <div className="w-full h-[250px] object-cover relative rounded-t-[10px] overflow-hidden">
-              <Image src={blog.thumbnail} alt={blog.title} fill className="" />
+            <div className="w-full h-[250px] relative rounded-t-[10px] overflow-hidden">
+              <Image
+                src={blog.thumbnail}
+                alt={blog.title}
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="content_blog p-[25px]">
               <div className="flex items-center mb-[10px] justify-between">
@@ -39,9 +44,11 @@ const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
                   <span className="text-white">{blog.date}</span>
                 </div>
                 <div className="author flex items-center gap-2">
-                  <img
+                  <Image
                     src={blog?.imageAuthor || "https://github.com/shadcn.png"}
                     alt=""
+                    width={35}
+                    height={35}
                     className="w-[35px] h-[35px] rounded-full"
                   />
                   <span className="text-white">{blog.author}</span>

@@ -1,5 +1,7 @@
 // src/app/not-found.tsx
 
+import Link from "next/link";
+
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
@@ -12,12 +14,12 @@ export default function NotFound() {
       <p className="text-gray-400 mt-2 max-w-[500px]">
         Xin lỗi, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.
       </p>
-      <a
+      <Link
         href="/"
         className="mt-6 inline-block px-6 py-3 font-extrabold bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white rounded-lg transition hover:opacity-90"
       >
         Quay lại trang chủ
-      </a>
+      </Link>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { Blog } from "@/app/(client)/blog/page";
+import Image from "next/image";
 // import Comment from "@/components/User/Comment";
 const DetailBlog = () => {
   const [detailBlog, setDetailBlog] = useState<Blog | null>(null);
@@ -41,14 +42,16 @@ const DetailBlog = () => {
           </Link>
         </div>
         <section className="detail_blog my-[15px]">
-          <h1 className="title_blog text-[35px] text-white font-bold">
+          <h1 className="title_blog xl:text-[35px] max-sm:text-[25px] text-white font-bold">
             {detailBlog?.title}
           </h1>
           <div className="author_post flex items-center gap-6">
             <div className="author flex items-center gap-[10px] my-[15px]">
-              <img
+              <Image
                 src={detailBlog?.imageAuthor || "https://github.com/shadcn.png"}
                 alt=""
+                width={40}
+                height={40}
                 className="w-[40px] h-[40px] rounded-full"
               />
               <div className="name_author">

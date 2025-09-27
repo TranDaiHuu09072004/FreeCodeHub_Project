@@ -33,12 +33,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { isAxiosError } from "axios";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
 import { Blog } from "@/app/(client)/blog/page";
 import Editor from "@/components/Admin/Editor/Editor";
+import Image from "next/image";
 
 type BlogFormValue = {
   title: string;
@@ -124,8 +126,12 @@ const Blog_Management = () => {
       setIsDialogOpen(false);
       setEditingBlog(null);
       fetchBlogs();
-    } catch (error) {
-      toast.error("Lỗi Server");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Lỗi Server");
+      } else {
+        toast.error("Lỗi Server");
+      }
     }
   };
 
@@ -185,8 +191,12 @@ const Blog_Management = () => {
       await axiosInstance.delete(`blogs/${deleteBlog._id}`);
       toast.success("Xóa Danh mục thành công!!!");
       fetchBlogs();
-    } catch (error) {
-      toast.error("Xóa danh mục thất bại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Xóa danh mục thất bại");
+      } else {
+        toast.error("Xóa danh mục thất bại");
+      }
     } finally {
       setDeleteDialog(false);
       setDeleteBlog(null);
@@ -214,9 +224,10 @@ const Blog_Management = () => {
           <Button
             onClick={openCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-            children="Thêm bài viết"
             icon="fa-solid fa-circle-plus"
-          />
+          >
+            Thêm bài viết
+          </Button>
         </div>
         <div className="search_input bg-[#121826] rounded-[3px] p-3 flex items-center gap-[10px] my-[10px] h-[40px]">
           <i className="fa-solid fa-magnifying-glass text-[#677d9b] cursor-pointer"></i>{" "}
@@ -349,12 +360,14 @@ const Blog_Management = () => {
                     <Label htmlFor="title">Ảnh bìa bài viết</Label>
                     <div className="col-span-3">
                       {editingBlog?.thumbnail && (
-                        <img
+                        <Image
                           src={
                             editingBlog.thumbnail.startsWith("http")
                               ? editingBlog.thumbnail
                               : `http://localhost:5000${editingBlog.thumbnail}`
                           }
+                          width={80}
+                          height={80}
                           alt="Ảnh đại diện"
                           className="h-[80px] w-[80px] object-cover rounded-full mb-2"
                         />
@@ -412,12 +425,14 @@ const Blog_Management = () => {
                     <Label htmlFor="image">Hình ảnh</Label>
                     <div className="col-span-3">
                       {editingBlog?.imageAuthor && (
-                        <img
+                        <Image
                           src={
                             editingBlog.imageAuthor.startsWith("http")
                               ? editingBlog.imageAuthor
                               : `http://localhost:5000${editingBlog.imageAuthor}`
                           }
+                          width={80}
+                          height={80}
                           alt="Ảnh đại diện"
                           className="h-[80px] w-[80px] object-cover rounded-full mb-2"
                         />
@@ -504,8 +519,9 @@ const Blog_Management = () => {
                 <Button
                   type="submit"
                   className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-                  children={editingBlog ? "Cập nhật" : "Tạo bài viết"}
-                />
+                >
+                  {editingBlog ? "Cập nhật" : "Tạo bài viết"}
+                </Button>
               </DialogFooter>
             </form>
           </div>

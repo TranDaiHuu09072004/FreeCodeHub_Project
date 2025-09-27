@@ -18,7 +18,7 @@ interface UserProps {
 }
 const Home = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [user, setUser] = useState<UserProps | null>(null);
+  const [, setUser] = useState<UserProps | null>(null);
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Home = () => {
         description="Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng
             đầu Việt Nam, tất cả đều miễn phí và chất lượng"
         showButton={true}
-        image="../assets/img/banner_img.png"
+        image="/assets/img/banner_img.png"
       />
       <section className="course_popular my-[35px]">
         <div className="relative pl-4">
@@ -249,10 +249,10 @@ const Home = () => {
             </div>
             <div className="content">
               <p className="text-[#E5E4E4] text-[14px]">
-                "Khóa học tại FreeCodeHub giúp tôi rất nhiều trong việc học lập
-                trình web. Những kiến thức tôi học được rất dễ hiểu và ứng dụng
-                ngay vào công việc. Cảm ơn FreeCodeHub đã mang đến cơ hội học
-                tập tuyệt vời này."
+                &quot;Khóa học tại FreeCodeHub giúp tôi rất nhiều trong việc học
+                lập trình web. Những kiến thức tôi học được rất dễ hiểu và ứng
+                dụng ngay vào công việc. Cảm ơn FreeCodeHub đã mang đến cơ hội
+                học tập tuyệt vời này.&quot;
               </p>
             </div>
           </div>

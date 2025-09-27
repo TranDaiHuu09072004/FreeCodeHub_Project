@@ -2,7 +2,12 @@
 type MyQuillProps = {
   value: string;
   onChange: (value: string) => void;
-  modules?: any;
+  modules?: {
+    toolbar?: {
+      container?: unknown;
+      handlers?: Record<string, (...args: unknown[]) => void>;
+    };
+  };
   formats?: string[];
   theme?: string;
   style?: React.CSSProperties;

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
+import Image from "next/image";
 
 const baseListMenu = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
@@ -76,9 +77,20 @@ const SidebarUser = ({ className = "" }) => {
         <div className="p-4 border-t border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#654ea3] rounded-full flex items-center justify-center">
-                <span className="text-white text-xl">{user.name[0]}</span>
-              </div>
+              {user && user.avatar ? (
+                <Image
+                  src={user.avatar}
+                  alt={user.name}
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 bg-[#654ea3] rounded-full flex items-center justify-center">
+                  <span className="text-white text-xl">{user.name[0]}</span>
+                </div>
+              )}
+
               <div className="flex flex-col">
                 <span className="text-white text-sm font-medium">
                   {user.name}

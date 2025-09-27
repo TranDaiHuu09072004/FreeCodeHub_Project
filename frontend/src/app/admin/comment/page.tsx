@@ -22,8 +22,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { isAxiosError } from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Comment } from "@/app/(client)/blog/page";
+import Image from "next/image";
 
 export type CommentFormValue = {
   _id: string;
@@ -74,8 +76,12 @@ const Comment_Management = () => {
       await axiosInstance.delete(`comments/${deleteComment._id}`);
       toast.success("Xóa bình luận thành công!!!");
       fetchComments();
-    } catch (error) {
-      toast.error("Xóa bình luận thất bại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Xóa bình luận thất bại");
+      } else {
+        toast.error("Xóa bình luận thất bại");
+      }
     } finally {
       setDeleteDialog(false);
       setDeleteComment(null);
@@ -133,7 +139,7 @@ const Comment_Management = () => {
                   <h5 className="text-white">{c.userId.name}</h5>
                 </TableCell>
                 <TableCell>
-                  <img
+                  <Image
                     src={
                       c.userId.avatar
                         ? c.userId.avatar.startsWith("http")
@@ -141,6 +147,8 @@ const Comment_Management = () => {
                           : `http://localhost:5000${c.userId.avatar}`
                         : "https://placehold.co/100"
                     }
+                    width={32}
+                    height={32}
                     alt={c.userId.name}
                     className="h-[32px] w-[32px] rounded-full object-cover"
                   />

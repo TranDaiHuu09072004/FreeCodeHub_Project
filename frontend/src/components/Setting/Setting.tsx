@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
+import Image from "next/image";
 
 const Setting = () => {
   // State variables for profile data
@@ -64,8 +65,14 @@ const Setting = () => {
       );
 
       toast.success("Mật khẩu đã được thay đổi thành công");
-    } catch (error) {
-      toast.error("Có lỗi xảy ra khi đổi mật khẩu");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || "Có lỗi xảy ra khi đổi mật khẩu"
+        );
+      } else {
+        toast.error("Có lỗi xảy ra khi đổi mật khẩu");
+      }
     }
   };
 
@@ -90,7 +97,7 @@ const Setting = () => {
       });
       return;
     }
-  }, []);
+  }, [loading, user, router]);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -201,7 +208,6 @@ const Setting = () => {
           {tabs.map((tab) => (
             <Button
               key={tab.id}
-              children={tab.label}
               icon={tab.icon}
               onClick={() => setActiveTab(tab.id)}
               className={`xl:px-4 xl:py-2 max-sm:py-2 max-sm:px-1 transition-all ${
@@ -209,7 +215,9 @@ const Setting = () => {
                   ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white rounded-[10px] font-bold"
                   : "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent rounded-[10px] font-bold"
               }`}
-            />
+            >
+              {tab.label}
+            </Button>
           ))}
         </div>
 
@@ -219,9 +227,11 @@ const Setting = () => {
               <div className="flex max-sm:flex-col items-start gap-8">
                 <div className="xl:w-[120px] max-sm:w-full">
                   {/* Use profileAvatar state for img src */}
-                  <img
+                  <Image
                     src={profileAvatar || "/default-avatar.png"} // Fallback avatar
                     alt="Profile"
+                    width={120}
+                    height={120}
                     className="rounded-full w-[120px] h-[120px] object-cover max-sm:mx-auto"
                   />
                   <input
@@ -262,10 +272,11 @@ const Setting = () => {
                     />
                   </div>
                   <Button
-                    children="Cập nhật hồ sơ"
                     onClick={handleProfileUpdate}
                     className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] px-4 py-2 rounded-[10px] xl:w-[150px] max-sm:w-full"
-                  />
+                  >
+                    Cập nhật hồ sơ
+                  </Button>
                 </div>
               </div>
             </div>
@@ -314,10 +325,11 @@ const Setting = () => {
                   />
                 </div>
                 <Button
-                  children="Cập nhật mật khẩu"
                   onClick={handleChangePassWord}
                   className="xl:w-[200px] max-sm:w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] px-2 py-2 rounded-[10px] "
-                />
+                >
+                  Cập nhật mật khẩu
+                </Button>
               </div>
             </div>
           )}
@@ -339,7 +351,6 @@ const Setting = () => {
                 {themeDarkMode.map((item) => (
                   <Button
                     key={item.id}
-                    children={item.label}
                     onClick={() =>
                       setTheme(resolvedTheme === "light" ? "dark" : "light")
                     }
@@ -348,7 +359,9 @@ const Setting = () => {
                         ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white rounded-[10px] font-bold"
                         : "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] bg-clip-text text-transparent rounded-[10px] font-bold"
                     }`}
-                  />
+                  >
+                    {item.label}
+                  </Button>
                 ))}
               </div>
             </div>

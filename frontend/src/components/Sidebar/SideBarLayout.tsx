@@ -14,7 +14,7 @@ const SidebarLayout = ({ className = "" }) => {
     if (!user && !loading) {
       router.push("/login");
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   if (loading) {
     // Có thể return null hoặc một spinner/loading nếu muốn

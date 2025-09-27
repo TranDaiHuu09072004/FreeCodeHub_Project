@@ -8,51 +8,57 @@ const Sidebar = ({ className = "" }) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  const baseMenuAdmin = [
-    {
-      href: "/dashboard/courses",
-      icon: "fa-solid fa-book-open",
-      label: "Quản lý khóa học",
-    },
-    {
-      href: "/dashboard/blogs",
-      icon: "fa-solid fa-file",
-      label: "Quản lý bài viết",
-    },
-    {
-      href: "/dashboard/users",
-      icon: "fa-solid fa-users",
-      label: "Quản lý người dùng",
-    },
-    {
-      href: "/dashboard/comments",
-      icon: "fa-solid fa-comments",
-      label: "Quản lý bình luận",
-    },
-    {
-      href: "/dashboard/categories",
-      icon: "fa-solid fa-layer-group",
-      label: "Quản lý danh mục",
-    },
-    {
-      href: "/dashboard/authors",
-      icon: "fa-solid fa-pen-nib",
-      label: "Quản lý tác giả",
-    },
-  ];
+  const baseMenuAdmin = React.useMemo(
+    () => [
+      {
+        href: "/dashboard/courses",
+        icon: "fa-solid fa-book-open",
+        label: "Quản lý khóa học",
+      },
+      {
+        href: "/dashboard/blogs",
+        icon: "fa-solid fa-file",
+        label: "Quản lý bài viết",
+      },
+      {
+        href: "/dashboard/users",
+        icon: "fa-solid fa-users",
+        label: "Quản lý người dùng",
+      },
+      {
+        href: "/dashboard/comments",
+        icon: "fa-solid fa-comments",
+        label: "Quản lý bình luận",
+      },
+      {
+        href: "/dashboard/categories",
+        icon: "fa-solid fa-layer-group",
+        label: "Quản lý danh mục",
+      },
+      {
+        href: "/dashboard/authors",
+        icon: "fa-solid fa-pen-nib",
+        label: "Quản lý tác giả",
+      },
+    ],
+    []
+  );
 
-  const baseMenuAuthor = [
-    {
-      href: "/dashboard/courses",
-      icon: "fa-solid fa-book-open",
-      label: "Quản lý khóa học",
-    },
-    {
-      href: "/dashboard/blogs",
-      icon: "fa-solid fa-file",
-      label: "Quản lý bài viết",
-    },
-  ];
+  const baseMenuAuthor = React.useMemo(
+    () => [
+      {
+        href: "/dashboard/courses",
+        icon: "fa-solid fa-book-open",
+        label: "Quản lý khóa học",
+      },
+      {
+        href: "/dashboard/blogs",
+        icon: "fa-solid fa-file",
+        label: "Quản lý bài viết",
+      },
+    ],
+    []
+  );
 
   const menuItems = React.useMemo(() => {
     if (!user) {
@@ -76,7 +82,7 @@ const Sidebar = ({ className = "" }) => {
     if (user.role === "admin") return [...baseMenuAdmin, ...common];
     if (user.role === "author") return [...baseMenuAuthor, ...common];
     return common;
-  }, [user]);
+  }, [user, baseMenuAdmin, baseMenuAuthor]);
 
   return (
     <div
@@ -88,7 +94,7 @@ const Sidebar = ({ className = "" }) => {
         </h1>
       </div>
 
-      <div className="flex-grow overflow-y-auto pb-[280px]">
+      <div className="flex-grow overflow-y-auto pb-[230px]">
         <ul className="list_sidebar mt-[20px] text-white px-[30px]">
           {menuItems.map((item, index) => (
             <li

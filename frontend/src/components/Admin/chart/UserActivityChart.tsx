@@ -1,6 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   LineChart,
   Line,

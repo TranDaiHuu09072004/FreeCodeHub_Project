@@ -4,18 +4,27 @@ import Link from "next/link";
 import { useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
+import { isAxiosError } from "axios";
 
 const ChangePassWord = () => {
   const [email, setEmail] = useState("");
-  const handleSendEmail = (e: React.FormEvent) => {
+
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      axiosInstance.post("/forgot-password", {
+      await axiosInstance.post("/forgot-password", {
         email: email,
       });
       toast.success("Email đã được gửi, vui lòng check lại Gmail của bạn!!!");
-    } catch (error) {
-      toast.error("Email không đúng vui lòng thử lại!!!");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message ||
+            "Email không đúng, vui lòng thử lại!!!"
+        );
+      } else {
+        toast.error("Email không đúng, vui lòng thử lại!!!");
+      }
     }
   };
   return (
@@ -40,10 +49,11 @@ const ChangePassWord = () => {
             />
           </div>
           <Button
-            children="Gửi"
             type="submit"
             className="w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium"
-          />
+          >
+            Gửi
+          </Button>
           <p className="text-center mt-4 text-[#7B8798]">
             <Link
               href="/login"

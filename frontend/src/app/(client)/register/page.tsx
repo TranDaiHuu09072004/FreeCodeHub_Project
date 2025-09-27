@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "@/app/utils/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 const Registerschema = yup.object().shape({
   name: yup.string().required("Họ và tên không được để trống"),
@@ -36,7 +37,7 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(Registerschema) });
+  } = useForm<RegisterFormData>({ resolver: yupResolver(Registerschema) });
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
       await axios.post("/register", {
@@ -48,8 +49,12 @@ const Register = () => {
       setTimeout(() => {
         router.push("/login");
       }, 1000);
-    } catch (error) {
-      toast.error("Đăng ký thất bại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Đăng ký thất bại");
+      } else {
+        toast.error("Đăng ký thất bại");
+      }
     }
   };
   return (
@@ -105,9 +110,10 @@ const Register = () => {
           </div>
           <Button
             type="submit"
-            children="Đăng ký"
             className="w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium"
-          />
+          >
+            Đăng ký
+          </Button>
           <p className="text-center mt-4 text-[#7B8798]">
             Đã có tài khoản?{" "}
             <Link

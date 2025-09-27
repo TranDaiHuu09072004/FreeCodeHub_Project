@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import React, { useMemo, useRef } from "react";
+import type ReactQuillType from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import axiosInstance from "@/app/utils/axiosInstance";
 
@@ -14,7 +15,7 @@ type EditorProps = {
 };
 
 const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
-  const quillRef = useRef<any>(null);
+  const quillRef = useRef<ReactQuillType | null>(null);
 
   const imageHandler = () => {
     const input = document.createElement("input");
@@ -33,10 +34,10 @@ const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
         const res = await axiosInstance.post("/upload", formData);
         const imageUrl = res.data.url;
 
-        const editor = quillRef.current?.getEditor();
+        const editor = quillRef.current?.getEditor?.();
         const range = editor?.getSelection();
 
-        if (range) {
+        if (editor && range) {
           editor.insertEmbed(range.index, "image", imageUrl);
         }
       } catch (error) {

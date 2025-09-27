@@ -8,7 +8,7 @@ export interface InputSearch {
   className: string;
   apiEndpoint: string;
   queryParam?: string;
-  onResults: (data: any[]) => void;
+  onResults: (data: unknown[]) => void;
 }
 import { toast, ToastContainer } from "react-toastify";
 const InputSearch = ({
@@ -28,8 +28,12 @@ const InputSearch = ({
       const res = await axiosInstance.get(url);
 
       onResults(res.data);
-    } catch (error: any) {
-      if (error.response?.status === 404) {
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        (error as { response?: { status?: number } }).response?.status === 404
+      ) {
         window.location.href = "/not-found";
         return;
       }

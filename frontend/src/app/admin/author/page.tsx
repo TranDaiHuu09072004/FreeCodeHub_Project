@@ -33,11 +33,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { isAxiosError } from "axios";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import Image from "next/image";
 export interface AuthorAdmin {
   _id: string;
   name: string;
@@ -127,8 +129,12 @@ const Author_Management = () => {
       setIsDialogOpen(false);
       setIsEditingAuthors(null);
       fetchAuthors();
-    } catch (error) {
-      toast.error("Server lỗi");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Server lỗi");
+      } else {
+        toast.error("Server lỗi");
+      }
     }
   };
 
@@ -178,8 +184,12 @@ const Author_Management = () => {
       if (!deleteAuthor) return;
       axiosInstance.delete(`/authors/${deleteAuthor._id}`);
       toast.success("Xóa tác giả thành công");
-    } catch (error) {
-      toast.error("Lỗi Server");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Lỗi Server");
+      } else {
+        toast.error("Lỗi Server");
+      }
     }
   };
   return (
@@ -202,9 +212,10 @@ const Author_Management = () => {
           <Button
             onClick={openCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-            children="Thêm tác giả"
             icon="fa-solid fa-circle-plus"
-          />
+          >
+            Thêm tác giả
+          </Button>
         </div>
         <div className="search_input bg-[#121826] rounded-[3px] p-3 flex items-center gap-[10px] my-[10px] h-[40px]">
           <i className="fa-solid fa-magnifying-glass text-[#677d9b] cursor-pointer"></i>{" "}
@@ -235,8 +246,8 @@ const Author_Management = () => {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                      <img
+                    <div className="image relative h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
+                      <Image
                         src={au.avatar || "https://placehold.co/100"}
                         alt=""
                         className="h-full w-full object-cover"
@@ -324,9 +335,9 @@ const Author_Management = () => {
                 <label htmlFor="image_author" className="mb-3 font-bold">
                   Ảnh đại diện
                 </label>
-                <div className="w-[128px] h-[128px] mb-3">
+                <div className="relative w-[128px] h-[128px] mb-3">
                   {" "}
-                  <img
+                  <Image
                     src={
                       previewImage
                         ? previewImage
@@ -335,6 +346,7 @@ const Author_Management = () => {
                         : "https://avatars.githubusercontent.com/u/124599?v=4"
                     }
                     alt="Ảnh đại diện"
+                    fill
                     className="h-full w-full object-cover rounded-full"
                   />
                 </div>
@@ -417,8 +429,9 @@ const Author_Management = () => {
                   <Button
                     type="submit"
                     className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-                    children={isEditingAuthor ? "Cập nhật" : "Tạo tác giả"}
-                  />
+                  >
+                    {isEditingAuthor ? "Cập nhật" : "Tạo tác giả"}
+                  </Button>
                 </DialogFooter>
               </div>
             </form>

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import ItemBlogList from "@/components/User/ItemBlogList";
+import Image from "next/image";
 export interface Comment {
   _id: string;
   userId: {
@@ -21,6 +22,11 @@ export interface Comment {
   };
   content: string;
   createdAt: string; // dạng ISO string khi trả từ API
+}
+
+interface Category {
+  _id: string; // hoặc id nếu API trả về id
+  name: string;
 }
 
 export interface Blog {
@@ -45,10 +51,10 @@ const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Tất cả");
   const [blogFeatured, setBlogFeatured] = useState<Blog | null>(null);
   const [activeButton, setActiveButton] = useState<number | null>(0);
-  const handleButtonClick = (id: number) => {
+  const handleButtonClick = (id: number, cat: string) => {
     setActiveButton(id);
+    setSelectedCategory(cat);
   };
-
   useEffect(() => {
     axiosInstance
       .get("/blogs/featured")
@@ -57,16 +63,20 @@ const Blog = () => {
           setBlogFeatured(res.data[0]); // ✅ Lấy phần tử đầu tiên
         }
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         console.log("FetchData Blogs Nổi bật thất bại", error);
       });
   }, []);
 
   useEffect(() => {
-    axiosInstance.get("/categories").then((res) => {
-      // Giả sử API trả về mảng các object có thuộc tính name
-      setCategories(["Tất cả", ...res.data.map((cat: any) => cat.name)]);
-    });
+    axiosInstance
+      .get<Category[]>("/categories")
+      .then((res) => {
+        setCategories(["Tất cả", ...res.data.map((cat) => cat.name)]);
+      })
+      .catch((error: unknown) => {
+        console.log("Fetch categories failed", error);
+      });
   }, []);
   return (
     <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
@@ -81,30 +91,30 @@ const Blog = () => {
           {categories.map((cat, index) => (
             <Button
               key={index}
-              children={cat}
               isNumber_blog={true}
-              // Có thể thay bằng số bài viết từng category nếu muốn
               className={`py-[10px] px-[30px] rounded-[5px] cursor-pointer ${
                 activeButton === index
                   ? "text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3]"
                   : "text-white bg-[#1A1F2B]"
               }`}
-              onClick={() => {
-                setActiveButton(index);
-                setSelectedCategory(cat);
-              }}
-            />
+              onClick={() => handleButtonClick(index, cat)}
+            >
+              {cat}
+            </Button>
           ))}
         </div>
       </section>
       {blogFeatured && (
         <section className="blog_hot">
           <div className="item-detail_course flex max-xl:flex-col">
-            <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px]">
-              <img
+            <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px] relative xl:h-[300px] max-sm:h-[200px]">
+              {" "}
+              {/* Thêm relative và một chiều cao cụ thể */}
+              <Image
                 src={blogFeatured.thumbnail || "https://placehold.co/600x400"}
-                alt=""
-                className="rounded-[10px] w-full"
+                alt="Mô tả hình ảnh"
+                className="rounded-[10px] object-cover" // Thêm object-cover để ảnh không bị bóp méo khi fill
+                fill // Sử dụng fill thay vì width và height
               />
             </div>
             <div className="content_detail xl:pl-[37px] xl:w-[50%] max-xl:w-full">
@@ -132,10 +142,9 @@ const Blog = () => {
                 </div>
               </div>
               <Link href={`/blog/${blogFeatured.slug}`}>
-                <Button
-                  children="Đọc bài viết"
-                  className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
-                />
+                <Button className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer">
+                  Đọc bài viết
+                </Button>
               </Link>
             </div>
           </div>

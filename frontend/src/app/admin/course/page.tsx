@@ -34,6 +34,7 @@ import {
 import ReactPaginate from "react-paginate";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { isAxiosError } from "axios";
 import * as yup from "yup";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,6 +42,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Course } from "@/components/User/ItemProduct";
 import CreateLesson from "@/components/Admin/CreateLesson/CreateLesson";
 import LessonList from "@/components/Admin/CreateLesson/LessonList";
+import Image from "next/image";
 
 type CoursesValue = {
   _id: string;
@@ -159,8 +161,12 @@ const Course_Management = () => {
       }
 
       fetchCourses();
-    } catch (error) {
-      toast.error("Lỗi Server");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Lỗi Server");
+      } else {
+        toast.error("Lỗi Server");
+      }
     }
   };
 
@@ -224,8 +230,12 @@ const Course_Management = () => {
       await axiosInstance.delete(`courses/${deletedCourses._id}`);
       toast.success("Xóa Khóa thành công!!!");
       fetchCourses();
-    } catch (error) {
-      toast.error("Xóa khóa học thất bại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Xóa khóa học thất bại");
+      } else {
+        toast.error("Xóa khóa học thất bại");
+      }
     } finally {
       setDeleteDialog(false);
       setDeletedCourses(null);
@@ -253,9 +263,10 @@ const Course_Management = () => {
           <Button
             onClick={OpenCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] !py-[8px] !px-[15px] rounded-[5px] cursor-pointer"
-            children="Thêm khóa học"
             icon="fa-solid fa-circle-plus"
-          />
+          >
+            Thêm khóa học
+          </Button>
         </div>
         <div className="search_input bg-[#121826] rounded-[3px] p-3 flex items-center gap-[10px] my-[10px] h-[40px]">
           <i className="fa-solid fa-magnifying-glass text-[#677d9b] cursor-pointer"></i>{" "}
@@ -285,8 +296,8 @@ const Course_Management = () => {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="image h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
-                      <img
+                    <div className="image relative h-[48px] w-[64px] rounded-[3px] bg-purple flex items-center justify-center text-white overflow-hidden">
+                      <Image
                         src={
                           c.thumbnail
                             ? c.thumbnail.startsWith("http")
@@ -295,6 +306,7 @@ const Course_Management = () => {
                             : "https://placehold.co/100"
                         }
                         alt={c.thumbnail}
+                        fill
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -449,12 +461,14 @@ const Course_Management = () => {
                         Ảnh Tác giả
                       </Label>
                       {editingCourses?.image_author && (
-                        <img
+                        <Image
                           src={
                             editingCourses.image_author.startsWith("http")
                               ? editingCourses.image_author
                               : `http://localhost:5000${editingCourses.image_author}`
                           }
+                          width={80}
+                          height={80}
                           alt="Ảnh đại diện"
                           className="h-[80px] w-[80px] object-cover rounded-full mb-2"
                         />
@@ -549,7 +563,9 @@ const Course_Management = () => {
                         Ảnh Thumbnail
                       </Label>
                       {editingCourses?.thumbnail && (
-                        <img
+                        <Image
+                          width={80}
+                          height={80}
                           src={
                             editingCourses.thumbnail.startsWith("http")
                               ? editingCourses.thumbnail
@@ -640,8 +656,9 @@ const Course_Management = () => {
                 <Button
                   type="submit"
                   className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-                  children={editingCourses ? "Cập nhật" : "Tạo khóa học"}
-                />
+                >
+                  {editingCourses ? "Cập nhật" : "Tạo khóa học"}
+                </Button>
               </DialogFooter>
             </form>
           </div>

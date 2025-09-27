@@ -1,6 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
-import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
@@ -45,7 +43,7 @@ export interface CourseDetail extends Course {
   lessons: Lesson[];
 }
 
-const ItemProduct = ({ courses, title }: ItemProductProps) => {
+const ItemProduct = ({ courses }: ItemProductProps) => {
   const router = useRouter();
   const { user } = useAuth();
 
@@ -56,10 +54,10 @@ const ItemProduct = ({ courses, title }: ItemProductProps) => {
     if (
       user &&
       user.registeredCourses &&
-      user.registeredCourses.includes(course.slug)
+      user.registeredCourses.includes(course.slug ?? "")
     ) {
       e.preventDefault();
-      router.push(`/courses/lesson/${course.slug}`);
+      router.push(`/courses/lesson/${course.slug ?? ""}`);
     }
   };
 
@@ -68,12 +66,17 @@ const ItemProduct = ({ courses, title }: ItemProductProps) => {
       {courses.map((course, index) => (
         <Link
           key={index}
-          href={`/courses/${course.slug}`}
+          href={`/courses/${course.slug ?? ""}`}
           onClick={(e) => handleRegisterCourse(e, course)}
         >
           <div className="item_course bg-[#1A1F2B] rounded-t-[10px] rounded-b-[10px] hover:translate-y-[-10px] transition-all duration-300">
-            <div className="w-full h-[200px] object-cover relative rounded-t-[10px] overflow-hidden">
-              <Image src={course.thumbnail} alt="" fill className="" />
+            <div className="w-full h-[200px] relative rounded-t-[10px] overflow-hidden">
+              <Image
+                src={course.thumbnail}
+                alt={course.title}
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="content_course p-[25px]">
               <h1 className="text-[20px] font-bold text-white mb-[10px] line-clamp-2 overflow-hidden text-ellipsis">
@@ -81,9 +84,11 @@ const ItemProduct = ({ courses, title }: ItemProductProps) => {
               </h1>
               <div className="author flex items-center justify-between relative">
                 <div>
-                  <img
+                  <Image
                     src={course.image_author}
                     alt=""
+                    width={30}
+                    height={30}
                     className="author_img rounded-full w-[30px] h-[30px] inline-block mr-[10px]"
                   />
                   <span>

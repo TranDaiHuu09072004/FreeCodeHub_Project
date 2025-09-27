@@ -1,5 +1,6 @@
 "use client";
 import { ItemBlogs } from "@/app/types/ItemBlog.type";
+import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -13,10 +14,11 @@ const ItemBlog = ({ blog }: Props) => {
         key={blog._id}
         className="item_blog bg-[#1A1F2B] rounded-[10px] hover:translate-y-[-10px] transition-all duration-300"
       >
-        <div className="img_blog">
-          <img
+        <div className="img_blog relative w-full h-[200px] rounded-t-[10px]">
+          <Image
             src={blog.thumbnail}
             alt={blog.title}
+            fill
             className="w-full h-[200px] rounded-t-[10px] object-cover"
           />
         </div>
@@ -27,9 +29,11 @@ const ItemBlog = ({ blog }: Props) => {
               <span className="text-white">{blog.date}</span>
             </div>
             <div className="author flex items-center gap-2">
-              <img
+              <Image
                 src={blog?.imageAuthor || "https://github.com/shadcn.png"}
                 alt=""
+                width={40}
+                height={40}
                 className="w-[40px] h-[40px] rounded-full"
               />
               <span className="text-white">{blog.author}</span>

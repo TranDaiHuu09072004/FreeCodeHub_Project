@@ -13,10 +13,11 @@ import CoursePerformanceChart from "@/components/Admin/chart/CoursePerformanceCh
 import Button from "@/components/User/Button";
 import { useAuth } from "@/app/Context/AuthContext";
 import axios from "@/app/utils/axiosInstance";
+import Image from "next/image";
 
 const Dashboard = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const { logout } = useAuth();
 
   // Dynamic counts
@@ -30,15 +31,14 @@ const Dashboard = () => {
   const [coursePerformance, setCoursePerformance] = useState(
     coursePerformanceData
   );
-  const [userDistribution, setUserDistribution] = useState(
-    userDistributionData
-  );
+  const [userDistribution, setUserDistribution] =
+    useState(userDistributionData);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
-        !(dropdownRef.current as any).contains(event.target)
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setShowDropdown(false);
       }
@@ -59,12 +59,22 @@ const Dashboard = () => {
           axios.get("/blogs"),
         ]);
 
-        const users: any[] = Array.isArray(usersRes.data) ? usersRes.data : [];
-        const courses: any[] = Array.isArray(coursesRes.data)
-          ? coursesRes.data
+        type UserLite = {
+          createdAt?: string;
+          registeredCourses?: string[];
+          role?: string;
+        };
+        type CourseLite = { _id: string; title: string; slug: string };
+        type LessonLite = { courseId?: string | { toString?: () => string } };
+
+        const users: UserLite[] = Array.isArray(usersRes.data)
+          ? (usersRes.data as UserLite[])
           : [];
-        const lessons: any[] = Array.isArray(lessonsRes.data)
-          ? lessonsRes.data
+        const courses: CourseLite[] = Array.isArray(coursesRes.data)
+          ? (coursesRes.data as CourseLite[])
+          : [];
+        const lessons: LessonLite[] = Array.isArray(lessonsRes.data)
+          ? (lessonsRes.data as LessonLite[])
           : [];
 
         // Counts
@@ -77,7 +87,7 @@ const Dashboard = () => {
         const currentYear = new Date().getFullYear();
         const monthlyActivity = Array.from({ length: 12 }, (_, i) => {
           const count = users.filter((u) => {
-            const created = new Date(u.createdAt);
+            const created = new Date(u.createdAt ?? "");
             return (
               !isNaN(created.getTime()) &&
               created.getFullYear() === currentYear &&
@@ -122,13 +132,14 @@ const Dashboard = () => {
           return acc;
         }, {});
         const totalUsers = users.length || 1;
-        const distribution = Object.entries(roleCounts).map(([name, value]) => ({
-          name,
-          value: Math.round((value * 100) / totalUsers),
-        }));
+        const distribution = Object.entries(roleCounts).map(
+          ([name, value]) => ({
+            name,
+            value: Math.round((value * 100) / totalUsers),
+          })
+        );
         setUserDistribution(distribution);
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("Failed to fetch dashboard data", error);
       }
     };
@@ -205,7 +216,9 @@ const Dashboard = () => {
             ref={dropdownRef}
           >
             <div className="avatar">
-              <img
+              <Image
+                width={24}
+                height={24}
                 src="https://avatars.githubusercontent.com/u/124599?v=4"
                 alt=""
                 className="w-[24px] h-[24px] rounded-full"

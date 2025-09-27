@@ -10,7 +10,12 @@ import {
 interface User {
   name: string;
   email: string;
-  [key: string]: any;
+  role?: string;
+  avatar?: string;
+  registeredCourses?: string[];
+  date_or_birth?: string;
+  id?: string;
+  _id?: string;
 }
 
 interface AuthContextType {

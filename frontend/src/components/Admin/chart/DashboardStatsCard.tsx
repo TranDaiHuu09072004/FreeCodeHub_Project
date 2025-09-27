@@ -13,7 +13,6 @@ const DashboardStatsCard = ({
   value,
   icon,
   change,
-  color,
 }: DashboardStatsCardProps) => {
   const isPositive = !change.includes("-") && !change.includes("down");
   return (

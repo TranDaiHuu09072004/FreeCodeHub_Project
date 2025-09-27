@@ -1,4 +1,5 @@
-import InputSearch from "@/components/User/InputSearch";
+import Image from "next/image";
+import Link from "next/link";
 
 type Banner = {
   name: string;
@@ -9,14 +10,7 @@ type Banner = {
   isSearch?: boolean;
   placeholder?: string;
 };
-const Banner = ({
-  name,
-  description,
-  showButton,
-  image,
-  isSearch,
-  placeholder = "Tìm kiếm...",
-}: Banner) => {
+const Banner = ({ name, description, showButton, image }: Banner) => {
   return (
     <>
       <section className="banner_home w-[100%] flex justify-between items-center rounded-[10px] max-[1080px]:h-[16rem] max-[1080px]:p-5 max-sm:h-full max-sm:p-[2rem] min-[1080px]:p-[32px] 2xl:p-[20px] 2xl:py-[30px] 2xl:px-[80px] bg-gradient-to-l from-[#eaafc8] to-[#654ea3]">
@@ -37,17 +31,22 @@ const Banner = ({
             />
           )} */}
           {showButton && (
-            <a
+            <Link
               href="/courses"
               className="bg-[#E7E3E3] rounded-[30px] py-2 px-4 text-[#121826] inline-block cursor-pointer"
             >
               Xem ngay
-            </a>
+            </Link>
           )}
         </div>
-        <div className="img_banner min-[1046px]:w-[50%] min-[1046px]:block max-[1080px]:hidden">
-          <img
-            src={image}
+        <div className="img_banner relative h-[50%]  min-[1046px]:w-[50%] min-[1046px]:block max-[1080px]:hidden">
+          <Image
+            src={
+              image && (image.startsWith("/") || image.startsWith("http"))
+                ? image
+                : "/assets/img/banner_img.png"
+            }
+            fill
             alt=""
             className="object-cover 2xl:ml-[207px] max-2xl:ml-auto max-lg:hidden"
           />

@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/Context/AuthContext";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 const DetailCourses = () => {
   const { slug } = useParams();
@@ -45,7 +46,7 @@ const DetailCourses = () => {
       try {
         const response = await axios.post("/register-courses", {
           courseSlug: slug, // Assuming the API expects courseSlug
-          userId: user.id, // Assuming user object has an 'id'
+          userId: user.id ?? user._id, // support both id shapes
         });
 
         if (response.data) {
@@ -79,15 +80,16 @@ const DetailCourses = () => {
       <Banner
         name="Chi tiết khóa học"
         description="Chọn khóa học chi tiết của bạn"
-        image="../assets/img/banne_detail-course.png"
+        image="/assets/img/banne_detail-course.png"
       />
       <section className="detail_course bg-[#1F212C] rounded-[10px] p-[35px] my-[35px] ">
         <div className="item-detail_course flex max-2xl:flex-col">
-          <div className="img_detail 2xl:w-[50%] max-2xl:w-full bg-[#121826] p-[10px] rounded-[10px]">
-            <img
-              src={detailCourses?.thumbnail}
-              alt=""
-              className="rounded-[10px] w-full h-full object-cover"
+          <div className="img_detail relative 2xl:w-[50%] max-2xl:w-full bg-[#121826] p-[10px] rounded-[10px] xl:h-[310px] max-sm:h-[170px]">
+            <Image
+              src={detailCourses?.thumbnail || "/fallback.jpg"}
+              alt="Course Thumbnail"
+              fill
+              className="rounded-[10px] object-contain"
             />
           </div>
           <div className="content_detail 2xl:pl-[37px] 2xl:w-[50%] max-2xl:w-full">
@@ -107,10 +109,11 @@ const DetailCourses = () => {
               {detailCourses?.description}
             </p>
             <Button
-              children="Đăng ký ngay"
               className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
               onClick={handleRegisterCourse}
-            />
+            >
+              Đăng ký ngay
+            </Button>
           </div>
         </div>
       </section>

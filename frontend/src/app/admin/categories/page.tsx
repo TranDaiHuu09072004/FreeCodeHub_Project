@@ -32,6 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { isAxiosError } from "axios";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -107,8 +108,14 @@ const Category_Management = () => {
       setIsDialogOpen(false);
       setIsEditingCate(null);
       fetchCate();
-    } catch (error) {
-      toast.error("Có lỗi xảy ra vui lòng thử lại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || "Có lỗi xảy ra vui lòng thử lại"
+        );
+      } else {
+        toast.error("Có lỗi xảy ra vui lòng thử lại");
+      }
     }
   };
 
@@ -132,8 +139,12 @@ const Category_Management = () => {
       await axiosInstance.delete(`categories/${deleteCate._id}`);
       toast.success("Xóa Danh mục thành công!!!");
       fetchCate();
-    } catch (error) {
-      toast.error("Xóa danh mục thất bại");
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Xóa danh mục thất bại");
+      } else {
+        toast.error("Xóa danh mục thất bại");
+      }
     } finally {
       setDeleteDialog(false);
       setDeleteCate(null);
@@ -161,9 +172,10 @@ const Category_Management = () => {
           <Button
             onClick={openCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-            children="Thêm danh mục"
             icon="fa-solid fa-circle-plus"
-          />
+          >
+            Thêm danh mục
+          </Button>
         </div>
         <div className="search_input bg-[#121826] rounded-[3px] p-3 flex items-center gap-[10px] my-[10px] h-[40px]">
           <i className="fa-solid fa-magnifying-glass text-[#677d9b] cursor-pointer"></i>{" "}
@@ -287,8 +299,9 @@ const Category_Management = () => {
                 <Button
                   type="submit"
                   className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-                  children={isEditingCate ? "Cập nhật" : "Tạo danh mục"}
-                />
+                >
+                  {isEditingCate ? "Cập nhật" : "Tạo danh mục"}
+                </Button>
               </DialogFooter>
             </form>
           </div>

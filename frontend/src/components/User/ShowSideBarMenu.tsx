@@ -1,11 +1,9 @@
 "use client";
 import SidebarMobile from "@/components/Sidebar/SidebarMobile";
 import { useState } from "react";
-import { useAuth } from "@/app/Context/AuthContext"; // thêm dòng này
 
 const ShowSideBarMenu = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const { user } = useAuth(); // lấy user từ context
 
   return (
     <>

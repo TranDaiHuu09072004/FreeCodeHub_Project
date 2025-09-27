@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/Context/AuthContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ListCoursesProps {
   courses?: Course[]; // Optional prop to pass search results
@@ -73,22 +74,29 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
           className="items_course bg-[#141625] p-[16px] rounded-[10px] flex items-center justify-between mb-[20px]"
         >
           <div className="content_course flex">
-            <img
-              src={listcourse.thumbnail}
-              alt=""
-              className="w-[94px] h-auto rounded-[5px]"
-            />
+            <div className="relative w-[94px] h-[60px] rounded-[5px] overflow-hidden">
+              <Image
+                src={
+                  listcourse.thumbnail ||
+                  "https://placehold.co/94x60?text=No+Image"
+                }
+                alt={listcourse.title || "Course Thumbnail"}
+                fill
+                className="object-cover rounded-[5px]"
+              />
+            </div>
             <div className="name_course ml-[20px]">
-              <h3 className="text-[#E5E4E4] text-[18px] max-sm:text-[15px] max-w-[160px] truncate">
+              <h3 className="text-[#E5E4E4] text-[18px] max-sm:text-[15px] xl:max-w-[160px] max-sm:max-w-[100px] truncate">
                 {listcourse.title}
               </h3>
-              <p className="max-w-[170px] truncate">
+              <p className="xl:max-w-[170px] max-sm:max-w-[150px] truncate">
                 <i className="text-[#9D9DA3] max-sm:text-[14px] ">
                   {listcourse.slogan}
                 </i>
               </p>
             </div>
           </div>
+
           <div className="author max-lg:hidden">
             <h5 className="text-white">
               <i className="fa-solid fa-user"></i> Tác giả
@@ -109,19 +117,20 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
           <div className="max-sm:hidden">
             <Button
               className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer "
-              children="Học ngay"
               onClick={() => {
                 if (
                   user &&
                   user.registeredCourses &&
-                  user.registeredCourses.includes(listcourse.slug)
+                  user.registeredCourses.includes(listcourse.slug ?? "")
                 ) {
-                  router.push(`/lesson/${listcourse.slug}`);
+                  router.push(`/lesson/${listcourse.slug ?? ""}`);
                 } else {
-                  router.push(`/courses/${listcourse.slug}`);
+                  router.push(`/courses/${listcourse.slug ?? ""}`);
                 }
               }}
-            />
+            >
+              Học ngay
+            </Button>
           </div>
         </div>
       ))}

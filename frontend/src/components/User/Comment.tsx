@@ -1,31 +1,37 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@/components/User/Button";
 import { useAuth } from "@/app/Context/AuthContext";
 import axiosInstance from "@/app/utils/axiosInstance";
+import Image from "next/image";
 
 interface CommentProps {
   targetId?: string;
 }
 
-type RenderableComment = {
-  user: string;
-  avatar?: string;
+export type CommentT = {
+  _id: string;
+  userId: {
+    _id: string;
+    name: string;
+    avatar?: string;
+    createdAt?: string;
+  };
+  targetType: string;
+  targetId: {
+    _id: string;
+    title: string;
+  };
   content: string;
-  createdAt: string;
 };
 
 const Comment: React.FC<CommentProps> = ({ targetId }) => {
   const { user } = useAuth();
   const [content, setContent] = useState("");
-  const [commentList, setCommentList] = useState<RenderableComment[]>([]);
+  const [commentList, setCommentList] = useState<CommentT[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
   const isFetchingRef = useRef(false);
-  const canSubmit = useMemo(
-    () => Boolean(user && content.trim() && targetId),
-    [user, content, targetId]
-  );
 
   // Fetch comments initially and poll; prevent duplicate intervals and cancel inflight on unmount
   useEffect(() => {
@@ -43,27 +49,16 @@ const Comment: React.FC<CommentProps> = ({ targetId }) => {
     }
     controllerRef.current = new AbortController();
 
-    const mapApiToRenderable = (items: any[]): RenderableComment[] => {
-      return items.map((item) => ({
-        user: item?.userId?.name || "Ẩn danh",
-        avatar: item?.userId?.avatar,
-        content: item?.content,
-        createdAt: item?.createdAt,
-      }));
-    };
-
     const fetchComments = async () => {
       if (isFetchingRef.current) return;
       isFetchingRef.current = true;
       try {
         const res = await axiosInstance.get("/comments", {
           params: { targetId },
-          signal: controllerRef.current?.signal as any,
+          signal: controllerRef.current?.signal,
         });
         if (!isMounted) return;
-        setCommentList(mapApiToRenderable(res.data || []));
-      } catch (error: any) {
-        if (error?.name === "CanceledError") return;
+        setCommentList(res.data.comments || []);
       } finally {
         isFetchingRef.current = false;
       }
@@ -102,26 +97,25 @@ const Comment: React.FC<CommentProps> = ({ targetId }) => {
         }
       );
 
-      console.log("Comment created:", res.data);
-
-      // 👉 Cập nhật luôn vào UI
-      // Optimistic append using current user info
+      // Optimistic append using returned comment
       setCommentList((prev) => [
         ...prev,
-        {
-          user: user?.name || "Ẩn danh",
-          avatar: user?.avatar,
-          content: res.data.content,
-          createdAt: res.data.createdAt,
-        },
+        res.data.comment, // backend nên trả về comment mới tạo
       ]);
 
       setContent("");
-    } catch (error: any) {
-      console.error("Lỗi khi tạo comment:", error);
-      alert(error.response?.data?.message || "Có lỗi xảy ra");
+    } catch {
+      alert("Có lỗi xảy ra");
     }
   };
+
+  useEffect(() => {
+    if (targetId) {
+      axiosInstance
+        .get(`/comments?targetId=${targetId}`)
+        .then((res) => setCommentList(res.data.comments || []));
+    }
+  }, [targetId]);
 
   return (
     <div className="comment">
@@ -133,10 +127,12 @@ const Comment: React.FC<CommentProps> = ({ targetId }) => {
       <div className="form_comment bg-[#1a1f2b] p-[16px] mt-[24px] rounded-[5px]">
         <form onSubmit={handleSubmit}>
           <div className="flex gap-[10px]">
-            <img
+            <Image
               src={user?.avatar || "https://github.com/shadcn.png"}
               className="w-[30px] h-[30px] rounded-full"
               alt="user avatar"
+              width={30}
+              height={30}
             />
             <textarea
               value={content}
@@ -148,36 +144,48 @@ const Comment: React.FC<CommentProps> = ({ targetId }) => {
           <div className="flex justify-end mt-[15px]">
             <Button
               type="submit"
-              children="Gửi bình luận"
               icon="fa-regular fa-paper-plane"
               className="text-white text-[13px] bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[16px] rounded-[5px] cursor-pointer "
-            />
+            >
+              Gửi bình luận
+            </Button>
           </div>
         </form>
       </div>
 
       {/* Danh sách comment */}
-      {commentList.map((c, idx) => (
-        <div
-          key={idx}
-          className="show_comment bg-[#1a1f2b] p-[16px] mt-[24px] rounded-[5px]"
-        >
-          <div className="flex gap-[10px]">
-            <img
-              src={c.avatar || "https://github.com/shadcn.png"}
-              className="w-[30px] h-[30px] rounded-full"
-              alt=""
-            />
-            <div className="name_post">
-              <h3 className="text-white font-bold">{c.user}</h3>
-              <span className="text-[#677d9b] text-[13px]">
-                {new Date(c.createdAt).toLocaleString("vi-VN")}
-              </span>
-              <p className="text-white">{c.content}</p>
+
+      <div className="show_comment bg-[#1a1f2b] p-[16px] mt-[24px] rounded-[5px]">
+        {" "}
+        {commentList.length > 0 ? (
+          commentList.map((c) => (
+            <div key={c._id} className="mb-2">
+              <div className="flex gap-[10px]">
+                <Image
+                  src={c.userId.avatar || "https://github.com/shadcn.png"}
+                  className="w-[30px] h-[30px] rounded-full"
+                  alt=""
+                  width={30}
+                  height={30}
+                />
+                <div className="name_post">
+                  <h3 className="text-white font-bold">
+                    {c.userId.name || "Ẩn danh"}
+                  </h3>
+                  <span className="text-[#677d9b] text-[13px]">
+                    {c.userId.createdAt
+                      ? new Date(c.userId.createdAt).toLocaleString("vi-VN")
+                      : ""}
+                  </span>
+                  <p className="text-white">{c.content}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          ))
+        ) : (
+          <span>Hiện chưa có bình luận nào</span>
+        )}
+      </div>
     </div>
   );
 };

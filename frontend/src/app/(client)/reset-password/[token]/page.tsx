@@ -1,5 +1,4 @@
 import Button from "@/components/User/Button";
-import Link from "next/link";
 const ChangePassWord = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121826]">
@@ -27,10 +26,9 @@ const ChangePassWord = () => {
               className="h-[40px] border-none outline-none bg-[#101013] text-[#90A3B8] px-4 w-full rounded-[5px]"
             />
           </div>
-          <Button
-            children="Cập nhật mật khẩu"
-            className="w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium"
-          />
+          <Button className="w-full text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium">
+            Cập nhật mật khẩu{" "}
+          </Button>
         </form>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "@/app/utils/axiosInstance";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export interface Author {
@@ -10,13 +11,6 @@ export interface Author {
   avatar: string;
   numCourses: number;
   numSubscribers: number;
-}
-
-function formatSubscribers(n: number | undefined | null): string {
-  if (n === undefined || n === null || typeof n !== "number") return "0"; // Handle undefined, null, or non-number input
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
-  if (n >= 1000) return (n / 1000).toFixed(0) + "K";
-  return n.toString();
 }
 
 const ChannelAuthor = () => {
@@ -37,9 +31,11 @@ const ChannelAuthor = () => {
             className="item_partner--chanel bg-gradient-to-l from-[#eaafc8] to-[#654ea3] w-[324px] h-[220px] p-5 place-items-center rounded-[10px]"
           >
             <div className="logo_chanel">
-              <img
+              <Image
                 src={listau.avatar}
                 alt=""
+                width={84}
+                height={84}
                 className="img_logo--chanel w-[84px] h-[84px] rounded-[20px]"
               />
             </div>

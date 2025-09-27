@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "@/components/User/Button";
 import {
   Dialog,
@@ -48,7 +48,7 @@ const LessonList: React.FC<LessonListProps> = ({
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchLessons = async () => {
+  const fetchLessons = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get(`/lessons?courseId=${courseId}`);
@@ -59,13 +59,13 @@ const LessonList: React.FC<LessonListProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [courseId]);
 
   useEffect(() => {
     if (isOpen && courseId) {
       fetchLessons();
     }
-  }, [isOpen, courseId]);
+  }, [isOpen, courseId, fetchLessons]);
 
   const handleDeleteLesson = async (lessonId: string) => {
     if (!confirm("Bạn có chắc muốn xóa bài học này?")) return;
@@ -74,8 +74,16 @@ const LessonList: React.FC<LessonListProps> = ({
       await axiosInstance.delete(`/lessons/${lessonId}`);
       toast.success("Xóa bài học thành công!");
       fetchLessons();
-    } catch (error) {
-      toast.error("Lỗi khi xóa bài học");
+    } catch (error: unknown) {
+      const message =
+        typeof error === "object" &&
+        error !== null &&
+        (error as { response?: { data?: { message?: string } } }).response?.data
+          ?.message
+          ? (error as { response?: { data?: { message?: string } } }).response!
+              .data!.message!
+          : "Lỗi khi xóa bài học";
+      toast.error(message);
     }
   };
 
@@ -162,8 +170,6 @@ const LessonList: React.FC<LessonListProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-
-    
   );
 };
 

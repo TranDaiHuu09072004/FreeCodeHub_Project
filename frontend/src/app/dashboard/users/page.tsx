@@ -37,6 +37,7 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
+import Image from "next/image";
 
 export interface UserAdmin {
   _id: string;
@@ -149,9 +150,8 @@ const User_Management = () => {
       const imageUrl = res.data.url;
       setValue("avatar", imageUrl);
       toast.success("Tải ảnh thành công!");
-    } catch (err) {
+    } catch {
       toast.error("Tải ảnh thất bại");
-      console.error("Upload error:", err);
     }
   };
 
@@ -164,7 +164,7 @@ const User_Management = () => {
 
       if (editingUser) {
         if (!payload.password) {
-          delete (payload as any).password;
+          delete (payload as { password?: string }).password;
         }
         await axiosInstance.put(`/users/${editingUser._id}`, payload);
         toast.success("Cập nhật người dùng thành công");
@@ -177,7 +177,7 @@ const User_Management = () => {
       setIsDialogOpen(false);
       setEditingUser(null);
       fetchUsers();
-    } catch (error) {
+    } catch {
       toast.error("Có lỗi xảy ra vui lòng thử lại");
     }
   };
@@ -188,7 +188,7 @@ const User_Management = () => {
       await axiosInstance.delete(`/users/${userToDelete._id}`);
       toast.success("Xóa người dùng thành công");
       fetchUsers();
-    } catch (error) {
+    } catch {
       toast.error("Xóa người dùng thất bại");
     } finally {
       setDeleteDialog(false);
@@ -235,9 +235,10 @@ const User_Management = () => {
           <Button
             onClick={openCreateDialog}
             className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-            children="Thêm người dùng"
             icon="fa-solid fa-user-plus"
-          />
+          >
+            Thêm người dùng
+          </Button>
         </div>
         <div className="search_input bg-[#121826] rounded-[3px] p-3 flex items-center gap-[10px] my-[10px] h-[40px]">
           <i className="fa-solid fa-magnifying-glass text-[#677d9b] cursor-pointer"></i>{" "}
@@ -267,8 +268,8 @@ const User_Management = () => {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <div className="image h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
-                      <img
+                    <div className="image relative h-8 w-8 rounded-full bg-purple flex items-center justify-center text-white overflow-hidden">
+                      <Image
                         src={
                           u.avatar
                             ? u.avatar.startsWith("http")
@@ -276,6 +277,7 @@ const User_Management = () => {
                               : `http://localhost:5000${u.avatar}`
                             : "https://placehold.co/100"
                         }
+                        fill
                         alt={u.name}
                         className="h-full w-full object-cover"
                       />
@@ -466,13 +468,15 @@ const User_Management = () => {
                   </Label>
                   <div className="col-span-3">
                     {editingUser?.avatar && (
-                      <img
+                      <Image
                         src={
                           editingUser.avatar.startsWith("http")
                             ? editingUser.avatar
                             : `http://localhost:5000${editingUser.avatar}`
                         }
                         alt="Ảnh đại diện"
+                        height={80}
+                        width={80}
                         className="h-[80px] w-[80px] object-cover rounded-full mb-2"
                       />
                     )}
@@ -494,8 +498,9 @@ const User_Management = () => {
               <Button
                 type="submit"
                 className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-                children={editingUser ? "Cập nhật" : "Tạo người dùng"}
-              />
+              >
+                {editingUser ? "Cập nhật" : "Tạo người dùng"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

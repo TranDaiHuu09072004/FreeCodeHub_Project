@@ -4,6 +4,7 @@ import Footer from "@/app/layout/Footer";
 import axios from "@/app/utils/axiosInstance";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export interface Authors {
   name: string;
@@ -55,9 +56,11 @@ const About_Us = () => {
           </p>
         </div>
         <div className="image_author xl:w-[50%] max-xl:w-full">
-          <img
-            src="assets/img/name_author.png"
+          <Image
+            src="/assets/img/name_author.png"
             alt=""
+            width={400}
+            height={400}
             className="xl:w-[400px] max-xl:w-full h-auto object-cover rounded-[10px] xl:ml-[165px]"
           />
         </div>
@@ -277,7 +280,9 @@ const About_Us = () => {
               className="item_partner bg-[#1a1f2b] p-5 flex items-center justify-center gap-x-[10px]"
             >
               <div className="img">
-                <img
+                <Image
+                  width={32}
+                  height={32}
                   src={p.avatar}
                   alt=""
                   className="w-[32px] h-[32px] rounded-full"

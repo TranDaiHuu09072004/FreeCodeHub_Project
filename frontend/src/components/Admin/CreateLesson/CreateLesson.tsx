@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/User/Button";
 import {
   Dialog,
@@ -76,11 +76,9 @@ const CreateLesson: React.FC<CreateLessonProps> = ({
         const response = await axiosInstance.get(
           `/lessons?courseId=${courseId}`
         );
-        const lessons = response.data;
+        const lessons = response.data as Array<{ order: number }>;
         const maxOrder =
-          lessons.length > 0
-            ? Math.max(...lessons.map((l: any) => l.order))
-            : 0;
+          lessons.length > 0 ? Math.max(...lessons.map((l) => l.order)) : 0;
         setValue("order", maxOrder + 1);
       } catch (error) {
         console.error("Error fetching lessons for order:", error);
@@ -98,13 +96,19 @@ const CreateLesson: React.FC<CreateLessonProps> = ({
       toast.success("Tạo bài học thành công!");
       reset();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating lesson:", error);
-      if (error.response?.data?.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("Lỗi khi tạo bài học");
+      let message = "Lỗi khi tạo bài học";
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        (error as { response?: { data?: { error?: string } } }).response?.data
+          ?.error
+      ) {
+        message = (error as { response?: { data?: { error?: string } } })
+          .response!.data!.error as string;
       }
+      toast.error(message);
     }
   };
 
@@ -216,13 +220,15 @@ const CreateLesson: React.FC<CreateLessonProps> = ({
               type="button"
               onClick={onClose}
               className="bg-gray-500 text-white py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-              children="Hủy"
-            />
+            >
+              Hủy
+            </Button>
             <Button
               type="submit"
               className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[8px] px-[15px] rounded-[5px] cursor-pointer"
-              children="Tạo bài học"
-            />
+            >
+              Tạo bài học
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

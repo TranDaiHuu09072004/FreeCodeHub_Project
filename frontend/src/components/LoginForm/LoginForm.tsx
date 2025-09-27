@@ -68,7 +68,7 @@ const LoginForm = ({ roleScope }: Props) => {
           router.push("/");
         }
       }, 1000);
-    } catch (error) {
+    } catch {
       toast.error("Email hoặc mật khẩu không đúng!");
     }
   };
@@ -106,9 +106,10 @@ const LoginForm = ({ roleScope }: Props) => {
           </div>
           <Button
             type="submit"
-            children="Đăng nhập"
             className="w-full text-white bg-gradient-to-r mt-2 from-[#eaafc8] to-[#654ea3] py-3 px-4 rounded-[5px] cursor-pointer font-medium mb-2"
-          />
+          >
+            Đăng nhập
+          </Button>
           <p className="text-center text-[#90a3b8] text-[14px]">
             <Link href="/forgot-password" className="">
               Quên mật khẩu
