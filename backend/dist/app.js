@@ -12,20 +12,18 @@ import commentRoutes from "./routes/comment.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import path from "path";
 const allowedOrigins = [
-    "http://localhost:3000", // FE dev
-    "http://127.0.0.1:3000",
-    "https://your-frontend.com", // FE production
+  "http://localhost:3000", // FE dev
+  "http://127.0.0.1:3000",
+  "https://free-code-hub-website.vercel.app",
+  // FE production
 ];
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        }
-        return callback(new Error("Not allowed by CORS"));
-    },
+app.use(
+  cors({
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));

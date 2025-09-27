@@ -21,10 +21,18 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true); // Cho Postman / server-to-server
+
+      if (
+        origin === "http://localhost:3000" || // dev local
+        origin === "http://127.0.0.1:3000" || // dev local khác
+        origin === "https://free-code-hub-website.vercel.app" || // FE production
+        /\.vercel\.app$/.test(origin) // mọi subdomain *.vercel.app (preview)
+      ) {
         return callback(null, true);
       }
-      return callback(new Error("Not allowed by CORS"));
+
+      return callback(new Error("Not allowed by CORS: " + origin));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
