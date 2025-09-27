@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import Blog from "../models/blog.model";
+import Blog from "../models/blog.model.js";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
   const blogs = await Blog.find();

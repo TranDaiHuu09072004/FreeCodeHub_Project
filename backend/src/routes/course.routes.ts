@@ -9,7 +9,7 @@ import {
   registerCourse,
   searchCourse,
   DeletedCourses,
-} from "../controllers/course.control";
+} from "../controllers/course.control.js";
 
 const router = Router();
 router.get("/courses", getAllCourses);

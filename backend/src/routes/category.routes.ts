@@ -4,7 +4,7 @@ import {
   //   recountCourseCount,
   UpdateCate,
   DeletedCate,
-} from "./../controllers/category.control";
+} from "./../controllers/category.control.js";
 import { Router } from "express";
 
 const router = Router();

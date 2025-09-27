@@ -6,9 +6,9 @@ import {
   UpdateUser,
   DeletedUser,
   getCurrentUser,
-} from "../controllers/user.control";
-import upload from "../middleware/upload";
-import { authenticate, authorize } from "../middleware/auth.middleware";
+} from "../controllers/user.control.js";
+import upload from "../middleware/upload.js";
+import { authenticate, authorize } from "../middleware/auth.middleware.js";
 const router = Router();
 
 router.get("/users", getAllUsers);

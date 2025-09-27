@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
-import Author from "../models/author.model";
-import Course from "../models/course.models"; // Make sure to import the Course model
+import Author from "../models/author.model.js";
+import Course from "../models/course.models.js"; // Make sure to import the Course model
 
 // GET all authors with their course count
 export const getAllAuthors: RequestHandler = async (req, res) => {

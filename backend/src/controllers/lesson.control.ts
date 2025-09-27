@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import Lesson from "../models/lesson.model";
+import Lesson from "../models/lesson.model.js";
 import mongoose from "mongoose";
 import { Types } from "mongoose";
 // GET: /api/lessons/video/:videoId - Lấy bài học theo videoId

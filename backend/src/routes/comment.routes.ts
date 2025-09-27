@@ -4,8 +4,8 @@ import {
   getComment,
   deleteComment,
   getAllComments,
-} from "../controllers/comment.control";
-import { authenticate } from "../middleware/auth.middleware";
+} from "../controllers/comment.control.js";
+import { authenticate } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 

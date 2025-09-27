@@ -2,15 +2,15 @@ import express from "express";
 import cors from "cors";
 
 const app = express();
-import courseRoutes from "./routes/course.routes";
-import blogRoutes from "./routes/blog.routes";
-import CategoriesRoutes from "./routes/category.routes";
-import UserRoutes from "./routes/user.routes";
-import AuthorRoutes from "./routes/author.routes";
-import LessonRoutes from "./routes/lesson.routes";
-import authRoutes from "./routes/auth.routes";
-import commentRoutes from "./routes/comment.routes";
-import uploadRoutes from "./routes/upload.routes";
+import courseRoutes from "./routes/course.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
+import CategoriesRoutes from "./routes/category.routes.js";
+import UserRoutes from "./routes/user.routes.js";
+import AuthorRoutes from "./routes/author.routes.js";
+import LessonRoutes from "./routes/lesson.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
+import uploadRoutes from "./routes/upload.routes.js";
 import path from "path";
 const allowedOrigins = [
   "http://localhost:3000", // FE dev

@@ -4,8 +4,8 @@ import {
   login,
   forgotPassword,
   changePassword,
-} from "../controllers/auth.controler";
-import { authenticate, authorize } from "../middleware/auth.middleware";
+} from "../controllers/auth.controler.js";
+import { authenticate, authorize } from "../middleware/auth.middleware.js";
 
 const router = Router();
 router.post("/forgot-password", forgotPassword);

@@ -1,6 +1,6 @@
 import mongoose, { UpdateQuery } from "mongoose";
 import slugify from "slugify";
-import Category from "./category.model";
+import Category from "./category.model.js";
 const courseSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },

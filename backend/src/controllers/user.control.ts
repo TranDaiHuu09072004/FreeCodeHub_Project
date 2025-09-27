@@ -1,6 +1,6 @@
 import { Response, Request, RequestHandler } from "express";
-import User from "../models/user.model";
-import { AuthRequest } from "../middleware/auth.middleware";
+import User from "../models/user.model.js";
+import { AuthRequest } from "../middleware/auth.middleware.js";
 
 // Get current user information
 export const getCurrentUser: RequestHandler = async (req, res) => {

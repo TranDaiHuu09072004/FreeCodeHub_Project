@@ -1,6 +1,6 @@
 import { Response, Request, RequestHandler } from "express";
-import Category from "../models/category.model";
-import Course from "../models/course.models";
+import Category from "../models/category.model.js";
+import Course from "../models/course.models.js";
 
 export const getAllCategory = async (req: Request, res: Response) => {
   try {

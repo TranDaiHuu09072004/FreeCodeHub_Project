@@ -1,17 +1,6 @@
 import { Router } from "express";
-import {
-  getAllBlogs,
-  CreateBlogs,
-  getBlogsBySlug,
-  UpdateBlogs,
-  getFeaturedBlogs,
-  DeletedBlogs,
-  getRelatedBlogs,
-  SearchBlogs,
-} from "../controllers/blog.control.js";
-
+import { getAllBlogs, CreateBlogs, getBlogsBySlug, UpdateBlogs, getFeaturedBlogs, DeletedBlogs, getRelatedBlogs, SearchBlogs, } from "../controllers/blog.control.js";
 const router = Router();
-
 router.get("/blogs", getAllBlogs);
 router.get("/blogs/search", SearchBlogs);
 router.get("/blogs/featured", getFeaturedBlogs);
@@ -20,5 +9,4 @@ router.get("/blogs/:slug", getBlogsBySlug);
 router.put("/blogs/:id", UpdateBlogs);
 router.delete("/blogs/:id", DeletedBlogs);
 router.get("/blogs/:slug/related", getRelatedBlogs);
-
 export default router;

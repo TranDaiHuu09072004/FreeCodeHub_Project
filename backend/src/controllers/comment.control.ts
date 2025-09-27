@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import mongoose from "mongoose";
-import Comment from "../models/comment.model";
-import Lesson from "../models/lesson.model";
+import Comment from "../models/comment.model.js";
+import Lesson from "../models/lesson.model.js";
 
 // Helper: ensure targetId belongs to Lesson only
 const ensureLessonTarget = async (targetId: string): Promise<boolean> => {

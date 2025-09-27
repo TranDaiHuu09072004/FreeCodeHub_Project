@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
-import Course from "../models/course.models";
-import Lesson from "../models/lesson.model";
-import User from "../models/user.model";
+import Course from "../models/course.models.js";
+import Lesson from "../models/lesson.model.js";
+import User from "../models/user.model.js";
 
 //api search khóa học
 export const searchCourse: RequestHandler = async (req, res) => {

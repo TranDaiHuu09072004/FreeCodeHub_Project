@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { sendEmail } from "../utils/sendMail";
+import { sendEmail } from "../utils/sendMail.js";
 
 export const forgotPassword: RequestHandler = async (req, res) => {
   const { email } = req.body;
