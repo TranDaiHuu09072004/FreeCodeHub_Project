@@ -26,7 +26,6 @@ const DetailCourses = () => {
 
   const handleRegisterCourse = async () => {
     if (!user) {
-      // User not logged in, show SweetAlert2
       Swal.fire({
         title: "Bạn chưa đăng nhập",
         text: "Vui lòng đăng nhập để đăng ký khóa học này.",
@@ -42,26 +41,22 @@ const DetailCourses = () => {
         }
       });
     } else {
-      // User is logged in, call register API
       try {
         const response = await axios.post("/register-courses", {
-          courseSlug: slug, // Assuming the API expects courseSlug
-          userId: user.id ?? user._id, // support both id shapes
+          courseSlug: slug,
+          userId: user.id ?? user._id,
         });
 
         if (response.data) {
-          // Assuming API returns { success: true, ... }
           Swal.fire(
             "Thành công!",
             "Bạn đã đăng ký khóa học thành công!",
             "success"
           );
-          // Redirect to the lesson page
           setTimeout(() => {
             router.push(`/courses/lesson/${slug}`);
           }, 1500);
         } else {
-          // Assuming API returns { success: false, message: '...' }
           Swal.fire(
             "Lỗi!",
             response.data.message || "Đăng ký khóa học thất bại.",
@@ -83,17 +78,18 @@ const DetailCourses = () => {
         image="/assets/img/banne_detail-course.png"
       />
       <section className="detail_course bg-[#1F212C] rounded-[10px] p-[35px] my-[35px] ">
-        <div className="item-detail_course flex max-2xl:flex-col">
-          <div className="img_detail relative 2xl:w-[50%] max-2xl:w-full bg-[#121826] p-[10px] rounded-[10px] xl:h-[310px] max-sm:h-[170px]">
+        <div className="item-detail_course flex flex-col lg:flex-row gap-6 lg:gap-0">
+          <div className="img_detail relative w-full lg:w-[50%] bg-[#121826] p-[10px] rounded-[10px] aspect-video">
             <Image
               src={detailCourses?.thumbnail || "/fallback.jpg"}
               alt="Course Thumbnail"
               fill
-              className="rounded-[10px] object-contain"
+              className="rounded-[10px] object-cover"
             />
           </div>
-          <div className="content_detail 2xl:pl-[37px] 2xl:w-[50%] max-2xl:w-full">
-            <h3 className="text-[20px] text-white font-bold mt-[15px] mb-[30px]">
+
+          <div className="content_detail w-full lg:w-[50%] lg:pl-[37px]">
+            <h3 className="text-[20px] text-white font-bold mt-[15px] mb-[30px] lg:mt-0">
               {detailCourses?.title}
             </h3>
             <div className="author flex justify-between">
@@ -105,11 +101,11 @@ const DetailCourses = () => {
                 <i className="text-[#9D9DA3]">{detailCourses?.badge}</i>
               </span>
             </div>
-            <p className="text-[#9d9da3] my-[20px] text-[14px]">
+            <p className="text-[#9d9da3] my-[20px] text-[14px] line-clamp-3">
               {detailCourses?.description}
             </p>
             <Button
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer"
+              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer hover:opacity-90 transition-opacity"
               onClick={handleRegisterCourse}
             >
               Đăng ký ngay
@@ -117,11 +113,12 @@ const DetailCourses = () => {
           </div>
         </div>
       </section>
+
       <section className="description_detail--courses my-[35px] bg-[#1F212C] rounded-[10px] px-[35px]">
         <h1 className="title text-white text-[30px] font-bold text-center py-[35px]">
           Mô tả thông tin
         </h1>
-        <ul className="list_des--detail-course grid grid-cols-2 max-sm:grid-cols-1 gap-[20px] pb-[35px]">
+        <ul className="list_des--detail-course grid grid-cols-1 md:grid-cols-2 gap-[20px] pb-[35px]">
           {(detailCourses?.highlights?.length ?? 0) > 0 ? (
             (detailCourses?.highlights ?? []).map((highlight, index) => (
               <li key={index} className="flex items-center gap-[10px]">

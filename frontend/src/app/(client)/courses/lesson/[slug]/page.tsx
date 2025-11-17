@@ -81,7 +81,6 @@ const Learning = () => {
             </div>
           </div>
 
-          {/* Danh sách bài học */}
           <div className="lesson_list 2xl:w-[50%] max-xl:w-full bg-[#141625] rounded-[10px] max-h-[600px] overflow-y-auto">
             <div className="title_course mb-[20px]">
               <div className="play_video bg-gradient-to-r from-[#eaafc8] to-[#654ea3] w-full rounded-[10px] py-[10px] px-[20px]">

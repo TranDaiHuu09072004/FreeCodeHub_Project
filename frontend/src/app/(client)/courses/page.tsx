@@ -74,105 +74,135 @@ const CoursesPage = () => {
   };
 
   return (
-    <div className="lg:px-[32px] lg:pt-[48px] max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4">
-      <Banner
-        name="Khóa học miễn phí - Học mọi lúc mọi nơi"
-        description="Học lập trình miễn phí, mọi lúc mọi nơi với nội dung chất lượng từ các chuyên gia. Nắm vững HTML, CSS, JavaScript, ReactJS và hơn thế nữa – bắt đầu ngay hôm nay! 🚀"
-        showButton={false}
-        image="assets/img/banner_img_courses.png"
-        isBlog={false}
-      />
-      <section className="Filter_course my-[35px] max-xl:flex-col max-xl:justify-center max-xl:items-center bg-[#1F212C] py-[10px] px-[30px] rounded-[10px] flex justify-between ">
-        <h1 className="title_course text-white text-[25px] max-xl:mb-[10px] font-bold">
-          Bộ lọc tìm kiếm
-        </h1>
-        <select
-          name="author"
-          id="author"
-          className="select_author bg-[#333647] rounded-[5px] text-white px-[4px] border-none outline-none xl:w-[172px] h-[40px] max-xl:mb-[10px] max-xl:w-[250px]"
-          style={{ colorScheme: "dark" }}
-          value={selectedAuthor}
-          onChange={(e) => {
-            setSelectedAuthor(e.target.value);
-            setCurrentPage(1);
-          }}
-        >
-          <option value="">Tất cả tác giả</option>
-          {authors.map((a) => (
-            <option key={a} value={a}>
-              {a}
-            </option>
-          ))}
-        </select>
-        <select
-          name="category"
-          id="category"
-          className="select_author bg-[#333647] rounded-[5px] text-white px-[4px] border-none outline-none xl:w-[172px] h-[40px] max-xl:mb-[10px] max-xl:w-[250px]"
-          style={{ colorScheme: "dark" }}
-          value={selectedCategory}
-          onChange={(e) => {
-            setSelectedCategory(e.target.value);
-            setCurrentPage(1);
-          }}
-        >
-          <option value="">Tất cả danh mục</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-        <InputSearch
-          placeholder="Tìm kiếm theo khóa học..."
-          h={"40px"}
-          w={"250px"}
-          apiEndpoint="/courses/search"
-          onResults={(data) => {
-            setSearchResults(data as Course[]);
-            setCurrentPage(1);
-          }}
-          className="search_courses flex justify-center items-center w-[250px] max-xl:mb-[10px]"
+    <div className="w-full min-h-screen bg-[#0f1218]">
+      <div className="px-4 py-6 lg:px-8 lg:py-10 max-w-[1440px] mx-auto">
+        <Banner
+          name="Khóa học miễn phí - Học mọi lúc mọi nơi"
+          description="Học lập trình miễn phí, mọi lúc mọi nơi với nội dung chất lượng từ các chuyên gia. Nắm vững HTML, CSS, JavaScript, ReactJS và hơn thế nữa – bắt đầu ngay hôm nay! 🚀"
+          showButton={false}
+          image="assets/img/banner_img_courses.png"
+          isBlog={false}
         />
-      </section>
-      <section className="listCourses bg-[#1F212C] py-[10px] px-[20px] rounded-[10px] h-auto">
-        {filteredCourses.length === 0 ? (
-          <h3 className="text-[#E5E4E4] text-center">
-            Không tìm thấy khóa học nào!
-          </h3>
-        ) : (
-          <ListCourses courses={paginatedCourses} />
+
+        <section className="my-8 bg-[#1F212C] rounded-[12px] p-4 lg:p-6">
+          {/* Flex col trên mobile, Row trên XL */}
+          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+            <h1 className="text-white text-[20px] lg:text-[24px] font-bold shrink-0 mb-2 xl:mb-0">
+              Bộ lọc tìm kiếm
+            </h1>
+
+            <div className="flex flex-col md:flex-row gap-3 w-full xl:w-auto">
+              {/* Select Author */}
+              <select
+                name="author"
+                id="author"
+                // w-full trên mobile để nó dài ra hết màn hình -> Đẹp hơn
+                className="bg-[#333647] rounded-[8px] text-white px-3 border-none outline-none h-[44px] w-full md:w-[200px] cursor-pointer hover:bg-[#3d4052] transition-colors"
+                style={{ colorScheme: "dark" }}
+                value={selectedAuthor}
+                onChange={(e) => {
+                  setSelectedAuthor(e.target.value);
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="">Tất cả tác giả</option>
+                {authors.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </select>
+
+              {/* Select Category */}
+              <select
+                name="category"
+                id="category"
+                className="bg-[#333647] rounded-[8px] text-white px-3 border-none outline-none h-[44px] w-full md:w-[200px] cursor-pointer hover:bg-[#3d4052] transition-colors"
+                style={{ colorScheme: "dark" }}
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="">Tất cả danh mục</option>
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+
+              {/* Input Search */}
+              <div className="w-full md:flex-1">
+                <InputSearch
+                  placeholder="Tìm kiếm theo khóa học..."
+                  h={"44px"}
+                  w={"100%"}
+                  apiEndpoint="/courses/search"
+                  onResults={(data) => {
+                    setSearchResults(data as Course[]);
+                    setCurrentPage(1);
+                  }}
+                  className="search_courses flex items-center w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#1F212C] rounded-[12px] p-4 lg:p-6 min-h-[300px]">
+          {filteredCourses.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <i className="fa-solid fa-box-open text-gray-600 text-4xl mb-3"></i>
+              <h3 className="text-[#E5E4E4] text-lg">
+                Không tìm thấy khóa học nào!
+              </h3>
+            </div>
+          ) : (
+            <ListCourses courses={paginatedCourses} />
+          )}
+        </section>
+
+        {totalPages > 1 && (
+          <section className="flex items-center justify-center gap-2 mt-8">
+            {/* Nút Prev */}
+            <button
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#333647] hover:border-[#654ea3] hover:text-[#654ea3] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <i className="fa-solid fa-chevron-left text-gray-400"></i>
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`w-10 h-10 flex items-center justify-center rounded-lg font-medium transition-all ${
+                  currentPage === page
+                    ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white shadow-lg shadow-purple-500/20 border-none"
+                    : "bg-[#1F212C] text-gray-400 border border-[#333647] hover:border-gray-500 hover:text-white"
+                }`}
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#333647] hover:border-[#654ea3] hover:text-[#654ea3] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <i className="fa-solid fa-chevron-right text-gray-400"></i>
+            </button>
+          </section>
         )}
-      </section>
-      <section className="flex items-center justify-center gap-2 my-8">
-        <button
-          className="w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] hover:bg-gradient-to-r from-[#eaafc8] to-[#654ea3] hover:border-transparent hover:text-white transition-colors"
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <i className="fa-solid fa-chevron-left text-[#E5E4E4]"></i>
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            className={`w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] transition-colors ${
-              currentPage === page
-                ? "bg-gradient-to-r from-[#eaafc8] to-[#654ea3] text-white"
-                : "text-[#E5E4E4] hover:bg-gradient-to-r hover:from-[#eaafc8] hover:to-[#654ea3] hover:border-transparent hover:text-white"
-            }`}
-            onClick={() => handlePageChange(page)}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className="w-9 h-9 flex items-center justify-center rounded border border-[#6C6C6C] hover:bg-gradient-to-r from-[#eaafc8] to-[#654ea3] hover:border-transparent hover:text-white transition-colors"
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          <i className="fa-solid fa-chevron-right text-[#E5E4E4]"></i>
-        </button>
-      </section>
-      <Footer />
+
+        <div className="mt-10">
+          <Footer />
+        </div>
+      </div>
     </div>
   );
 };

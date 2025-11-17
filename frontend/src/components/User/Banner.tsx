@@ -15,21 +15,12 @@ const Banner = ({ name, description, showButton, image }: Banner) => {
     <>
       <section className="banner_home w-[100%] flex justify-between items-center rounded-[10px] max-[1080px]:h-[16rem] max-[1080px]:p-5 max-sm:h-full max-sm:p-[2rem] min-[1080px]:p-[32px] 2xl:p-[20px] 2xl:py-[30px] 2xl:px-[80px] bg-gradient-to-l from-[#eaafc8] to-[#654ea3]">
         <div className="content_banner min-[1046px]:w-[50%] max-lg:w-full">
-          <h1 className="text-[32px] text-white font-bold leading-10 mb-[10px] ">
+          <h1 className="text-[20px] text-white font-bold mb-[10px] ">
             {name}
           </h1>
           <p className="text-[14px] text-white font-normal mb-[10px]">
             {description}
           </p>
-          {/* {isSearch && (
-            <InputSearch
-              placeholder={placeholder}
-              w="470px"
-              h="40px"
-              onResults=""
-              className="search_courses flex justify-center items-center mx-auto w-[250px] max-xl:mb-[10px]"
-            />
-          )} */}
           {showButton && (
             <Link
               href="/courses"
