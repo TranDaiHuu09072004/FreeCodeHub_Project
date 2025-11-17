@@ -86,20 +86,9 @@ const SidebarMobile = ({ className = "" }) => {
   return (
     <aside
       className={`
-        /* 1. VỊ TRÍ & KÍCH THƯỚC LINH HOẠT */
         fixed top-0 left-0 z-[999]
-        h-[100dvh] w-[85vw] max-w-[320px]
-        
-        /* 2. MÀU SẮC & HIỆU ỨNG */
-        bg-[#1a1f2b]/95 backdrop-blur-xl border-r border-white/10 shadow-2xl
-        
-        /* 3. BỐ CỤC FLEX DỌC (Header - List - Footer) */
-        flex flex-col 
-        
-        /* 4. LOGIC HIỂN THỊ (Ẩn trên Desktop > 1365px) */
-        min-[1365px]:hidden
-        
-        ${className}
+        h-[100dvh] w-[85vw] max-w-[250px]
+        bg-[#1a1f2b]/95 backdrop-blur-xl border-r border-white/10 shadow-2xl flex flex-col min-[1365px]:hidden${className}
       `}
     >
       {/* --- PHẦN 1: HEADER (Cố định chiều cao) --- */}
@@ -109,12 +98,6 @@ const SidebarMobile = ({ className = "" }) => {
         </h1>
       </div>
 
-      {/* --- PHẦN 2: MENU LIST (Tự động giãn nở) --- */}
-      {/* CHÌA KHÓA FIX LỖI NẰM Ở ĐÂY:
-        - flex-1: Bảo nó chiếm hết khoảng trống.
-        - min-h-0: Ép nó không được co lại theo nội dung, mà phải co theo `flex-1`.
-        - py-6: Thêm padding trên/dưới cho thoáng.
-      */}
       <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-[230px]">
         <ul className="px-5 space-y-2">
           {" "}
