@@ -110,7 +110,7 @@ const SidebarMobile = ({ className = "" }) => {
 
       {/* --- PHẦN 2: MENU LIST (Tự động giãn nở) --- */}
       {/* flex-1: Chiếm toàn bộ khoảng trống ở giữa */}
-      <div className="flex-1 overflow-y-auto py-6 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
         <ul className="px-5 space-y-2">
           {menuItems.map((item, index) => {
             const isActive =
@@ -152,9 +152,7 @@ const SidebarMobile = ({ className = "" }) => {
             {/* Avatar */}
             <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-[#654ea3] to-[#eaafc8] flex items-center justify-center text-white font-bold shadow-inner">
               {user.avatar
-                ? // Nếu dùng thẻ Image của Next.js thì bỏ comment dòng dưới
-                  // <Image src={user.avatar} width={40} height={40} className="rounded-full" />
-                  user.name[0].toUpperCase()
+                ? user.name[0].toUpperCase()
                 : user.name[0].toUpperCase()}
             </div>
 
