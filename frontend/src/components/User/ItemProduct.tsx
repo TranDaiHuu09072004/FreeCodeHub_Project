@@ -57,7 +57,7 @@ const ItemProduct = ({ courses }: ItemProductProps) => {
       user.registeredCourses.includes(course.slug ?? "")
     ) {
       e.preventDefault();
-      router.push(`/courses/lesson/${course.slug ?? ""}`);
+      router.push(`/lesson/${course.slug ?? ""}`);
     }
   };
 

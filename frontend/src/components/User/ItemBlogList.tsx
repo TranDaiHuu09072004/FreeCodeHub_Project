@@ -33,9 +33,6 @@ const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
       ? blogs
       : blogs.filter((blog) => blog.category === selectedCategory);
 
-  // --- LOGIC RENDER ---
-
-  // 1. Trạng thái Đang tải...
   if (isLoading) {
     return (
       <p className="text-white text-center col-span-1 sm:col-span-2 lg:col-span-3 py-20">
