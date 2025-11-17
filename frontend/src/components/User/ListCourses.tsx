@@ -2,7 +2,6 @@
 import Button from "@/components/User/Button";
 import { Course } from "./ItemProduct";
 import axios from "@/app/utils/axiosInstance";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/Context/AuthContext";
 import { useRouter } from "next/navigation";
