@@ -1,4 +1,3 @@
-// app/client/layout.tsx
 "use client";
 
 import { AuthProvider } from "@/app/Context/AuthContext";
@@ -12,10 +11,14 @@ export default function ClientLayout({
 }) {
   return (
     <AuthProvider>
-      <div className="wrapper_app xl:flex">
+      <div className="wrapper_app min-h-screen bg-[#0f1218] relative">
         <SidebarUser />
-        <ShowSideBarMenu />
-        <main className="2xl:ml-[287px] min-[1366px]:w-[75%] min-[1366px]:ml-[20%] max-sm:overflow-x-hidden max-sm:ml-0 2xl:flex-1">
+
+        <div className="lg:hidden">
+          <ShowSideBarMenu />
+        </div>
+
+        <main className="transition-all duration-300 w-full lg:ml-[287px] lg:w-auto">
           {children}
         </main>
       </div>
