@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/Context/AuthContext";
+import Image from "next/image"; // Thêm import Image
 
 // --- DATA MENU (Giữ nguyên) ---
 const baseClientMenu = [
@@ -109,9 +110,15 @@ const SidebarMobile = ({ className = "" }) => {
       </div>
 
       {/* --- PHẦN 2: MENU LIST (Tự động giãn nở) --- */}
-      {/* flex-1: Chiếm toàn bộ khoảng trống ở giữa */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
+      {/* CHÌA KHÓA FIX LỖI NẰM Ở ĐÂY:
+        - flex-1: Bảo nó chiếm hết khoảng trống.
+        - min-h-0: Ép nó không được co lại theo nội dung, mà phải co theo `flex-1`.
+        - py-6: Thêm padding trên/dưới cho thoáng.
+      */}
+      <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-[230px]">
         <ul className="px-5 space-y-2">
+          {" "}
+          {/* Xóa py-6 ở đây */}
           {menuItems.map((item, index) => {
             const isActive =
               item.href === "/"
@@ -146,14 +153,25 @@ const SidebarMobile = ({ className = "" }) => {
       </div>
 
       {/* --- PHẦN 3: USER FOOTER (Luôn ghim đáy) --- */}
+      {/* Vì div ở trên dùng flex-1 + min-h-0 nên phần này tự động bị đẩy xuống đáy */}
       {user && (
         <div className="shrink-0 p-5 border-t border-white/10 bg-[#151923]">
           <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5">
             {/* Avatar */}
-            <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-[#654ea3] to-[#eaafc8] flex items-center justify-center text-white font-bold shadow-inner">
-              {user.avatar
-                ? user.name[0].toUpperCase()
-                : user.name[0].toUpperCase()}
+            <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-[#654ea3] to-[#eaafc8] flex items-center justify-center text-white font-bold shadow-inner overflow-hidden">
+              {/* Sửa lại logic hiển thị avatar */}
+              {user.avatar ? (
+                <Image
+                  src={user.avatar}
+                  alt={user.name}
+                  width={40}
+                  height={40}
+                  className="object-cover"
+                />
+              ) : (
+                // Chỉ hiển thị chữ cái đầu nếu KHÔNG CÓ avatar
+                user.name[0].toUpperCase()
+              )}
             </div>
 
             {/* Info (Truncate để tên dài không phá layout) */}
