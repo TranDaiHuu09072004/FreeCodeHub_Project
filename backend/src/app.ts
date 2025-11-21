@@ -52,4 +52,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/auth", uploadRoutes);
 app.use("/api/auth", commentRoutes);
 
+app.get("/", (req, res) => {
+  // Trả về trạng thái 200 OK và một thông báo đơn giản
+  res.status(200).json({
+    message: "API is running successfully on Render!",
+    status: "ok",
+    version: "1.0",
+  });
+});
+
 export default app;
