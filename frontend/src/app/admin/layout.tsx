@@ -1,4 +1,6 @@
+// app/admin/layout.tsx
 "use client";
+
 import { AuthProvider } from "@/app/Context/AuthContext";
 import SidebarAdmin from "@/components/Sidebar/SideBarAdmin";
 
