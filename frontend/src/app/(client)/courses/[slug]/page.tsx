@@ -13,7 +13,7 @@ import Image from "next/image";
 const DetailCourses = () => {
   const { slug } = useParams();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading, login } = useAuth();
   const [detailCourses, setDetailCourses] = useState<Course | null>(null);
 
   useEffect(() => {
@@ -23,6 +23,12 @@ const DetailCourses = () => {
       });
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (!loading && user && user.registeredCourses?.includes(slug as string)) {
+      router.push(`/lesson/${slug}`);
+    }
+  }, [user, loading, slug, router]);
 
   const handleRegisterCourse = async () => {
     if (!user) {
@@ -54,7 +60,14 @@ const DetailCourses = () => {
             "success"
           );
           setTimeout(() => {
-            router.push(`/courses/lesson/${slug}`);
+            if (user) {
+              const updatedUser = {
+                ...user,
+                registeredCourses: response.data.registeredCourses,
+              };
+              login(updatedUser);
+            }
+            router.push(`/lesson/${slug}`);
           }, 1500);
         } else {
           Swal.fire(
@@ -104,12 +117,21 @@ const DetailCourses = () => {
             <p className="text-[#9d9da3] my-[20px] text-[14px] line-clamp-3">
               {detailCourses?.description}
             </p>
-            <Button
-              className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer hover:opacity-90 transition-opacity"
-              onClick={handleRegisterCourse}
-            >
-              Đăng ký ngay
-            </Button>
+            {user?.registeredCourses?.includes(slug as string) ? (
+              <Button
+                className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => router.push(`/lesson/${slug}`)}
+              >
+                Tiếp tục học
+              </Button>
+            ) : (
+              <Button
+                className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={handleRegisterCourse}
+              >
+                Đăng ký ngay
+              </Button>
+            )}
           </div>
         </div>
       </section>
