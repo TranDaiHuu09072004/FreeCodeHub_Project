@@ -17,7 +17,7 @@ async function getRelatedBlogs(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   try {
     const res = await fetch(`${baseUrl}/blogs/${slug}/related`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 10 },
     });
     return res.ok ? res.json() : [];
   } catch {

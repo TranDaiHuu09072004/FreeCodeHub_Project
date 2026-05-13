@@ -4,7 +4,7 @@ async function getCoursesDetail(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   try {
     const res = await fetch(`${baseUrl}/courses/${slug}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 10 },
     });
     if (!res.ok) return null;
     return res.json();

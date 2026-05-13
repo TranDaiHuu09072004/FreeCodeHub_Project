@@ -3,7 +3,7 @@ import BlogClient from "./BlogClient";
 async function getBlogData() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const fetchOptions = {
-    next: { revalidate: 3600 },
+    next: { revalidate: 10 },
   };
   try {
     const [blogRes, featuredBlogRes, categoriesRes] = await Promise.all([
