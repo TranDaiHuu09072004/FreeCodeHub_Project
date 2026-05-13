@@ -28,9 +28,10 @@ async function getRelatedBlogs(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const blog = await getBlogDetail(params.slug);
+  const { slug } = await params;
+  const blog = await getBlogDetail(slug);
   if (!blog) return { title: "Không tìm thấy khóa học" };
   return {
     title: `${blog.title} | FreeCodeHub`,
@@ -46,11 +47,12 @@ export async function generateMetadata({
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const [blog, relatedBlogs] = await Promise.all([
-    getBlogDetail(params.slug),
-    getRelatedBlogs(params.slug),
+    getBlogDetail(slug),
+    getRelatedBlogs(slug),
   ]);
   if (!blog) {
     return (

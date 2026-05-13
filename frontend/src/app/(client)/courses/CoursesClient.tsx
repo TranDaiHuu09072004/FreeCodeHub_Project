@@ -3,10 +3,9 @@ import Banner from "@/components/User/Banner";
 import InputSearch from "@/components/User/InputSearch";
 import ListCourses from "@/components/User/ListCourses";
 import Footer from "@/app/layout/Footer";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { Course } from "@/components/User/ItemProduct";
 import { Author, Categories } from "@/app/types/type";
-import CoursesSkeleton from "./loading";
 
 interface CoursesClientProps {
   initialCourses: Course[];

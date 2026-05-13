@@ -1,6 +1,6 @@
 import CoursesClientPage from "./CoursesClient";
 
-export async function getCoursesData() {
+async function getCoursesData() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const fetchOptions = { next: { revalidate: 3600 } };
 

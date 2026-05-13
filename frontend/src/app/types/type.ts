@@ -14,11 +14,27 @@ export interface Course {
   slug: string;
 }
 
+// Lesson Comment
+export interface LessonComment {
+  user: string;
+  avatar?: string;
+  content: string;
+  createdAt: string;
+}
+
 // Lesson
 export interface Lesson {
   _id: string;
   courseId: string;
+  title: string;
+  description?: string;
+  videoId: string;
+  videoUrl?: string;
+  order?: number;
+  duration?: string;
+  comments?: LessonComment[];
 }
+
 
 // Blog
 export interface Blog {

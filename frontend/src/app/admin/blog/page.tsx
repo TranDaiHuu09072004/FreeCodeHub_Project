@@ -38,7 +38,7 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
-import { Blog } from "@/app/(client)/blog/page";
+import { Blog } from "@/app/(client)/blog/BlogClient";
 import Editor from "@/components/Admin/Editor/Editor";
 import Image from "next/image";
 
@@ -137,7 +137,7 @@ const Blog_Management = () => {
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldName: "thumbnail" | "imageAuthor"
+    fieldName: "thumbnail" | "imageAuthor",
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;

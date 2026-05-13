@@ -16,9 +16,11 @@ async function getCoursesDetail(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const course = await getCoursesDetail(params.slug);
+  const { slug } = await params;
+
+  const course = await getCoursesDetail(slug);
   if (!course) return { title: "Không tìm thấy khóa học" };
   return {
     title: `${course.title} | FreeCodeHub`,
@@ -34,9 +36,10 @@ export async function generateMetadata({
 export default async function CoursesDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const course = await getCoursesDetail(params.slug);
+  const { slug } = await params;
+  const course = await getCoursesDetail(slug);
   if (!course) {
     return (
       <div className="text-white text-center mt-20 text-2xl font-bold">
@@ -45,5 +48,5 @@ export default async function CoursesDetailPage({
     );
   }
 
-  return <DetailCourses initialCourse={course} slug={params.slug} />;
+  return <DetailCourses initialCourse={course} slug={slug} />;
 }
