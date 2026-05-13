@@ -16,7 +16,6 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
   const [listcourses, setListCourses] = useState<Course[]>([]);
   const router = useRouter();
 
-  // --- LOGIC FETCH DATA (Giữ nguyên) ---
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -29,7 +28,7 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
           setListCourses(res.data);
         } else {
           const userRes = await axios.get<{ registerCourses: string[] }>(
-            "/users"
+            "/users",
           );
           let registeredCoursesSlugs: string[] = [];
           if (userRes.data && Array.isArray(userRes.data.registerCourses)) {
@@ -40,8 +39,8 @@ const ListCourses = ({ courses }: ListCoursesProps) => {
           const unregisterCourses = allCourses.filter(
             (course) =>
               !registeredCoursesSlugs.some(
-                (registeredSlug: string) => registeredSlug === course.slug
-              )
+                (registeredSlug: string) => registeredSlug === course.slug,
+              ),
           );
           setListCourses(unregisterCourses);
         }

@@ -21,8 +21,8 @@ type LoginFormData = {
 };
 
 const LoginSchema = yup.object().shape({
-  email: yup.string().required("Vui lòng nhập email"),
-  password: yup.string().min(6).required("Vui lòng nhập mật khẩu"),
+  email: yup.string().required("Vui lòng nhập Email"),
+  password: yup.string().min(6, "Mật khẩu phải từ 6 kí tự trở lên!").required("Vui lòng nhập mật khẩu"),
 });
 
 const LoginForm = ({ roleScope }: Props) => {

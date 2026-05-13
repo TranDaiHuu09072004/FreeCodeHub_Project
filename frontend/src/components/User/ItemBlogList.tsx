@@ -4,34 +4,26 @@ import axiosInstance from "@/app/utils/axiosInstance";
 import { ItemBlogs } from "@/app/types/ItemBlog.type"; // Giữ nguyên type của bạn
 import Link from "next/link";
 import Image from "next/image";
+import { Blog } from "@/app/(client)/blog/BlogClient";
 
-const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
-  const [blogs, setBlogs] = useState<ItemBlogs[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // <-- THÊM: State loading
+interface ItemBlogListProps {
+  selectedCategory: string;
+  initialBlogs: Blog[];
+}
 
-  useEffect(() => {
-    setIsLoading(true); // <-- THÊM: Bật loading khi fetch
-    axiosInstance
-      .get("/blogs")
-      .then((res) => {
-        // Giữ nguyên logic lọc blog Featured của bạn
-        const filtered = res.data.filter((b: ItemBlogs) => !b.isFeatured);
-        setBlogs(filtered);
-      })
-      .catch((err) => {
-        // <-- THÊM: Xử lý lỗi
-        console.error("Failed to fetch blogs:", err);
-      })
-      .finally(() => {
-        setIsLoading(false); // <-- THÊM: Tắt loading khi xong
-      });
-  }, []); // Chỉ fetch 1 lần lúc component mount
+const ItemBlogList = ({
+  selectedCategory,
+  initialBlogs,
+}: ItemBlogListProps) => {
+  const [blogs] = useState<Blog[]>(
+    (initialBlogs || []).filter((b) => !b.isFeatured),
+  );
+  const isLoading = false;
 
-  // Logic lọc theo category (Giữ nguyên của bạn)
   const filteredBlogs =
     selectedCategory === "Tất cả"
       ? blogs
-      : blogs.filter((blog) => blog.category === selectedCategory);
+      : blogs.filter((b) => b.category === selectedCategory);
 
   if (isLoading) {
     return (
@@ -41,7 +33,6 @@ const ItemBlogList = ({ selectedCategory }: { selectedCategory: string }) => {
     );
   }
 
-  // 2. Trạng thái Không tìm thấy (Sau khi đã lọc xong)
   if (filteredBlogs.length === 0) {
     return (
       <div className="text-center text-gray-400 py-20 col-span-1 sm:col-span-2 lg:col-span-3">

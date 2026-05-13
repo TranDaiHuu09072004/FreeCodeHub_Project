@@ -1,6 +1,12 @@
-"use client";
+import { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/app/Context/AuthContext";
+
+export const metadata:Metadata = {
+  title: "FreeCodeHub - Học lập trình miễn phí",
+  description: "Khám phá kho tàng kiến thức lập trình"
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

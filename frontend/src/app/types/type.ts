@@ -26,3 +26,20 @@ export interface Blog {
   title: string;
   slug: string;
 }
+
+// Author
+export interface Author {
+  name: string;
+  channel: string;
+  description: string;
+  avatar: string;
+  numCourses: number;
+  numSubscribers: number;
+}
+
+// Categories
+export interface Categories {
+  name: string;
+  slug: string;
+  description: string;
+}

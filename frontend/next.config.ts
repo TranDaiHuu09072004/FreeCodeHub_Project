@@ -11,8 +11,9 @@ const nextConfig = {
       "github.com",
       "placehold.co",
       "freecodehub-project.onrender.com",
+      "res.cloudinary.com"
     ],
-  }, // 👈 THÊM DÒNG NÀY
+  }, 
 };
 
 export default nextConfig;

@@ -1,17 +1,9 @@
 "use client";
 
+import { Author } from "@/app/types/type";
 import axios from "@/app/utils/axiosInstance";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-export interface Author {
-  name: string;
-  channel: string;
-  description: string;
-  avatar: string;
-  numCourses: number;
-  numSubscribers: number;
-}
 
 const ChannelAuthor = () => {
   const [listAuthor, setListAuthor] = useState<Author[]>([]);
