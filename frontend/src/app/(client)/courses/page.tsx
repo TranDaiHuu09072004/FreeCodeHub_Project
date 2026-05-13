@@ -2,7 +2,7 @@ import CoursesClientPage from "./CoursesClient";
 
 async function getCoursesData() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const fetchOptions = { next: { revalidate: 10 } };
+  const fetchOptions = { next: { revalidate: 10, tags: ["courses"] } };
 
   try {
     const [coursesRes, authorRes, categoriesRes] = await Promise.all([

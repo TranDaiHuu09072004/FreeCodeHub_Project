@@ -43,6 +43,7 @@ import { Course } from "@/components/User/ItemProduct";
 import CreateLesson from "@/components/Admin/CreateLesson/CreateLesson";
 import LessonList from "@/components/Admin/CreateLesson/LessonList";
 import Image from "next/image";
+import { revalidateTag } from "next/cache";
 
 type CoursesValue = {
   _id: string;
@@ -80,7 +81,7 @@ const createCourses = yup.object({
     .of(
       yup.object({
         value: yup.string().trim().required("Highlight không được để trống"),
-      })
+      }),
     )
     .optional()
     .default([]),
@@ -147,6 +148,7 @@ const Course_Management = () => {
         reset();
         setIsDialogOpen(false);
         setEditingCourses(null);
+        revalidateTag("courses-list");
       } else {
         const res = await axiosInstance.post("/courses", payload);
         console.log("Payload gửi lên:", payload);
@@ -172,7 +174,7 @@ const Course_Management = () => {
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldName: "thumbnail" | "image_author"
+    fieldName: "thumbnail" | "image_author",
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -209,7 +211,7 @@ const Course_Management = () => {
     setValue("isFeatured", c.isFeatured);
     setValue(
       "highlights",
-      (c.highlights ?? []).map((h) => ({ value: h }))
+      (c.highlights ?? []).map((h) => ({ value: h })),
     );
     setValue("image_author", c.image_author);
     setValue("description", c.description);

@@ -3,11 +3,11 @@ import BlogClient from "./BlogClient";
 async function getBlogData() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const fetchOptions = {
-    next: { revalidate: 10 },
+    next: { revalidate: 10, tags: ["blogs"] },
   };
   try {
     const [blogRes, featuredBlogRes, categoriesRes] = await Promise.all([
-      fetch(`${baseUrl}/blogs`, fetchOptions),
+      fetch(`${baseUrl}/blogs?t=${Date.now()}`, fetchOptions),
       fetch(`${baseUrl}/blogs/featured`, fetchOptions),
       fetch(`${baseUrl}/categories`, fetchOptions),
     ]);

@@ -4,7 +4,7 @@ async function getBlogDetail(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   try {
     const res = await fetch(`${baseUrl}/blogs/${slug}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 10, tags: ["blogs", `blog-${slug}`] },
     });
     if (!res.ok) return null;
     return res.json();
