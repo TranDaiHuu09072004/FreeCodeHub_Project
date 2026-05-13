@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-// import axiosInstance from "@/app/utils/axiosInstance";
-// import { ItemBlogs } from "@/app/types/ItemBlog.type"; // Giữ nguyên type của bạn
 import Link from "next/link";
 import Image from "next/image";
 import { Blog } from "@/app/(client)/blog/BlogClient";
