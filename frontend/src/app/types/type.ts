@@ -12,6 +12,7 @@ export interface Course {
   _id: string;
   title: string;
   slug: string;
+  updatedAt: string;
 }
 
 // Lesson Comment
@@ -35,12 +36,12 @@ export interface Lesson {
   comments?: LessonComment[];
 }
 
-
 // Blog
 export interface Blog {
   _id: string;
   title: string;
   slug: string;
+  updatedAt: string;
 }
 
 // Author

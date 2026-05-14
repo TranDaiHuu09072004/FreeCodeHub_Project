@@ -1,4 +1,3 @@
-import sitemap from "@/app/sitemap";
 import DetailBlog from "./DetailBlogClient";
 
 async function getBlogDetail(slug: string) {

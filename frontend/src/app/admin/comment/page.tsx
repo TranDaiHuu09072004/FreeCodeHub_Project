@@ -24,7 +24,7 @@ import {
 import axiosInstance from "@/app/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { Comment } from "@/app/(client)/blog/BlogClient";
+import { Comment } from "@/app/(client)/blogs/BlogClient";
 import Image from "next/image";
 
 export type CommentFormValue = {

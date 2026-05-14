@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { Blog, Course } from "./types/type";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://free-code-hub-project.vercel.app";
@@ -27,21 +28,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: page.changeFrequency as "daily" | "weekly" | "monthly",
   }));
 
-  const coursePages = coursesRes.map((course: any) => ({
+  const coursePages = coursesRes.map((course: Course) => ({
     url: `${baseUrl}/courses/${course.slug}`,
     lastModified: new Date(course.updatedAt || Date.now()),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const blogPages = blogsRes.map((blog: any) => ({
+  const blogPages = blogsRes.map((blog: Blog) => ({
     url: `${baseUrl}/blog/${blog.slug}`,
     lastModified: new Date(blog.updatedAt || Date.now()),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const lessonPages = coursesRes.map((course: any) => ({
+  const lessonPages = coursesRes.map((course: Course) => ({
     url: `${baseUrl}/lesson/${course.slug}`,
     lastModified: new Date(course.updatedAt || Date.now()),
     changeFrequency: "monthly" as const,
