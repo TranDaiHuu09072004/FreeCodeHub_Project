@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import CoursesClientPage from "./CoursesClient";
 
 async function getCoursesData() {
@@ -20,6 +21,18 @@ async function getCoursesData() {
     return { courses: [], author: [], categories: [] };
   }
 }
+
+export const metadata: Metadata = {
+  title: "Tất cả khóa học lập trình miễn phí | FreeCodeHub",
+  description:
+    "Khám phá kho tàng khóa học lập trình miễn phí chất lượng cao. Học ReactJS, Next.js, Node.js và nhiều công nghệ khác với lộ trình bài bản.",
+  openGraph: {
+    title: "Tất cả khóa học lập trình miễn phí | FreeCodeHub",
+    description:
+      "Khám phá kho tàng khóa học lập trình miễn phí chất lượng cao.",
+    images: ["/assets/img/banner_course.jpg"],
+  },
+};
 
 export default async function CoursesPage() {
   const { courses, author, categories } = await getCoursesData();

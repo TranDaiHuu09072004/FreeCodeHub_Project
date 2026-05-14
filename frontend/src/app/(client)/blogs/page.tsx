@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import BlogClient from "./BlogClient";
 
 async function getBlogData() {
@@ -20,6 +21,17 @@ async function getBlogData() {
     return { blog: [], featured: [], categories: [] };
   }
 }
+
+export const metadata: Metadata = {
+  title: "Bài viết chia sẻ kiến thức & kinh nghiệm lập trình | FreeCodeHub",
+  description:
+    "Đọc các bài viết mới nhất về kinh nghiệm học lập trình, mẹo code hiệu quả và cập nhật xu hướng công nghệ cùng FreeCodeHub.",
+  openGraph: {
+    title: "Bài viết chia sẻ kiến thức & kinh nghiệm lập trình | FreeCodeHub",
+    description: "Cập nhật kiến thức lập trình mới nhất mỗi ngày.",
+    images: ["/assets/img/banner_blog.jpg"],
+  },
+};
 
 export default async function BlogPage() {
   const { blog, featured, categories } = await getBlogData();

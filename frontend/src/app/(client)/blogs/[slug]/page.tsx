@@ -1,3 +1,4 @@
+import sitemap from "@/app/sitemap";
 import DetailBlog from "./DetailBlogClient";
 
 async function getBlogDetail(slug: string) {
@@ -32,14 +33,40 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const blog = await getBlogDetail(slug);
-  if (!blog) return { title: "Không tìm thấy khóa học" };
+  if (!blog) return { title: "Không tìm thấy bài viết | FreeCodeHub" };
+  const pageUrl = `/blogs/${slug}`;
+  const ogImage = blog.thumbnail || "/assets/img/banner_detail-blog.jpg";
   return {
     title: `${blog.title} | FreeCodeHub`,
-    description: blog.description || "Khóa học miễn phí tại FreeCodeHub",
+    description:
+      blog.excerpt ||
+      blog.description ||
+      "Đọc bài viết chia sẻ kiến thức lập trình tại FreeCodeHub",
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: blog.title,
-      description: blog.description,
-      images: [blog.thumbnail || "/assets/img/banner_detail-blog.png"],
+      description: blog.excerp || blog.description,
+      url: pageUrl,
+      sitemap: "FreeCodeHub",
+      type: "article",
+      publishedTime: blog.createdAt,
+      authors: [blog.author || "FreeCodeHub"],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        },
+      ],
+    },
+    facebook: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.excerpt || blog.description,
+      images: [ogImage],
     },
   };
 }

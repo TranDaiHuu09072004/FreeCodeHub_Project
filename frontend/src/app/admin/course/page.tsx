@@ -43,7 +43,7 @@ import { Course } from "@/components/User/ItemProduct";
 import CreateLesson from "@/components/Admin/CreateLesson/CreateLesson";
 import LessonList from "@/components/Admin/CreateLesson/LessonList";
 import Image from "next/image";
-import { revalidateTag } from "next/cache";
+import { revalidateTagAction } from "@/app/actions";
 
 type CoursesValue = {
   _id: string;
@@ -148,7 +148,7 @@ const Course_Management = () => {
         reset();
         setIsDialogOpen(false);
         setEditingCourses(null);
-        revalidateTag("courses-list");
+        await revalidateTagAction("courses-list");
       } else {
         const res = await axiosInstance.post("/courses", payload);
         console.log("Payload gửi lên:", payload);

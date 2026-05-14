@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/app/layout/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lesson } from "@/app/types/type";
 import Comment from "@/components/User/Comment";
 
@@ -12,6 +12,12 @@ const LearningClient = ({ allLessons }: { allLessons: Lesson[] }) => {
   const [currentVideoId, setCurrentVideoId] = useState<string>(
     allLessons[0]?._id || "",
   );
+
+  useEffect(() => {
+    if (currentLesson) {
+      document.title = `${currentLesson.title} | FreeCodeHub`;
+    }
+  }, [currentLesson]);
 
   const handleLessonClick = (lessonId: string) => {
     const selected = lessons.find((lesson) => lesson._id === lessonId);

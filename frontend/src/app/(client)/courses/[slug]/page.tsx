@@ -22,13 +22,31 @@ export async function generateMetadata({
 
   const course = await getCoursesDetail(slug);
   if (!course) return { title: "Không tìm thấy khóa học" };
+  const pageUrl = `/courses/${slug}`;
+  const ogImage = course.thumbnail || "/assets/img/banner_detail-course.jpg";
   return {
-    title: `${course.title} | FreeCodeHub`,
+    title: `${course.title}`,
     description: course.description || "Khóa học miễn phí tại FreeCodeHub",
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: course.title,
       description: course.description,
-      images: [course.thumbnail || "/assets/img/banner_detail-course.png"],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: course.title,
+        },
+      ],
+    },
+    facebook: {
+      card: "summary_large_image",
+      title: course.title,
+      description: course.description,
+      images: [ogImage],
     },
   };
 }

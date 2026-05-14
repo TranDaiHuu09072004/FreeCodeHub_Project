@@ -9,7 +9,7 @@ import Image from "next/image"; // Thêm import Image
 const baseClientMenu = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
   { href: "/courses", icon: "fa-solid fa-graduation-cap", label: "Khóa học" },
-  { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Blog" },
+  { href: "/blogs", icon: "fa-solid fa-note-sticky", label: "Blog" },
   { href: "/about-us", icon: "fa-solid fa-user", label: "Về Chúng Tôi" },
 ];
 

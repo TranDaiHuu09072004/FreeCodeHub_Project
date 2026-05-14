@@ -38,10 +38,10 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast, ToastContainer } from "react-toastify";
-import { Blog } from "@/app/(client)/blog/BlogClient";
+import { Blog } from "@/app/(client)/blogs/BlogClient";
 import Editor from "@/components/Admin/Editor/Editor";
 import Image from "next/image";
-import { revalidateTag } from "next/cache";
+import { revalidateTagAction } from "@/app/actions";
 
 type BlogFormValue = {
   title: string;
@@ -118,7 +118,7 @@ const Blog_Management = () => {
         await axiosInstance.put(`/blogs/${editingBlog._id}`, payload);
         console.log("Payload gửi lên:", payload);
         toast.success("Cập nhật bài viết thành công");
-        revalidateTag("blog-list");
+        await revalidateTagAction("blog-list");
       } else {
         await axiosInstance.post("/blogs", payload);
         console.log("Payload gửi lên:", payload);

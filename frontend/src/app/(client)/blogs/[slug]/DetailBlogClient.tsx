@@ -20,9 +20,9 @@ const DetailBlog = ({
       key={detailBlog?._id}
       className="lg:px-[32px] lg:pt-[32px]  max-xl:pt-[32px] max-xl:px-[16px] max-sm:px-4 max-sm:pt-4"
     >
-      <div className="wrapper_detail-blog max-w-4xl mx-auto">
+      <div className="wrapper_detail-blog 2xl:max-w-5xl mx-auto">
         <div className="turnback_blog cursor-pointer">
-          <Link href="/blog" className="flex items-center gap-[10px]">
+          <Link href="/blogs" className="flex items-center gap-[10px]">
             <i className="fa-solid fa-arrow-left text-[#677d9b]"></i>
             <h3 className="text-[#677d9b]">Quay lại danh sách bài viết</h3>
           </Link>
@@ -75,22 +75,28 @@ const DetailBlog = ({
               </span>
             </div>
           </div>
-          <div className="content_blog !text-white w-full">
+          <div className="content_blog !text-white w-full overflow-hidden">
             <div
-              className="prose prose-invert max-w-none w-full [&_*]:!text-white [&_*]:!max-w-full [&_img]:w-full [&_img]:mb-2 
-  [&_span]:!bg-transparent [&_ol]:!bg-transparent [&_strong]:!bg-transparent [&_ul]:!bg-transparent [&_li]:!bg-transparent"
+              className="prose prose-invert max-w-none w-full break-words 
+    [&_*]:!text-white [&_*]:!max-w-full [&_img]:w-full [&_img]:h-auto [&_img]:mb-2 
+    [&_span]:!bg-transparent [&_ol]:!bg-transparent [&_strong]:!bg-transparent 
+    [&_ul]:!bg-transparent [&_li]:!bg-transparent [&_pre]:overflow-x-auto"
               dangerouslySetInnerHTML={{ __html: detailBlog?.content || "" }}
             ></div>
           </div>
         </section>
-        <section className="blog_related">
-          <h3 className="text-2xl font-bold text-white">Bài viết liên quan</h3>
-          <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5 my-5">
-            {relatedblog.map((item) => (
-              <ItemBlog key={item._id} blog={item} />
-            ))}
-          </div>
-        </section>
+        {relatedblog.length > 0 && (
+          <section className="blog_related">
+            <h3 className="text-2xl font-bold text-white">
+              Bài viết liên quan
+            </h3>
+            <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5 my-5">
+              {relatedblog.map((item) => (
+                <ItemBlog key={item._id} blog={item} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
       <Footer />
     </div>

@@ -97,7 +97,6 @@ const BlogClient = ({
         <section className="blog_hot">
           <div className="item-detail_course flex max-xl:flex-col">
             <div className="img_detail xl:w-[50%] max-xl:w-full bg-[#1a1f2b] xl:p-[10px] rounded-[10px] relative xl:h-[300px] max-sm:h-[200px]">
-              {" "}
               {/* Thêm relative và một chiều cao cụ thể */}
               <Image
                 src={blogFeatured.thumbnail || "https://placehold.co/600x400"}
@@ -130,7 +129,7 @@ const BlogClient = ({
                   <span className="text-white">{blogFeatured.author}</span>
                 </div>
               </div>
-              <Link href={`/blog/${blogFeatured.slug}`}>
+              <Link href={`/blogs/${blogFeatured.slug}`}>
                 <Button className="text-white bg-gradient-to-r from-[#eaafc8] to-[#654ea3] py-[10px] px-[30px] rounded-[5px] cursor-pointer">
                   Đọc bài viết
                 </Button>

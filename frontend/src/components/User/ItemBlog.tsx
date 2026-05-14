@@ -9,7 +9,7 @@ type Props = {
 
 const ItemBlog = ({ blog }: Props) => {
   return (
-    <Link href={`/blog/${blog.slug}`}>
+    <Link href={`/blogs/${blog.slug}`}>
       <div
         key={blog._id}
         className="item_blog bg-[#1A1F2B] rounded-[10px] hover:translate-y-[-10px] transition-all duration-300"

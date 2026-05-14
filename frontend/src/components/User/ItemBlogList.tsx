@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Blog } from "@/app/(client)/blog/BlogClient";
+import { Blog } from "@/app/(client)/blogs/BlogClient";
 
 interface ItemBlogListProps {
   selectedCategory: string;
@@ -48,7 +48,7 @@ const ItemBlogList = ({
           key={blog._id}
           className="item_blog bg-[#1A1F2B] rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 group"
         >
-          <Link href={`/blog/${blog.slug}`} className="block">
+          <Link href={`/blogs/${blog.slug}`} className="block">
             <div className="w-full h-[250px] relative rounded-t-[10px] overflow-hidden bg-[#121826]">
               <Image
                 src={

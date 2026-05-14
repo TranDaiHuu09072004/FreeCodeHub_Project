@@ -6,7 +6,7 @@ import { useAuth } from "@/app/Context/AuthContext";
 const menuUser = [
   { href: "/", icon: "fa-solid fa-house", label: "Trang Chủ" },
   { href: "/courses", icon: "fa-solid fa-graduation-cap", label: "Khóa học" },
-  { href: "/blog", icon: "fa-solid fa-note-sticky", label: "Bài viết" },
+  { href: "/blogs", icon: "fa-solid fa-note-sticky", label: "Bài viết" },
   { href: "/about-us", icon: "fa-solid fa-user", label: "Về Chúng Tôi" },
 ];
 
@@ -17,7 +17,7 @@ const menuAdmin = [
     label: "Dashboard",
   },
   {
-    href: "/admin/blog",
+    href: "/admin/blogs",
     icon: "fa-solid fa-file",
     label: "Quản lý bài viết",
   },
