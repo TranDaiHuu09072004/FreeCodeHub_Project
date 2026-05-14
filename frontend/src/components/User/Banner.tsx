@@ -30,7 +30,7 @@ const Banner = ({ name, description, showButton, image }: Banner) => {
             </Link>
           )}
         </div>
-        <div className="img_banner relative h-[50%]  min-[1046px]:w-[50%] min-[1046px]:block max-[1080px]:hidden">
+        <div className="img_banner relative h-[50%] min-[1046px]:w-[50%] min-[1046px]:block max-[1080px]:hidden">
           <Image
             src={
               image && (image.startsWith("/") || image.startsWith("http"))
@@ -39,6 +39,7 @@ const Banner = ({ name, description, showButton, image }: Banner) => {
             }
             fill
             alt=""
+            priority
             className="object-cover 2xl:ml-[207px] max-2xl:ml-auto max-lg:hidden"
           />
         </div>

@@ -49,7 +49,7 @@ const ItemProduct = ({ courses }: ItemProductProps) => {
 
   const handleRegisterCourse = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    course: Course
+    course: Course,
   ) => {
     if (
       user &&
@@ -75,6 +75,7 @@ const ItemProduct = ({ courses }: ItemProductProps) => {
                 src={course.thumbnail}
                 alt={course.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>
