@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+Sitemap: https://free-code-hub-project.vercel.app/sitemap.xml

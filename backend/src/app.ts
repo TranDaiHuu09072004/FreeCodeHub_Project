@@ -42,7 +42,6 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.get("/", (req, res) => {
-  // Trả về trạng thái 200 OK và một thông báo đơn giản
   res.status(200).json({
     message: "API is running successfully on Render!",
     status: "ok",
