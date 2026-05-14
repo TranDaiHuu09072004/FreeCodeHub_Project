@@ -34,7 +34,9 @@ export async function generateMetadata({
   const blog = await getBlogDetail(slug);
   if (!blog) return { title: "Không tìm thấy bài viết | FreeCodeHub" };
   const pageUrl = `/blogs/${slug}`;
-  const ogImage = blog.thumbnail || "/assets/img/banner_detail-blog.jpg";
+  const ogImage =
+    blog.thumbnail ||
+    "https://free-code-hub-project.vercel.app/assets/img/banner_detail-blog.jpg";
   return {
     title: `${blog.title} | FreeCodeHub`,
     description:

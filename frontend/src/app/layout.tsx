@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       "Khám phá kho tàng kiến thức lập trình web từ các kênh Youtube hàng đầu Việt Nam",
     images: [
       {
-        url: "/assets/img/og-image.jpg",
+        url: "https://free-code-hub-project.vercel.app/assets/img/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Học lập trình cùng FreeCodeHub",

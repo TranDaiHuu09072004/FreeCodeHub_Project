@@ -24,8 +24,9 @@ export async function generateMetadata({
   const firstLesson = lessonCourses[0];
   if (!firstLesson)
     return { title: "Không tìm thấy nội dung học tập | FreeCodeHub" };
-  const pageUrl = `/lesson/${slug}`; // Phải khớp với thư mục /lesson/[slug]
-  const ogImage = "/assets/img/banner_learning.jpg"; // Nên có một ảnh đại diện chung cho trang học tập
+  const pageUrl = `/lesson/${slug}`;
+  const ogImage =
+    "https://free-code-hub-project.vercel.app/assets/img/banner_learning.jpg"; // Nên có một ảnh đại diện chung cho trang học tập
   return {
     title: `${firstLesson.title} | FreeCodeHub`,
     description: `Tham gia khóa học và học bài: ${firstLesson.title}. Nền tảng học lập trình miễn phí chất lượng cao.`,
@@ -45,7 +46,6 @@ export async function generateMetadata({
         },
       ],
     },
-    // Lưu ý: Next.js dùng 'twitter' thay vì 'facebook' cho thẻ card
     twitter: {
       card: "summary_large_image",
       title: firstLesson.title,

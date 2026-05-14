@@ -23,7 +23,9 @@ export async function generateMetadata({
   const course = await getCoursesDetail(slug);
   if (!course) return { title: "Không tìm thấy khóa học" };
   const pageUrl = `/courses/${slug}`;
-  const ogImage = course.thumbnail || "/assets/img/banner_detail-course.jpg";
+  const ogImage =
+    course.thumbnail ||
+    "https://free-code-hub-project.vercel.app/assets/img/banner_detail-course.jpg";
   return {
     title: `${course.title}`,
     description: course.description || "Khóa học miễn phí tại FreeCodeHub",

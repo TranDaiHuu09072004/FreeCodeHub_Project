@@ -29,7 +29,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bài viết chia sẻ kiến thức & kinh nghiệm lập trình | FreeCodeHub",
     description: "Cập nhật kiến thức lập trình mới nhất mỗi ngày.",
-    images: ["/assets/img/banner_blog.jpg"],
+    images: [
+      "https://free-code-hub-project.vercel.app/assets/img/banner_blog.jpg",
+    ],
   },
 };
 

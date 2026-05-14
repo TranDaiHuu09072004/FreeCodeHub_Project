@@ -30,7 +30,9 @@ export const metadata: Metadata = {
     title: "Tất cả khóa học lập trình miễn phí | FreeCodeHub",
     description:
       "Khám phá kho tàng khóa học lập trình miễn phí chất lượng cao.",
-    images: ["/assets/img/banner_course.jpg"],
+    images: [
+      "https://free-code-hub-project.vercel.app/assets/img/banner_course.jpg",
+    ],
   },
 };
 
