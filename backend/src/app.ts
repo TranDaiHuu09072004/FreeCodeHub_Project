@@ -36,7 +36,7 @@ app.use(
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-  })
+  }),
 );
 
 app.use(express.json({ limit: "10mb" }));
@@ -60,4 +60,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/auth", uploadRoutes);
 app.use("/api/auth", commentRoutes);
 
+const URL = `https://freecodehub-project.onrender.com/`;
+setInterval(
+  () => {
+    fetch(URL)
+      .then(() => console.log("Self-ping successful"))
+      .catch((err) => console.error("Self-ping failed:", err));
+  },
+  10 * 60 * 1000,
+);
 export default app;
