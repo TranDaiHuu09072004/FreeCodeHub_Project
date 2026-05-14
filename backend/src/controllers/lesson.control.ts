@@ -112,7 +112,7 @@ export const createLesson: RequestHandler = async (req, res) => {
       createdLessons.map((lesson) => ({
         ...lesson.toObject(),
         courseId: lesson.courseId?.toString() ?? null,
-      }))
+      })),
     );
   } catch (error: any) {
     console.error(error);
@@ -127,7 +127,7 @@ export const createLesson: RequestHandler = async (req, res) => {
 // DELETE: /api/lessons/:id - Xóa bài học
 export const deleteLesson: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       res.status(400).json({ error: "ID bài học không hợp lệ" });

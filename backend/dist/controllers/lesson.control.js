@@ -108,7 +108,7 @@ export const createLesson = async (req, res) => {
 // DELETE: /api/lessons/:id - Xóa bài học
 export const deleteLesson = async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         if (!id || !mongoose.Types.ObjectId.isValid(id)) {
             res.status(400).json({ error: "ID bài học không hợp lệ" });
             return;

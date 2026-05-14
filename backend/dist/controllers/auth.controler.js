@@ -98,7 +98,7 @@ export const login = async (req, res) => {
             res.status(403).json({ message: "Tài khoản đã bị khóa" });
             return;
         }
-        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET || "", { expiresIn: "2h" });
+        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
         res.json({
             token,
             role: user.role,

@@ -34,6 +34,14 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
+app.get("/", (req, res) => {
+    // Trả về trạng thái 200 OK và một thông báo đơn giản
+    res.status(200).json({
+        message: "API is running successfully on Render!",
+        status: "ok",
+        version: "1.0",
+    });
+});
 app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 app.use("/api/auth", courseRoutes);
 app.use("/api/auth", blogRoutes);
@@ -44,4 +52,10 @@ app.use("/api/auth", LessonRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/auth", uploadRoutes);
 app.use("/api/auth", commentRoutes);
+const URL = `https://freecodehub-project.onrender.com/`;
+setInterval(() => {
+    fetch(URL)
+        .then(() => console.log("Self-ping successful"))
+        .catch((err) => console.error("Self-ping failed:", err));
+}, 10 * 60 * 1000);
 export default app;

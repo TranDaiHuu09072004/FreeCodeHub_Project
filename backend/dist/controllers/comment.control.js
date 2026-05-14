@@ -106,7 +106,7 @@ export const getComment = async (req, res) => {
 };
 export const deleteComment = async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             res.status(400).json({ message: "id không hợp lệ" });
             return;
